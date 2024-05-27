@@ -77,7 +77,7 @@ export default function MainNavbar() {
           </UncontrolledTooltip>
           <button
             aria-expanded={collapseOpen}
-            className="navbar-toggler navbar-toggler"
+            className="navbar-toggler navbar-toggler mr-3"
             onClick={toggleCollapse}
           >
             <span className="navbar-toggler-bar bar1" />
