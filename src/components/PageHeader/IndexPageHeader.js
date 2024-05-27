@@ -22,7 +22,7 @@ import { Container } from "reactstrap";
 
 export default function PageHeader() {
   return (
-    <div className="index-page-header header-filter">
+    <div className="index-page-header header-filter ">
       <div className="squares square1" />
       <div className="squares square2" />
       <div className="squares square3" />

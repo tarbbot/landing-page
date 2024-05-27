@@ -19,7 +19,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
-  Button,
   Collapse,
   NavbarBrand,
   Navbar,
@@ -149,16 +148,11 @@ export default function MainNavbar() {
               </NavLink>
             </NavItem>
             <NavItem>
-              <Button
-                className="nav-link d-none d-lg-block"
-                color="primary"
-                target="_blank"
-                href="#"
-              >
-                <Link to="/login-page" style={{ color: 'inherit', textDecoration: 'inherit'}}>
-                <i className="tim-icons icon-spaceship" /> Login Web
-              </Link>
-              </Button>
+              <NavLink className="btn btn-primary nav-link" href="/login-page">
+                <div className="ml-2 mr-2">
+                  <i className="tim-icons icon-spaceship" /> Login Web
+                </div>
+              </NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="#">

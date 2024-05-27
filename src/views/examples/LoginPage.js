@@ -140,7 +140,7 @@ export default function RegisterPage() {
                     </CardBody>
                     <CardFooter>
                       <Button className="btn-round" color="primary" size="lg">
-                        Get Started
+                        Let's Go!
                       </Button>
                     </CardFooter>
                   </Card>

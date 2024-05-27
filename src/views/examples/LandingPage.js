@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {useRef, useState} from "react";
+import React from "react";
 // react plugin used to create charts
 // import { Line } from "react-chartjs-2";
 // reactstrap components
@@ -24,10 +24,10 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
+  // CardFooter,
   CardTitle,
-  ListGroupItem,
-  ListGroup,
+  // ListGroupItem,
+  // ListGroup,
   Container,
   Row,
   Col,
@@ -42,45 +42,45 @@ import IndexPageHeader from "components/PageHeader/IndexPageHeader.js";
 import MainNavbar from "components/Navbars/MainNavbar.js";
 import Footer from "components/Footer/Footer.js";
 
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js';
+// import {
+//   Chart as ChartJS,
+//   CategoryScale,
+//   LinearScale,
+//   PointElement,
+//   LineElement,
+//   Title,
+//   Tooltip,
+//   Legend
+// } from 'chart.js';
 
-import { Line } from 'react-chartjs-2';
+// import { Line } from 'react-chartjs-2';
 
-import bigChartData from "variables/charts.js";
+// import bigChartData from "variables/charts.js";
 
 // Register the components you want to use
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+// ChartJS.register(
+//   CategoryScale,
+//   LinearScale,
+//   PointElement,
+//   LineElement,
+//   Title,
+//   Tooltip,
+//   Legend
+// );
 
 export default function LandingPage() {
 
-  const canvasRef = useRef(null);
-  const [chartData, setChartData] = useState();
+  // const canvasRef = useRef(null);
+  // const [chartData, setChartData] = useState();
 
   React.useEffect(() => {
     // Add class when component mounts
     document.body.classList.add("index-landing-page");
   
-    if (canvasRef.current) {
-      const ctx = canvasRef.current;
-      setChartData(bigChartData.data(ctx));
-    }
+    // if (canvasRef.current) {
+    //   const ctx = canvasRef.current;
+    //   setChartData(bigChartData.data(ctx));
+    // }
   
     // Cleanup function to remove class when component unmounts
     return () => {
@@ -90,7 +90,6 @@ export default function LandingPage() {
   }, []); // Empty dependency array to run only once on mount and unmount
   return (
     <>
-    
       <MainNavbar />
       <IndexPageHeader />
       
@@ -172,7 +171,7 @@ export default function LandingPage() {
               <Col lg="4" md="5">
                 <img
                   alt="..."
-                  className="img-fluid"
+                  className="img-fluid-presentation"
                   src={require("assets/img/etherum.png")}
                 />
               </Col>
@@ -192,7 +191,7 @@ export default function LandingPage() {
             <Container>
               <Card className="card-plain">
                 <CardHeader>
-                  <h1 className="profile-title text-left">Our numbers</h1>
+                  <h1 className="profile-title text-left">Our Numbers</h1>
                   <h5 className="text-on-back">02</h5>
                 </CardHeader>
               </Card>
@@ -477,7 +476,7 @@ export default function LandingPage() {
             </Row>
           </Container>
         </section>
-        <section className="section section-lg">
+        {/* <section className="section section-lg">
           <img
             alt="..."
             className="path"
@@ -505,8 +504,8 @@ export default function LandingPage() {
               </CardBody>
             </Card>
           </Col>
-        </section>
-        <section className="section section-lg section-coins">
+        </section> */}
+        {/* <section className="section section-lg section-coins">
           <img
             alt="..."
             className="path"
@@ -621,7 +620,7 @@ export default function LandingPage() {
               </Col>
             </Row>
           </Container>
-        </section>
+        </section> */}
         <section className="section">
           <Container>
             <Row>
