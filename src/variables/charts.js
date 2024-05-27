@@ -4,14 +4,6 @@
 * BLK Design System React - v1.2.2
 =========================================================
 
-
-
-
-
-
-
-=========================================================
-
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
@@ -65,55 +57,51 @@ const bigChart = {
   },
   options: {
     maintainAspectRatio: false,
-    legend: {
-      display: false,
-    },
-
-    tooltips: {
-      backgroundColor: "#fff",
-      titleFontColor: "#ccc",
-      bodyFontColor: "#666",
-      bodySpacing: 4,
-      xPadding: 12,
-      mode: "nearest",
-      intersect: 0,
-      position: "nearest",
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        backgroundColor: "#fff",
+        titleColor: "#ccc",  // Changed from titleFontColor to titleColor
+        bodyColor: "#666",   // Changed from bodyFontColor to bodyColor
+        bodySpacing: 4,
+        padding: 12,         // Changed from xPadding to padding (if applicable)
+        mode: "nearest",
+        intersect: false,
+        position: "nearest",
+      }
     },
     responsive: true,
     scales: {
-      yAxes: [
-        {
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: "rgba(0,0,0,0.0)",
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            display: false,
-            suggestedMin: 0,
-            suggestedMax: 350,
-            padding: 20,
-            fontColor: "#9a9a9a",
-          },
+      y: {
+        grid: {
+          drawBorder: false,
+          color: "rgba(0,0,0,0.0)",
+          borderColor: "transparent",
         },
-      ],
-      xAxes: [
-        {
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: "rgba(0,0,0,0)",
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            padding: 20,
-            fontColor: "#9a9a9a",
-          },
+        ticks: {
+          display: false,
+          suggestedMin: 0,
+          suggestedMax: 350,
+          padding: 20,
+          color: "#9a9a9a",
+        }
+      },
+      x: {
+        grid: {
+          drawBorder: false,
+          color: "rgba(0,0,0,0)",
+          borderColor: "transparent",
         },
-      ],
-    },
-  },
+        ticks: {
+          padding: 20,
+          color: "#9a9a9a",
+        }
+      }
+    }
+  }
+  
 };
 
 export default bigChart;

@@ -15,9 +15,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useRef, useState} from "react";
 // react plugin used to create charts
-import { Line } from "react-chartjs-2";
+// import { Line } from "react-chartjs-2";
 // reactstrap components
 import {
   Button,
@@ -42,16 +42,52 @@ import IndexPageHeader from "components/PageHeader/IndexPageHeader.js";
 import MainNavbar from "components/Navbars/MainNavbar.js";
 import Footer from "components/Footer/Footer.js";
 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
+
+import { Line } from 'react-chartjs-2';
+
 import bigChartData from "variables/charts.js";
 
+// Register the components you want to use
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 export default function LandingPage() {
+
+  const canvasRef = useRef(null);
+  const [chartData, setChartData] = useState();
+
   React.useEffect(() => {
-    document.body.classList.toggle("index-landing-page");
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      document.body.classList.toggle("index-landing-page");
+    // Add class when component mounts
+    document.body.classList.add("index-landing-page");
+  
+    if (canvasRef.current) {
+      const ctx = canvasRef.current;
+      setChartData(bigChartData.data(ctx));
+    }
+  
+    // Cleanup function to remove class when component unmounts
+    return () => {
+      document.body.classList.remove("index-landing-page");
     };
-  }, []);
+  
+  }, []); // Empty dependency array to run only once on mount and unmount
   return (
     <>
     
@@ -464,12 +500,8 @@ export default function LandingPage() {
                 </Row>
               </CardHeader>
               <CardBody>
-                <div className="chart-area">
-                  <Line
-                    data={bigChartData.data}
-                    options={bigChartData.options}
-                  />
-                </div>
+                <canvas className="h-0" ref={canvasRef}></canvas>
+                {chartData && <Line type='line' data={chartData} />}
               </CardBody>
             </Card>
           </Col>
