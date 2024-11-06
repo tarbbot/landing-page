@@ -636,13 +636,13 @@ export default function LandingPage() {
                         <Col md="6">
                           <FormGroup>
                             <label>Your Name</label>
-                            <Input defaultValue="Mike" type="text" />
+                            <Input defaultValue="Someone" type="text" />
                           </FormGroup>
                         </Col>
                         <Col md="6">
                           <FormGroup>
                             <label>Email address</label>
-                            <Input placeholder="mike@email.com" type="email" />
+                            <Input placeholder="someone@email.com" type="email" />
                           </FormGroup>
                         </Col>
                       </Row>
@@ -696,9 +696,9 @@ export default function LandingPage() {
                   <div className="description">
                     <h4 className="info-title">Find us at the office</h4>
                     <p>
-                      Bld Mihail Kogalniceanu, nr. 8, <br />
-                      7652 Bucharest, <br />
-                      Romania
+                      Mailing Address, nr. 412, <br />
+                      7th ST, STE 776, Clovis, NM, 88101, <br />
+                      USA
                     </p>
                   </div>
                 </div>
@@ -707,11 +707,14 @@ export default function LandingPage() {
                     <i className="tim-icons icon-mobile" />
                   </div>
                   <div className="description">
-                    <h4 className="info-title">Give us a ring</h4>
+                    <h4 className="info-title">Our Contact</h4>
                     <p>
-                      Michael Jordan <br />
-                      +40 762 321 762 <br />
-                      Mon - Fri, 8:00-22:00
+                      Luis Rohten <br />
+                      luis.rohten@znit.io <br />
+                    </p>
+                    <p>
+                      Fabio Ogawa <br />
+                      fabio.ogawa@znit.io <br />
                     </p>
                   </div>
                 </div>
