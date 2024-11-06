@@ -712,6 +712,7 @@ export default function LandingPage() {
                       Luis Rohten <br />
                       luis.rohten@znit.io <br />
                     </p>
+                    <hr class="line-primary"></hr>
                     <p>
                       Fabio Ogawa <br />
                       fabio.ogawa@znit.io <br />

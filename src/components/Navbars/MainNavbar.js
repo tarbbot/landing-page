@@ -69,7 +69,7 @@ export default function MainNavbar() {
       <Container>
         <div className="navbar-translate">
           <NavbarBrand to="/" id="navbar-brand" tag={Link}>
-            <span>Trading Bot • </span>
+            <span>Znit IO • </span>
             Designing Smart Systems
           </NavbarBrand>
           <UncontrolledTooltip placement="bottom" target="navbar-brand">
