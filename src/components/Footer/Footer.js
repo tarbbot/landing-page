@@ -41,7 +41,7 @@ export default function Footer() {
       <Container>
         <Row>
           <Col md="3">
-            <h1 className="title">Trading • Bot</h1>
+            <h1 className="title">Znit IO • Trading Bot Systems</h1>
           </Col>
           <Col md="3">
             {/* <Nav>
