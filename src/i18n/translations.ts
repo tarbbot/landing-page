@@ -286,9 +286,9 @@ export const translations: Translations = {
       badge: "Revolutionary DeFi Solutions",
       hero: {
         title: "Building the Future of",
-        subtitle: "Decentralised Finance",
-        description: "Znit.io is pioneering the next generation of DeFi with cutting-edge trading bots, decentralised sports betting, and innovative crypto project launches.",
-        ctaBetting: "Try Betting Platform",
+        subtitle: "Algorithmic Trading",
+        description: "Znit.io is pioneering the next generation of automated trading with cutting-edge trading bots and advanced algorithms for crypto and traditional markets.",
+        ctaDashboard: "Access Dashboard",
         ctaExplore: "Explore Services"
       },
       stats: {
@@ -298,8 +298,8 @@ export const translations: Translations = {
         uptime: "Uptime"
       },
       services: {
-        title: "Our Services",
-        subtitle: "Three revolutionary verticals powering the future of decentralised finance",
+        title: "Our Service",
+        subtitle: "Advanced trading bots with cutting-edge algorithms and strategies",
         bots: {
           title: "Trading Bots",
           description: "Highly scalable bots for crypto and traditional markets with advanced strategies including liquidity pool, mean reversion, trending flow, machine learning, high-frequency trading and arbitrage.",
@@ -1017,16 +1017,16 @@ export const translations: Translations = {
       tagline: "Écosystème DeFi de Nouvelle Génération",
       badge: "Solutions DeFi Révolutionnaires",
       hero: {
-        title: "Construire l'Avenir de",
-        subtitle: "Finance Décentralisée",
-        description: "Znit.io est pionnier de la prochaine génération de DeFi avec des bots de trading de pointe, des paris sportifs décentralisés et des lancements innovants de projets crypto.",
-        ctaBetting: "Essayer la Plateforme de Paris",
+        title: "Construire l'Avenir du",
+        subtitle: "Trading Algorithmique",
+        description: "Znit.io est pionnier de la prochaine génération de trading automatisé avec des bots de trading de pointe et des algorithmes avancés pour les marchés crypto et traditionnels.",
+        ctaDashboard: "Accéder au Tableau de Bord",
         ctaExplore: "Explorer les Services"
       },
       stats: { bots: "Bots Actifs", users: "Utilisateurs Actifs", volume: "Volume de Trading", uptime: "Disponibilité" },
       services: {
-        title: "Nos Services",
-        subtitle: "Trois verticales révolutionnaires alimentant l'avenir de la finance décentralisée",
+        title: "Notre Service",
+        subtitle: "Bots de trading avancés avec des algorithmes et stratégies de pointe",
         bots: {
           title: "Bots de Trading", description: "Bots hautement évolutifs pour les marchés crypto et traditionnels avec des stratégies avancées.", detailTitle: "Trading Algorithmique Avancé", detailDescription: "Nos bots de trading sophistiqués exploitent des algorithmes de pointe et le machine learning pour maximiser les rendements.", cta: "Explorer les Bots",
           strategies: { liquidityPool: "Liquidity Pool", meanReversion: "Mean Reversion", trendingFlow: "Trending Flow", machineLearning: "Machine Learning", highFrequency: "Haute Fréquence", arbitrage: "Arbitrage" }
@@ -1192,16 +1192,16 @@ export const translations: Translations = {
       tagline: "Next-Gen DeFi Ökosystem",
       badge: "Revolutionäre DeFi Lösungen",
       hero: {
-        title: "Die Zukunft der",
-        subtitle: "Dezentralen Finanzen Bauen",
-        description: "Znit.io ist Vorreiter der nächsten Generation von DeFi mit hochmodernen Trading-Bots, dezentralen Sportwetten und innovativen Krypto-Projektstarts.",
-        ctaBetting: "Wettplattform Ausprobieren",
+        title: "Die Zukunft des",
+        subtitle: "Algorithmischen Handels Bauen",
+        description: "Znit.io ist Vorreiter der nächsten Generation des automatisierten Handels mit hochmodernen Trading-Bots und fortschrittlichen Algorithmen für Krypto- und traditionelle Märkte.",
+        ctaDashboard: "Zum Dashboard",
         ctaExplore: "Dienste Erkunden"
       },
       stats: { bots: "Aktive Bots", users: "Aktive Benutzer", volume: "Handelsvolumen", uptime: "Verfügbarkeit" },
       services: {
-        title: "Unsere Dienste",
-        subtitle: "Drei revolutionäre Säulen für die Zukunft der dezentralen Finanzen",
+        title: "Unser Dienst",
+        subtitle: "Fortschrittliche Trading-Bots mit modernsten Algorithmen und Strategien",
         bots: {
           title: "Trading Bots", description: "Hochskalierbare Bots für Krypto- und traditionelle Märkte mit fortgeschrittenen Strategien.", detailTitle: "Fortgeschrittener Algorithmischer Handel", detailDescription: "Unsere ausgefeilten Trading-Bots nutzen modernste Algorithmen und maschinelles Lernen.", cta: "Bots Erkunden",
           strategies: { liquidityPool: "Liquidity Pool", meanReversion: "Mean Reversion", trendingFlow: "Trending Flow", machineLearning: "Machine Learning", highFrequency: "Hochfrequenz", arbitrage: "Arbitrage" }
@@ -1368,15 +1368,15 @@ export const translations: Translations = {
       badge: "革命性DeFi解决方案",
       hero: {
         title: "构建未来的",
-        subtitle: "去中心化金融",
-        description: "Znit.io正在开创下一代DeFi，拥有尖端交易机器人、去中心化体育博彩和创新的加密项目启动。",
-        ctaBetting: "试用投注平台",
+        subtitle: "算法交易",
+        description: "Znit.io正在开创下一代自动化交易，拥有尖端交易机器人和先进算法，适用于加密货币和传统市场。",
+        ctaDashboard: "访问仪表板",
         ctaExplore: "探索服务"
       },
       stats: { bots: "活跃机器人", users: "活跃用户", volume: "交易量", uptime: "运行时间" },
       services: {
         title: "我们的服务",
-        subtitle: "三个革命性垂直领域推动去中心化金融的未来",
+        subtitle: "具有尖端算法和策略的高级交易机器人",
         bots: {
           title: "交易机器人", description: "针对加密和传统市场的高度可扩展机器人，具有先进策略。", detailTitle: "高级算法交易", detailDescription: "我们的复杂交易机器人利用尖端算法和机器学习来最大化回报。", cta: "探索机器人",
           strategies: { liquidityPool: "流动性池", meanReversion: "均值回归", trendingFlow: "趋势流", machineLearning: "机器学习", highFrequency: "高频", arbitrage: "套利" }
@@ -1543,15 +1543,15 @@ export const translations: Translations = {
       badge: "革新的なDeFiソリューション",
       hero: {
         title: "未来を構築する",
-        subtitle: "分散型金融",
-        description: "Znit.ioは、最先端のトレーディングボット、分散型スポーツベッティング、革新的な暗号プロジェクトの立ち上げで次世代DeFiを開拓しています。",
-        ctaBetting: "ベッティングプラットフォームを試す",
+        subtitle: "アルゴリズム取引",
+        description: "Znit.ioは、最先端のトレーディングボットと先進的なアルゴリズムで、暗号通貨と従来市場向けの次世代自動取引を開拓しています。",
+        ctaDashboard: "ダッシュボードにアクセス",
         ctaExplore: "サービスを探索"
       },
       stats: { bots: "アクティブボット", users: "アクティブユーザー", volume: "取引量", uptime: "稼働時間" },
       services: {
         title: "私たちのサービス",
-        subtitle: "分散型金融の未来を支える3つの革新的な柱",
+        subtitle: "最先端のアルゴリズムと戦略を備えた高度なトレーディングボット",
         bots: {
           title: "トレーディングボット", description: "高度な戦略を持つ暗号通貨と従来市場向けの高度にスケーラブルなボット。", detailTitle: "高度なアルゴリズム取引", detailDescription: "当社の洗練されたトレーディングボットは、最先端のアルゴリズムと機械学習を活用してリターンを最大化します。", cta: "ボットを探索",
           strategies: { liquidityPool: "流動性プール", meanReversion: "平均回帰", trendingFlow: "トレンドフロー", machineLearning: "機械学習", highFrequency: "高頻度", arbitrage: "アービトラージ" }

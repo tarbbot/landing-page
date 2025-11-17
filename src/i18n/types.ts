@@ -36,7 +36,8 @@ export interface Translation {
       title: string;
       subtitle: string;
       description: string;
-      ctaBetting: string;
+      ctaBetting?: string;
+      ctaDashboard?: string;
       ctaExplore: string;
     };
     stats: {
