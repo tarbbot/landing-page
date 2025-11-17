@@ -42,9 +42,9 @@ export const translations: Translations = {
       badge: "Revolutionary DeFi Solutions",
       hero: {
         title: "Building the Future of",
-        subtitle: "Decentralized Finance",
-        description: "Znit.io is pioneering the next generation of DeFi with cutting-edge trading bots, decentralized sports betting, and innovative crypto project launches.",
-        ctaBetting: "Try Betting Platform",
+        subtitle: "Algorithmic Trading",
+        description: "Znit.io is pioneering the next generation of automated trading with cutting-edge trading bots and advanced algorithms for crypto and traditional markets.",
+        ctaDashboard: "Access Dashboard",
         ctaExplore: "Explore Services"
       },
       stats: {
@@ -54,8 +54,8 @@ export const translations: Translations = {
         uptime: "Uptime"
       },
       services: {
-        title: "Our Services",
-        subtitle: "Three revolutionary verticals powering the future of decentralized finance",
+        title: "Our Service",
+        subtitle: "Advanced trading bots with cutting-edge algorithms and strategies",
         bots: {
           title: "Trading Bots",
           description: "Highly scalable bots for crypto and traditional markets with advanced strategies including liquidity pool, mean reversion, trending flow, machine learning, high-frequency trading and arbitrage.",
@@ -529,10 +529,10 @@ export const translations: Translations = {
       tagline: "Ecossistema DeFi de Próxima Geração",
       badge: "Soluções DeFi Revolucionárias",
       hero: {
-        title: "Construindo o Futuro das",
-        subtitle: "Finanças Descentralizadas",
-        description: "A Znit.io está pioneirando a próxima geração de DeFi com bots de trading avançados, apostas esportivas descentralizadas e lançamentos inovadores de projetos cripto.",
-        ctaBetting: "Experimentar Plataforma de Apostas",
+        title: "Construindo o Futuro do",
+        subtitle: "Trading Algorítmico",
+        description: "A Znit.io está pioneirando a próxima geração de trading automatizado com bots de trading avançados e algoritmos de ponta para mercados cripto e tradicionais.",
+        ctaDashboard: "Acessar Dashboard",
         ctaExplore: "Explorar Serviços"
       },
       stats: {
@@ -542,8 +542,8 @@ export const translations: Translations = {
         uptime: "Uptime"
       },
       services: {
-        title: "Nossos Serviços",
-        subtitle: "Três verticais revolucionárias impulsionando o futuro das finanças descentralizadas",
+        title: "Nosso Serviço",
+        subtitle: "Bots de trading avançados com algoritmos e estratégias de ponta",
         bots: {
           title: "Bots de Trading",
           description: "Bots altamente escaláveis para mercados de cripto e tradicionais com estratégias avançadas incluindo liquidity pool, mean reversion, trending flow, machine learning, trading de alta frequência e arbitragem.",
@@ -773,10 +773,10 @@ export const translations: Translations = {
       tagline: "Ecosistema DeFi de Nueva Generación",
       badge: "Soluciones DeFi Revolucionarias",
       hero: {
-        title: "Construyendo el Futuro de las",
-        subtitle: "Finanzas Descentralizadas",
-        description: "Znit.io está pioneriando la próxima generación de DeFi con bots de trading avanzados, apuestas deportivas descentralizadas y lanzamientos innovadores de proyectos cripto.",
-        ctaBetting: "Probar Plataforma de Apuestas",
+        title: "Construyendo el Futuro del",
+        subtitle: "Trading Algorítmico",
+        description: "Znit.io está pioneriando la próxima generación de trading automatizado con bots de trading avanzados y algoritmos de vanguardia para mercados cripto y tradicionales.",
+        ctaDashboard: "Acceder al Dashboard",
         ctaExplore: "Explorar Servicios"
       },
       stats: {
@@ -786,8 +786,8 @@ export const translations: Translations = {
         uptime: "Uptime"
       },
       services: {
-        title: "Nuestros Servicios",
-        subtitle: "Tres verticales revolucionarias impulsando el futuro de las finanzas descentralizadas",
+        title: "Nuestro Servicio",
+        subtitle: "Bots de trading avanzados con algoritmos y estrategias de vanguardia",
         bots: {
           title: "Bots de Trading",
           description: "Bots altamente escalables para mercados cripto y tradicionales con estrategias avanzadas incluyendo liquidity pool, mean reversion, trending flow, machine learning, trading de alta frecuencia y arbitraje.",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import { Badge } from "./ui/badge";
@@ -39,15 +39,15 @@ interface Service {
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const [activeService, setActiveService] = useState<number>(0);
 
-  // Auto-rotate active service showcase
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveService((prev) => (prev + 1) % 3);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  // Auto-rotate active service showcase - Disabled for single service
+  // const [activeService, setActiveService] = useState<number>(0);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setActiveService((prev) => (prev + 1) % 3);
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const services: Service[] = [
     {
@@ -56,18 +56,19 @@ const LandingPage: React.FC = () => {
       color: 'from-purple-500 to-pink-500',
       glowColor: 'rgba(139, 92, 246, 0.5)',
     },
-    {
-      id: 'betting',
-      icon: Target,
-      color: 'from-pink-500 to-cyan-500',
-      glowColor: 'rgba(236, 72, 153, 0.5)',
-    },
-    {
-      id: 'launch',
-      icon: Rocket,
-      color: 'from-cyan-500 to-purple-500',
-      glowColor: 'rgba(6, 182, 212, 0.5)',
-    }
+    // Betting and Launch services - Coming Soon
+    // {
+    //   id: 'betting',
+    //   icon: Target,
+    //   color: 'from-pink-500 to-cyan-500',
+    //   glowColor: 'rgba(236, 72, 153, 0.5)',
+    // },
+    // {
+    //   id: 'launch',
+    //   icon: Rocket,
+    //   color: 'from-cyan-500 to-purple-500',
+    //   glowColor: 'rgba(6, 182, 212, 0.5)',
+    // }
   ];
 
   const botStrategies = [
@@ -79,19 +80,20 @@ const LandingPage: React.FC = () => {
     { icon: Network, key: 'arbitrage' }
   ];
 
-  const bettingFeatures = [
-    { icon: Shield, key: 'anonymity' },
-    { icon: Lock, key: 'privacy' },
-    { icon: Coins, key: 'crypto' },
-    { icon: Users, key: 'decentralized' }
-  ];
+  // Betting and Launch features - Coming Soon
+  // const bettingFeatures = [
+  //   { icon: Shield, key: 'anonymity' },
+  //   { icon: Lock, key: 'privacy' },
+  //   { icon: Coins, key: 'crypto' },
+  //   { icon: Users, key: 'decentralized' }
+  // ];
 
-  const launchFeatures = [
-    { icon: Code2, key: 'smartContracts' },
-    { icon: Layers, key: 'tokenomics' },
-    { icon: Globe, key: 'multichain' },
-    { icon: Sparkles, key: 'innovation' }
-  ];
+  // const launchFeatures = [
+  //   { icon: Code2, key: 'smartContracts' },
+  //   { icon: Layers, key: 'tokenomics' },
+  //   { icon: Globe, key: 'multichain' },
+  //   { icon: Sparkles, key: 'innovation' }
+  // ];
 
   return (
     <div className="relative">
@@ -133,18 +135,15 @@ const LandingPage: React.FC = () => {
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
             <Button
-              onClick={() => {
-                navigate('/betting');
-                window.scrollTo(0, 0);
-              }}
+              onClick={() => window.open('https://dashboard.znit.io', '_blank')}
               size="lg"
               className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0 text-lg px-8 py-6 h-auto"
             >
-              <Target className="h-5 w-5 mr-2" />
-              {t('landing.hero.ctaBetting')}
+              <BarChart3 className="h-5 w-5 mr-2" />
+              {t('landing.hero.ctaDashboard')}
               <ArrowRight className="h-5 w-5 ml-2" />
             </Button>
-            
+
             <Button
               variant="outline"
               size="lg"
@@ -189,16 +188,13 @@ const LandingPage: React.FC = () => {
           </div>
 
           {/* Service Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-8 mb-20 max-w-2xl mx-auto">
             {services.map((service, idx) => (
               <div
                 key={service.id}
-                className={`cyber-card cursor-pointer transition-all duration-500 ${
-                  activeService === idx ? 'scale-105' : 'scale-100'
-                }`}
-                onMouseEnter={() => setActiveService(idx)}
+                className={`cyber-card cursor-pointer transition-all duration-500 scale-105`}
                 style={{
-                  boxShadow: activeService === idx ? `0 0 50px ${service.glowColor}` : undefined
+                  boxShadow: `0 0 50px ${service.glowColor}`
                 }}
               >
                 <div className="text-center p-8">
@@ -213,20 +209,10 @@ const LandingPage: React.FC = () => {
                   </p>
                   <Button
                     variant="outline"
-                    className={`w-full ${
-                      service.id === 'betting'
-                        ? 'bg-transparent border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white'
-                        : 'bg-gray-800/50 border-gray-600 text-gray-500 cursor-not-allowed'
-                    }`}
-                    disabled={service.id !== 'betting'}
-                    onClick={() => {
-                      if (service.id === 'betting') {
-                        navigate('/betting');
-                        window.scrollTo(0, 0);
-                      }
-                    }}
+                    className="w-full bg-transparent border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white"
+                    onClick={() => window.open('https://dashboard.znit.io', '_blank')}
                   >
-                    {service.id === 'betting' ? t('landing.services.betting.cta') : t('landing.learnMore')}
+                    {t('landing.services.bots.cta')}
                     <ChevronRight className="h-4 w-4 ml-2" />
                   </Button>
                 </div>
@@ -238,56 +224,28 @@ const LandingPage: React.FC = () => {
           <div className="cyber-card p-12">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <div className={`inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r ${services[activeService].color} text-white mb-6`}>
-                  {React.createElement(services[activeService].icon, { className: "h-5 w-5 mr-2" })}
-                  {t(`landing.services.${services[activeService].id}.title`)}
+                <div className={`inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r ${services[0].color} text-white mb-6`}>
+                  {React.createElement(services[0].icon, { className: "h-5 w-5 mr-2" })}
+                  {t('landing.services.bots.title')}
                 </div>
                 <h3 className="text-4xl font-bold text-white mb-6">
-                  {t(`landing.services.${services[activeService].id}.detailTitle`)}
+                  {t('landing.services.bots.detailTitle')}
                 </h3>
                 <p className="text-gray-400 text-lg leading-relaxed mb-8">
-                  {t(`landing.services.${services[activeService].id}.detailDescription`)}
+                  {t('landing.services.bots.detailDescription')}
                 </p>
 
-                {/* Features List */}
-                {activeService === 0 && (
-                  <div className="grid grid-cols-2 gap-4">
-                    {botStrategies.map((strategy, idx) => (
-                      <div key={idx} className="flex items-center space-x-3 bg-gray-800/30 rounded-lg p-3">
-                        <strategy.icon className="h-5 w-5 text-purple-400" />
-                        <span className="text-gray-300 text-sm">
-                          {t(`landing.services.bots.strategies.${strategy.key}`)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {activeService === 1 && (
-                  <div className="grid grid-cols-2 gap-4">
-                    {bettingFeatures.map((feature, idx) => (
-                      <div key={idx} className="flex items-center space-x-3 bg-gray-800/30 rounded-lg p-3">
-                        <feature.icon className="h-5 w-5 text-pink-400" />
-                        <span className="text-gray-300 text-sm">
-                          {t(`landing.services.betting.features.${feature.key}`)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {activeService === 2 && (
-                  <div className="grid grid-cols-2 gap-4">
-                    {launchFeatures.map((feature, idx) => (
-                      <div key={idx} className="flex items-center space-x-3 bg-gray-800/30 rounded-lg p-3">
-                        <feature.icon className="h-5 w-5 text-cyan-400" />
-                        <span className="text-gray-300 text-sm">
-                          {t(`landing.services.launch.features.${feature.key}`)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                {/* Features List - Trading Bots Only */}
+                <div className="grid grid-cols-2 gap-4">
+                  {botStrategies.map((strategy, idx) => (
+                    <div key={idx} className="flex items-center space-x-3 bg-gray-800/30 rounded-lg p-3">
+                      <strategy.icon className="h-5 w-5 text-purple-400" />
+                      <span className="text-gray-300 text-sm">
+                        {t(`landing.services.bots.strategies.${strategy.key}`)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className="relative">
@@ -298,55 +256,42 @@ const LandingPage: React.FC = () => {
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-6">
                       <span className="text-gray-400 font-mono text-sm">{t('landing.showcase.label')}</span>
-                      <div className="flex space-x-2">
-                        {[0, 1, 2].map((idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => setActiveService(idx)}
-                            className={`w-3 h-3 rounded-full transition-all ${
-                              activeService === idx 
-                                ? 'bg-purple-500 w-8' 
-                                : 'bg-gray-600 hover:bg-gray-500'
-                            }`}
-                          />
-                        ))}
-                      </div>
                     </div>
                     
                     <div className="space-y-4">
                       <div className="bg-gray-800/50 rounded-lg p-6 border border-purple-500/30">
                         <div className="flex items-center justify-between mb-4">
                           <span className="text-white font-semibold">
-                            {t(`landing.showcase.${services[activeService].id}.metric1.label`)}
+                            {t('landing.showcase.bots.metric1.label')}
                           </span>
                           <TrendingUp className="h-5 w-5 text-green-400" />
                         </div>
                         <div className="text-3xl font-bold gradient-text">
-                          {t(`landing.showcase.${services[activeService].id}.metric1.value`)}
+                          {t('landing.showcase.bots.metric1.value')}
                         </div>
                       </div>
 
                       <div className="bg-gray-800/50 rounded-lg p-6 border border-pink-500/30">
                         <div className="flex items-center justify-between mb-4">
                           <span className="text-white font-semibold">
-                            {t(`landing.showcase.${services[activeService].id}.metric2.label`)}
+                            {t('landing.showcase.bots.metric2.label')}
                           </span>
                           <Activity className="h-5 w-5 text-cyan-400" />
                         </div>
                         <div className="text-3xl font-bold gradient-text">
-                          {t(`landing.showcase.${services[activeService].id}.metric2.value`)}
+                          {t('landing.showcase.bots.metric2.value')}
                         </div>
                       </div>
 
                       <div className="bg-gray-800/50 rounded-lg p-6 border border-cyan-500/30">
                         <div className="flex items-center justify-between mb-4">
                           <span className="text-white font-semibold">
-                            {t(`landing.showcase.${services[activeService].id}.metric3.label`)}
+                            {t('landing.showcase.bots.metric3.label')}
                           </span>
                           <CheckCircle2 className="h-5 w-5 text-purple-400" />
                         </div>
                         <div className="text-3xl font-bold gradient-text">
-                          {t(`landing.showcase.${services[activeService].id}.metric3.value`)}
+                          {t('landing.showcase.bots.metric3.value')}
                         </div>
                       </div>
                     </div>
