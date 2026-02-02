@@ -8,14 +8,14 @@ export const translations: Translations = {
       subtitle: "DeFi Platform",
       home: "Home",
       bets: "Betting",
-      portfolio: "Portfolio", 
+      portfolio: "Portfolio",
       rankings: "Rankings",
       connectWallet: "Connect Wallet",
       disconnect: "Disconnect",
       connecting: "Connecting...",
       login: "Login"
     },
-    
+
     // Login
     login: {
       title: "Login",
@@ -35,7 +35,23 @@ export const translations: Translations = {
         accessDenied: "Access not allowed"
       }
     },
-    
+
+    // Dashboard Selector
+    dashboard: {
+      welcome: "Welcome",
+      chooseDashboard: "Choose a dashboard",
+      manageBots: {
+        title: "Manage Bots",
+        description: "Create, monitor and manage your trading bots",
+        button: "Open Manager"
+      },
+      metrics: {
+        title: "Metrics",
+        description: "View real-time performance and statistics",
+        button: "Open Dashboard"
+      }
+    },
+
     // Landing Page
     landing: {
       tagline: "Next-Gen DeFi Ecosystem",
@@ -232,7 +248,9 @@ export const translations: Translations = {
       loadEventsFailed: "Failed to load events",
       loadHistoryFailed: "Failed to load betting history",
       connectFirst: "Please connect your wallet first",
-      enterAmount: "Enter amount and select outcome"
+      enterAmount: "Enter amount and select outcome",
+      signedOut: "Signed out successfully",
+      signOutError: "Error signing out"
     },
     
     // Sports Leagues
@@ -253,13 +271,13 @@ export const translations: Translations = {
       home: "Home",
       bets: "Betting",
       portfolio: "Portfolio",
-      rankings: "Rankings", 
+      rankings: "Rankings",
       connectWallet: "Connect Wallet",
       disconnect: "Disconnect",
       connecting: "Connecting...",
       login: "Login"
     },
-    
+
     // Login
     login: {
       title: "Login",
@@ -279,7 +297,23 @@ export const translations: Translations = {
         accessDenied: "Access not allowed"
       }
     },
-    
+
+    // Dashboard Selector
+    dashboard: {
+      welcome: "Welcome",
+      chooseDashboard: "Choose a dashboard",
+      manageBots: {
+        title: "Manage Bots",
+        description: "Create, monitor and manage your trading bots",
+        button: "Open Manager"
+      },
+      metrics: {
+        title: "Metrics",
+        description: "View real-time performance and statistics",
+        button: "Open Dashboard"
+      }
+    },
+
     // Landing Page (Same as en-US for British English)
     landing: {
       tagline: "Next-Gen DeFi Ecosystem",
@@ -476,7 +510,9 @@ export const translations: Translations = {
       loadEventsFailed: "Failed to load events",
       loadHistoryFailed: "Failed to load betting history",
       connectFirst: "Please connect your wallet first",
-      enterAmount: "Enter amount and select outcome"
+      enterAmount: "Enter amount and select outcome",
+      signedOut: "Signed out successfully",
+      signOutError: "Error signing out"
     },
     
     // Sports Leagues
@@ -499,11 +535,11 @@ export const translations: Translations = {
       portfolio: "Portfolio",
       rankings: "Rankings",
       connectWallet: "Conectar Carteira",
-      disconnect: "Desconectar", 
+      disconnect: "Desconectar",
       connecting: "Conectando...",
       login: "Login"
     },
-    
+
     // Login
     login: {
       title: "Login",
@@ -523,7 +559,23 @@ export const translations: Translations = {
         accessDenied: "Acesso não permitido"
       }
     },
-    
+
+    // Dashboard Selector
+    dashboard: {
+      welcome: "Bem-vindo",
+      chooseDashboard: "Escolha um dashboard",
+      manageBots: {
+        title: "Gerenciar Bots",
+        description: "Crie, monitore e gerencie seus bots de trading",
+        button: "Abrir Gerenciador"
+      },
+      metrics: {
+        title: "Métricas",
+        description: "Visualize performance e estatísticas em tempo real",
+        button: "Abrir Dashboard"
+      }
+    },
+
     // Landing Page
     landing: {
       tagline: "Ecossistema DeFi de Próxima Geração",
@@ -718,11 +770,13 @@ export const translations: Translations = {
       betPlaced: "🎉 Aposta realizada com sucesso! TX:",
       betFailed: "Falha ao realizar aposta",
       loadEventsFailed: "Falha ao carregar eventos",
-      loadHistoryFailed: "Falha ao carregar histórico de apostas", 
+      loadHistoryFailed: "Falha ao carregar histórico de apostas",
       connectFirst: "Por favor, conecte sua carteira primeiro",
-      enterAmount: "Insira o valor e selecione o resultado"
+      enterAmount: "Insira o valor e selecione o resultado",
+      signedOut: "Desconectado com sucesso",
+      signOutError: "Erro ao desconectar"
     },
-    
+
     // Sports Leagues
     leagues: {
       "Premier League": "Premier League",
@@ -747,7 +801,7 @@ export const translations: Translations = {
       connecting: "Conectando...",
       login: "Iniciar sesión"
     },
-    
+
     // Login
     login: {
       title: "Iniciar sesión",
@@ -767,7 +821,23 @@ export const translations: Translations = {
         accessDenied: "Acceso no permitido"
       }
     },
-    
+
+    // Dashboard Selector
+    dashboard: {
+      welcome: "Bienvenido",
+      chooseDashboard: "Elige un dashboard",
+      manageBots: {
+        title: "Gestionar Bots",
+        description: "Crea, monitorea y gestiona tus bots de trading",
+        button: "Abrir Gestor"
+      },
+      metrics: {
+        title: "Métricas",
+        description: "Visualiza rendimiento y estadísticas en tiempo real",
+        button: "Abrir Dashboard"
+      }
+    },
+
     // Landing Page
     landing: {
       tagline: "Ecosistema DeFi de Nueva Generación",
@@ -964,9 +1034,11 @@ export const translations: Translations = {
       loadEventsFailed: "Error al cargar eventos",
       loadHistoryFailed: "Error al cargar historial de apuestas",
       connectFirst: "Por favor conecta tu billetera primero",
-      enterAmount: "Ingresa el monto y selecciona el resultado"
+      enterAmount: "Ingresa el monto y selecciona el resultado",
+      signedOut: "Sesión cerrada exitosamente",
+      signOutError: "Error al cerrar sesión"
     },
-    
+
     // Sports Leagues
     leagues: {
       "Premier League": "Premier League",
@@ -991,7 +1063,7 @@ export const translations: Translations = {
       connecting: "Connexion...",
       login: "Connexion"
     },
-    
+
     // Login
     login: {
       title: "Connexion",
@@ -1011,7 +1083,23 @@ export const translations: Translations = {
         accessDenied: "Accès non autorisé"
       }
     },
-    
+
+    // Dashboard Selector
+    dashboard: {
+      welcome: "Bienvenue",
+      chooseDashboard: "Choisissez un tableau de bord",
+      manageBots: {
+        title: "Gérer les Bots",
+        description: "Créez, surveillez et gérez vos bots de trading",
+        button: "Ouvrir le Gestionnaire"
+      },
+      metrics: {
+        title: "Métriques",
+        description: "Visualisez les performances et statistiques en temps réel",
+        button: "Ouvrir le Tableau de Bord"
+      }
+    },
+
     // Landing Page (using en-US as base, specific French translations)
     landing: {
       tagline: "Écosystème DeFi de Nouvelle Génération",
@@ -1139,9 +1227,11 @@ export const translations: Translations = {
       loadEventsFailed: "Échec du chargement des événements",
       loadHistoryFailed: "Échec du chargement de l'historique des paris",
       connectFirst: "Veuillez d'abord connecter votre portefeuille",
-      enterAmount: "Entrez le montant et sélectionnez le résultat"
+      enterAmount: "Entrez le montant et sélectionnez le résultat",
+      signedOut: "Déconnecté avec succès",
+      signOutError: "Erreur lors de la déconnexion"
     },
-    
+
     // Sports Leagues
     leagues: {
       "Premier League": "Premier League",
@@ -1166,7 +1256,7 @@ export const translations: Translations = {
       connecting: "Verbinden...",
       login: "Anmelden"
     },
-    
+
     // Login
     login: {
       title: "Anmelden",
@@ -1186,7 +1276,23 @@ export const translations: Translations = {
         accessDenied: "Zugriff nicht erlaubt"
       }
     },
-    
+
+    // Dashboard Selector
+    dashboard: {
+      welcome: "Willkommen",
+      chooseDashboard: "Wählen Sie ein Dashboard",
+      manageBots: {
+        title: "Bots Verwalten",
+        description: "Erstellen, überwachen und verwalten Sie Ihre Trading-Bots",
+        button: "Manager Öffnen"
+      },
+      metrics: {
+        title: "Metriken",
+        description: "Sehen Sie Echtzeit-Performance und Statistiken",
+        button: "Dashboard Öffnen"
+      }
+    },
+
     // Landing Page
     landing: {
       tagline: "Next-Gen DeFi Ökosystem",
@@ -1314,9 +1420,11 @@ export const translations: Translations = {
       loadEventsFailed: "Laden der Ereignisse fehlgeschlagen",
       loadHistoryFailed: "Laden der Wetthistorie fehlgeschlagen",
       connectFirst: "Bitte verbinden Sie zuerst Ihr Wallet",
-      enterAmount: "Betrag eingeben und Ergebnis auswählen"
+      enterAmount: "Betrag eingeben und Ergebnis auswählen",
+      signedOut: "Erfolgreich abgemeldet",
+      signOutError: "Fehler beim Abmelden"
     },
-    
+
     // Sports Leagues
     leagues: {
       "Premier League": "Premier League",
@@ -1341,7 +1449,7 @@ export const translations: Translations = {
       connecting: "连接中...",
       login: "登录"
     },
-    
+
     // Login
     login: {
       title: "登录",
@@ -1361,7 +1469,23 @@ export const translations: Translations = {
         accessDenied: "访问被拒绝"
       }
     },
-    
+
+    // Dashboard Selector
+    dashboard: {
+      welcome: "欢迎",
+      chooseDashboard: "选择一个仪表板",
+      manageBots: {
+        title: "管理机器人",
+        description: "创建、监控和管理您的交易机器人",
+        button: "打开管理器"
+      },
+      metrics: {
+        title: "指标",
+        description: "查看实时性能和统计数据",
+        button: "打开仪表板"
+      }
+    },
+
     // Landing Page
     landing: {
       tagline: "下一代DeFi生态系统",
@@ -1489,9 +1613,11 @@ export const translations: Translations = {
       loadEventsFailed: "加载赛事失败",
       loadHistoryFailed: "加载投注历史失败",
       connectFirst: "请先连接您的钱包",
-      enterAmount: "输入金额并选择结果"
+      enterAmount: "输入金额并选择结果",
+      signedOut: "退出成功",
+      signOutError: "退出时出错"
     },
-    
+
     // Sports Leagues
     leagues: {
       "Premier League": "英超联赛",
@@ -1516,7 +1642,7 @@ export const translations: Translations = {
       connecting: "接続中...",
       login: "ログイン"
     },
-    
+
     // Login
     login: {
       title: "ログイン",
@@ -1536,7 +1662,23 @@ export const translations: Translations = {
         accessDenied: "アクセスが許可されていません"
       }
     },
-    
+
+    // Dashboard Selector
+    dashboard: {
+      welcome: "ようこそ",
+      chooseDashboard: "ダッシュボードを選択",
+      manageBots: {
+        title: "ボット管理",
+        description: "トレーディングボットの作成、監視、管理",
+        button: "マネージャーを開く"
+      },
+      metrics: {
+        title: "メトリクス",
+        description: "リアルタイムのパフォーマンスと統計を表示",
+        button: "ダッシュボードを開く"
+      }
+    },
+
     // Landing Page
     landing: {
       tagline: "次世代DeFiエコシステム",
@@ -1664,9 +1806,11 @@ export const translations: Translations = {
       loadEventsFailed: "イベント読み込み失敗",
       loadHistoryFailed: "ベッティング履歴読み込み失敗",
       connectFirst: "まずウォレットを接続してください",
-      enterAmount: "金額を入力し結果を選択してください"
+      enterAmount: "金額を入力し結果を選択してください",
+      signedOut: "サインアウトしました",
+      signOutError: "サインアウトエラー"
     },
-    
+
     // Sports Leagues
     leagues: {
       "Premier League": "プレミアリーグ",

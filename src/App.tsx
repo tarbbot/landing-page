@@ -9,28 +9,32 @@ import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
 import { toast } from "sonner";
 import { Toaster } from "./components/ui/sonner";
-import { 
-  Wallet, 
-  TrendingUp, 
-  Trophy, 
-  Clock, 
-  Users, 
-  DollarSign, 
-  Globe, 
-  Gamepad2, 
-  Zap, 
+import {
+  Wallet,
+  TrendingUp,
+  Trophy,
+  Clock,
+  Users,
+  DollarSign,
+  Globe,
+  Gamepad2,
+  Zap,
   Star,
   Shield,
   Target,
   Activity,
-  Coins
+  Coins,
+  LogOut
 } from "lucide-react";
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 import LanguageSelector from './components/LanguageSelector';
 import Footer from './components/Footer';
 import Rankings from './components/Rankings';
 import LandingPage from './components/LandingPage';
+import DashboardSelector from './components/DashboardSelector';
 import "./App.css";
+import './amplifyConfig';
+import { signInWithRedirect, signIn } from 'aws-amplify/auth';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -233,12 +237,48 @@ const Navigation: React.FC = () => {
   const [loginDropdownOpen, setLoginDropdownOpen] = React.useState(false);
   const [loginForm, setLoginForm] = React.useState({ email: '', password: '' });
   const [isLoggingIn, setIsLoggingIn] = React.useState(false);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [userEmail, setUserEmail] = React.useState<string>('');
+  const [userDropdownOpen, setUserDropdownOpen] = React.useState(false);
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
   const loginDropdownRef = React.useRef<HTMLDivElement>(null);
+  const userDropdownRef = React.useRef<HTMLDivElement>(null);
 
   const currentLang = getCurrentLanguageInfo();
   const availableLanguages = getAvailableLanguages();
+
+  // Check Cognito authentication
+  React.useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('idToken');
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          const expirationTime = payload.exp * 1000;
+
+          if (Date.now() < expirationTime) {
+            setIsAuthenticated(true);
+            setUserEmail(payload.email || '');
+          } else {
+            setIsAuthenticated(false);
+            setUserEmail('');
+          }
+        } catch (error) {
+          setIsAuthenticated(false);
+          setUserEmail('');
+        }
+      } else {
+        setIsAuthenticated(false);
+        setUserEmail('');
+      }
+    };
+
+    checkAuth();
+    // Check periodically
+    const interval = setInterval(checkAuth, 5000);
+    return () => clearInterval(interval);
+  }, [location.pathname]);
 
   // Close dropdown when clicking outside
   React.useEffect(() => {
@@ -246,41 +286,110 @@ const Navigation: React.FC = () => {
       if (loginDropdownRef.current && !loginDropdownRef.current.contains(event.target as Node)) {
         setLoginDropdownOpen(false);
       }
+      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target as Node)) {
+        setUserDropdownOpen(false);
+      }
     };
 
-    if (loginDropdownOpen) {
+    if (loginDropdownOpen || userDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [loginDropdownOpen]);
+  }, [loginDropdownOpen, userDropdownOpen]);
+
+  const handleSignOut = async () => {
+    try {
+      const { signOut } = await import('aws-amplify/auth');
+      await signOut();
+      localStorage.clear();
+      setIsAuthenticated(false);
+      setUserEmail('');
+      setUserDropdownOpen(false);
+      toast.success('Signed out successfully', {
+        className: 'success-toast'
+      });
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast.error('Error signing out', {
+        className: 'error-toast'
+      });
+    }
+  };
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
-    
-    // Simulate API call delay
-    setTimeout(() => {
-      toast.error(t('login.errors.loginNotFound'), {
+
+    try {
+      const { isSignedIn } = await signIn({
+        username: loginForm.email,
+        password: loginForm.password,
+      });
+
+      if (isSignedIn) {
+        // Get tokens and save to localStorage
+        const { fetchAuthSession } = await import('aws-amplify/auth');
+        const session = await fetchAuthSession();
+
+        if (session.tokens) {
+          localStorage.setItem('idToken', session.tokens.idToken?.toString() || '');
+          localStorage.setItem('accessToken', session.tokens.accessToken?.toString() || '');
+        }
+
+        toast.success('Login successful!', {
+          className: 'success-toast'
+        });
+
+        // Close dropdown and redirect to dashboard selector
+        setLoginDropdownOpen(false);
+        setLoginForm({ email: '', password: '' });
+        window.location.href = '/dashboard-selector';
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+
+      let errorMessage = t('login.errors.loginNotFound');
+
+      if (error.name === 'UserNotFoundException' || error.name === 'NotAuthorizedException') {
+        errorMessage = 'Incorrect email or password';
+      } else if (error.name === 'UserNotConfirmedException') {
+        errorMessage = 'User not confirmed. Please check your email.';
+      }
+
+      toast.error(errorMessage, {
         className: 'error-toast'
       });
+    } finally {
       setIsLoggingIn(false);
-      setLoginForm({ email: '', password: '' });
-    }, 1000);
+    }
   };
 
-  const handleSocialLogin = (provider: string) => {
-    setIsLoggingIn(true);
-    
-    // Simulate API call delay
-    setTimeout(() => {
-      toast.error(t('login.errors.accessDenied'), {
-        className: 'error-toast'
-      });
-      setIsLoggingIn(false);
-    }, 1000);
+  const handleSocialLogin = async (provider: string) => {
+    if (provider === 'google') {
+      try {
+        setIsLoggingIn(true);
+        await signInWithRedirect({ provider: 'Google' });
+      } catch (error) {
+        console.error('Google login error:', error);
+        toast.error(t('login.errors.accessDenied'), {
+          className: 'error-toast'
+        });
+        setIsLoggingIn(false);
+      }
+    } else {
+      // Other providers not implemented yet
+      setIsLoggingIn(true);
+      setTimeout(() => {
+        toast.error(t('login.errors.accessDenied'), {
+          className: 'error-toast'
+        });
+        setIsLoggingIn(false);
+      }, 1000);
+    }
   };
 
   return (
@@ -331,9 +440,56 @@ const Navigation: React.FC = () => {
             {/* Desktop Right Side */}
             <div className="hidden md:flex items-center space-x-4">
               <LanguageSelector />
-              
-              {isLandingPage ? (
-                // Login button for landing page
+
+              {isAuthenticated ? (
+                // Authenticated user menu (show on all pages)
+                <div className="relative" ref={userDropdownRef}>
+                  <button
+                    onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                    className="cyber-button flex items-center space-x-2"
+                  >
+                    <Users className="h-4 w-4" />
+                    <span className="hidden lg:inline">{userEmail.split('@')[0]}</span>
+                    <svg
+                      className={`h-4 w-4 transition-transform ${userDropdownOpen ? 'rotate-180' : ''}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  {userDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-64 bg-gray-900 border border-purple-500/30 rounded-2xl shadow-2xl p-4 z-50 backdrop-blur-xl">
+                      <div className="mb-3 pb-3 border-b border-gray-700">
+                        <p className="text-xs text-gray-400 mb-1">Signed in as</p>
+                        <p className="text-sm text-white font-semibold truncate">{userEmail}</p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Link
+                          to="/dashboard-selector"
+                          className="w-full flex items-center justify-center px-4 py-2 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-400 hover:text-purple-300 transition-all"
+                          onClick={() => setUserDropdownOpen(false)}
+                        >
+                          <Activity className="h-4 w-4 mr-2" />
+                          Dashboard
+                        </Link>
+
+                        <button
+                          onClick={handleSignOut}
+                          className="w-full flex items-center justify-center px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 hover:text-red-300 transition-all"
+                        >
+                          <LogOut className="h-4 w-4 mr-2" />
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : isLandingPage ? (
+                // Login button for landing page (only when NOT authenticated)
                 <div className="relative" ref={loginDropdownRef}>
                   <button
                     onClick={() => setLoginDropdownOpen(!loginDropdownOpen)}
@@ -451,6 +607,7 @@ const Navigation: React.FC = () => {
                   )}
                 </div>
               ) : (
+                // Web3 wallet connect (for betting pages)
                 <>
                   {isConnected ? (
                     <div className="flex items-center space-x-4">
@@ -500,7 +657,15 @@ const Navigation: React.FC = () => {
               </button>
 
               {/* Login or Wallet Mobile */}
-              {isLandingPage ? (
+              {isAuthenticated ? (
+                <button
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className="cyber-button text-xs px-3 py-2"
+                  aria-label="User Menu"
+                >
+                  <Users className="h-3 w-3" />
+                </button>
+              ) : isLandingPage ? (
                 <button
                   onClick={() => setLoginDropdownOpen(!loginDropdownOpen)}
                   className="cyber-button text-xs px-3 py-2"
@@ -681,6 +846,36 @@ const Navigation: React.FC = () => {
                 </svg>
               </button>
             </div>
+
+            {/* User Info (if authenticated) */}
+            {isAuthenticated && (
+              <div className="p-6 border-b border-purple-500/20">
+                <div className="bg-purple-500/10 rounded-lg p-4 border border-purple-500/20 mb-4">
+                  <div className="text-xs text-gray-400 mb-1">Signed in as</div>
+                  <div className="text-purple-400 font-semibold text-sm truncate">{userEmail}</div>
+                </div>
+                <div className="space-y-2">
+                  <Link
+                    to="/dashboard-selector"
+                    className="flex items-center justify-center space-x-2 py-3 px-4 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-400 hover:text-purple-300 transition-all"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Activity className="h-4 w-4" />
+                    <span>Dashboard</span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleSignOut();
+                    }}
+                    className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 hover:text-red-300 transition-all"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Navigation Links - Only show if not landing page */}
             {!isLandingPage && (
@@ -1213,6 +1408,49 @@ const ScrollToTop: React.FC = () => {
 // Main App Component with Language Provider
 function AppContent() {
   const { t } = useLanguage();
+  const [isAuthChecking, setIsAuthChecking] = React.useState(true);
+
+  // Handle OAuth callback
+  React.useEffect(() => {
+    const handleOAuthCallback = async () => {
+      try {
+        const { getCurrentUser, fetchAuthSession } = await import('aws-amplify/auth');
+
+        // Check if user is authenticated
+        const user = await getCurrentUser();
+        const session = await fetchAuthSession();
+
+        if (user && session.tokens) {
+          // Save tokens to localStorage
+          localStorage.setItem('idToken', session.tokens.idToken?.toString() || '');
+          localStorage.setItem('accessToken', session.tokens.accessToken?.toString() || '');
+
+          // Redirect to dashboard selector if on landing/callback page
+          if (window.location.pathname === '/' || window.location.pathname === '/callback') {
+            window.location.href = '/dashboard-selector';
+          }
+        }
+      } catch (error) {
+        // User not authenticated, continue normally
+        console.log('No authenticated user');
+      } finally {
+        setIsAuthChecking(false);
+      }
+    };
+
+    handleOAuthCallback();
+  }, []);
+
+  if (isAuthChecking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-950">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Verificando autenticação...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Web3Provider>
@@ -1258,6 +1496,7 @@ function AppContent() {
                   <Rankings />
                 </div>
               } />
+              <Route path="/dashboard-selector" element={<DashboardSelector />} />
             </Routes>
           </main>
           

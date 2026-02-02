@@ -219,6 +219,20 @@ export interface Translation {
     cookies: string;
     licenses: string;
   };
+  dashboard: {
+    welcome: string;
+    chooseDashboard: string;
+    manageBots: {
+      title: string;
+      description: string;
+      button: string;
+    };
+    metrics: {
+      title: string;
+      description: string;
+      button: string;
+    };
+  };
   toasts: {
     walletConnected: string;
     walletDisconnected: string;
@@ -230,6 +244,8 @@ export interface Translation {
     loadHistoryFailed: string;
     connectFirst: string;
     enterAmount: string;
+    signedOut: string;
+    signOutError: string;
   };
   leagues: Record<string, string>;
   sports?: Record<string, string>;
