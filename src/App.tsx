@@ -84,9 +84,9 @@ interface Bet {
   timestamp: string;
 }
 
-// Floating Particles Component
+// Floating Particles Component - Clean & Sharp
 const FloatingParticles: React.FC = () => {
-  const particles = Array.from({ length: 50 }, (_, i) => (
+  const particles = Array.from({ length: 35 }, (_, i) => (
     <div
       key={i}
       className="particle"

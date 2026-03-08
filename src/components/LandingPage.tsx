@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { 
-  Zap, 
-  TrendingUp, 
-  Shield, 
+import {
+  Zap,
+  TrendingUp,
+  Shield,
   Rocket,
   Brain,
   Activity,
@@ -98,19 +98,19 @@ const LandingPage: React.FC = () => {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="hero-section min-h-screen flex items-center justify-center">
+      <section className="hero-section min-h-[90vh] flex items-center justify-center">
         <div className="cyber-grid"></div>
         <div className="hero-bg-overlay"></div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
+
+        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
           {/* Logo/Brand */}
-          <div className="mb-8 inline-block">
+          <div className="mb-6 inline-block">
             <div className="flex items-center justify-center space-x-4">
               <div className="nav-logo p-4">
                 <Zap className="h-12 w-12 text-white" />
               </div>
               <div className="text-left">
-                <h1 className="text-6xl font-bold gradient-text mb-2">Znit.io</h1>
+                <h1 className="text-5xl font-bold gradient-text mb-2">Znit.io</h1>
                 <p className="text-purple-400 font-mono text-sm">{t('landing.tagline')}</p>
               </div>
             </div>
@@ -123,17 +123,17 @@ const LandingPage: React.FC = () => {
             </Badge>
           </div>
 
-          <h2 className="hero-title gradient-text text-5xl md:text-6xl mb-6">
+          <h2 className="hero-title gradient-text mb-6">
             {t('landing.hero.title')}
             <br />
-            <span className="glow-text">{t('landing.hero.subtitle')}</span>
+            <span>{t('landing.hero.subtitle')}</span>
           </h2>
-          
-          <p className="hero-subtitle text-xl max-w-3xl mx-auto mb-12">
+
+          <p className="hero-subtitle text-lg max-w-2xl mx-auto mb-8">
             {t('landing.hero.description')}
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
             <Button
               onClick={() => window.open('https://dashboard.znit.io', '_blank')}
               size="lg"
@@ -164,10 +164,10 @@ const LandingPage: React.FC = () => {
               { icon: Star, label: t('landing.stats.uptime'), value: '99.9%' }
             ].map((stat, idx) => (
               <div key={idx} className="cyber-card p-6 text-center">
-                <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center icon-container">
                   <stat.icon className="h-6 w-6 text-white" />
                 </div>
-                <div className="text-3xl font-bold gradient-text mb-1">{stat.value}</div>
+                <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
                 <div className="text-gray-400 text-sm">{stat.label}</div>
               </div>
             ))}
@@ -176,13 +176,13 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-32 relative">
-        <div className="max-w-7xl mx-auto px-4">
+      <section id="services" className="py-24 relative">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-bold gradient-text mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
               {t('landing.services.title')}
             </h2>
-            <p className="text-gray-400 text-xl max-w-3xl mx-auto">
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               {t('landing.services.subtitle')}
             </p>
           </div>
@@ -198,10 +198,10 @@ const LandingPage: React.FC = () => {
                 }}
               >
                 <div className="text-center p-8">
-                  <div className={`w-20 h-20 mx-auto mb-6 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center transform hover:rotate-12 transition-transform duration-300`}>
+                  <div className={`w-20 h-20 mx-auto mb-6 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center icon-container`}>
                     <service.icon className="h-10 w-10 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-4">
+                  <h3 className="text-xl font-bold text-white mb-4">
                     {t(`landing.services.${service.id}.title`)}
                   </h3>
                   <p className="text-gray-400 mb-6 leading-relaxed">
@@ -221,17 +221,17 @@ const LandingPage: React.FC = () => {
           </div>
 
           {/* Detailed Service Showcase */}
-          <div className="cyber-card p-12">
+          <div className="cyber-card p-10 rotating-glow">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <div className={`inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r ${services[0].color} text-white mb-6`}>
                   {React.createElement(services[0].icon, { className: "h-5 w-5 mr-2" })}
                   {t('landing.services.bots.title')}
                 </div>
-                <h3 className="text-4xl font-bold text-white mb-6">
+                <h3 className="text-3xl font-bold text-white mb-6">
                   {t('landing.services.bots.detailTitle')}
                 </h3>
-                <p className="text-gray-400 text-lg leading-relaxed mb-8">
+                <p className="text-gray-400 leading-relaxed mb-8">
                   {t('landing.services.bots.detailDescription')}
                 </p>
 
@@ -252,12 +252,12 @@ const LandingPage: React.FC = () => {
                 <div className="cyber-card bg-gradient-to-br from-gray-900 to-gray-800 p-8 border-2 border-purple-500/50">
                   <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full opacity-20 blur-2xl"></div>
                   <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-full opacity-20 blur-2xl"></div>
-                  
+
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-6">
                       <span className="text-gray-400 font-mono text-sm">{t('landing.showcase.label')}</span>
                     </div>
-                    
+
                     <div className="space-y-4">
                       <div className="bg-gray-800/50 rounded-lg p-6 border border-purple-500/30">
                         <div className="flex items-center justify-between mb-4">
@@ -266,31 +266,31 @@ const LandingPage: React.FC = () => {
                           </span>
                           <TrendingUp className="h-5 w-5 text-green-400" />
                         </div>
-                        <div className="text-3xl font-bold gradient-text">
+                        <div className="text-3xl font-bold text-white">
                           {t('landing.showcase.bots.metric1.value')}
                         </div>
                       </div>
 
-                      <div className="bg-gray-800/50 rounded-lg p-6 border border-pink-500/30">
+                      <div className="bg-gray-800/50 rounded-lg p-6 border border-purple-500/30">
                         <div className="flex items-center justify-between mb-4">
                           <span className="text-white font-semibold">
                             {t('landing.showcase.bots.metric2.label')}
                           </span>
-                          <Activity className="h-5 w-5 text-cyan-400" />
+                          <Activity className="h-5 w-5 text-purple-400" />
                         </div>
-                        <div className="text-3xl font-bold gradient-text">
+                        <div className="text-3xl font-bold text-white">
                           {t('landing.showcase.bots.metric2.value')}
                         </div>
                       </div>
 
-                      <div className="bg-gray-800/50 rounded-lg p-6 border border-cyan-500/30">
+                      <div className="bg-gray-800/50 rounded-lg p-6 border border-purple-500/30">
                         <div className="flex items-center justify-between mb-4">
                           <span className="text-white font-semibold">
                             {t('landing.showcase.bots.metric3.label')}
                           </span>
                           <CheckCircle2 className="h-5 w-5 text-purple-400" />
                         </div>
-                        <div className="text-3xl font-bold gradient-text">
+                        <div className="text-3xl font-bold text-white">
                           {t('landing.showcase.bots.metric3.value')}
                         </div>
                       </div>
@@ -304,28 +304,28 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-32 relative">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-24 relative">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-bold gradient-text mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
               {t('landing.why.title')}
             </h2>
-            <p className="text-gray-400 text-xl">
+            <p className="text-gray-400 text-lg">
               {t('landing.why.subtitle')}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { icon: Shield, key: 'security', color: 'purple' },
-              { icon: Cpu, key: 'technology', color: 'pink' },
-              { icon: TrendingUp, key: 'performance', color: 'cyan' },
-              { icon: Users, key: 'community', color: 'purple' },
-              { icon: Lock, key: 'transparency', color: 'pink' },
-              { icon: Zap, key: 'speed', color: 'cyan' }
+              { icon: Shield, key: 'security' },
+              { icon: Cpu, key: 'technology' },
+              { icon: TrendingUp, key: 'performance' },
+              { icon: Users, key: 'community' },
+              { icon: Lock, key: 'transparency' },
+              { icon: Zap, key: 'speed' }
             ].map((item, idx) => (
-              <div key={idx} className="cyber-card p-8 hover:scale-105 transition-transform">
-                <div className={`w-16 h-16 mb-6 bg-gradient-to-br from-${item.color}-500 to-pink-500 rounded-2xl flex items-center justify-center`}>
+              <div key={idx} className="cyber-card p-8">
+                <div className="w-16 h-16 mb-6 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center icon-container">
                   <item.icon className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-4">
@@ -341,13 +341,13 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 relative">
-        <div className="max-w-5xl mx-auto px-4">
+      <section className="py-24 relative">
+        <div className="max-w-5xl mx-auto px-6">
           <div className="cyber-card p-16 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-cyan-500/20"></div>
             <div className="relative z-10">
               <Sparkles className="h-16 w-16 text-purple-400 mx-auto mb-6" />
-              <h2 className="text-5xl font-bold gradient-text mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
                 {t('landing.cta.title')}
               </h2>
               <p className="text-gray-300 text-xl mb-12 max-w-2xl mx-auto">
