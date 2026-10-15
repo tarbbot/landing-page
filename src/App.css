@@ -176,31 +176,29 @@ code {
   justify-content: center;
 }
 
-/* Language selector specific styles */
+/* Language selector */
 .language-selector-button {
   background: transparent !important;
-  border: 1px solid rgba(139, 92, 246, 0.3) !important;
-  color: #a855f7 !important;
-  height: 36px !important;
-  padding: 8px 12px !important;
-  font-size: 13px !important;
-  min-width: 110px !important;
-  transition: all 0.3s ease !important;
+  border: 1px solid rgba(34, 230, 255, 0.35) !important;
+  border-radius: 0 !important;
+  color: #eef0ff !important;
+  height: 40px !important;
+  padding: 0 14px !important;
+  font: 500 13px 'JetBrains Mono', monospace !important;
+  min-width: auto !important;
+  transition: background-color 0.25s, border-color 0.25s !important;
 }
 
 @media (max-width: 640px) {
   .language-selector-button {
-    min-width: auto !important;
-    padding: 6px 8px !important;
-    font-size: 12px !important;
-    height: 32px !important;
+    padding: 0 10px !important;
+    height: 36px !important;
   }
 }
 
 .language-selector-button:hover {
-  background: rgba(139, 92, 246, 0.1) !important;
-  border-color: #a855f7 !important;
-  color: #c084fc !important;
+  background: rgba(34, 230, 255, 0.1) !important;
+  border-color: #22e6ff !important;
 }
 
 /* Futuristic cards - Clean hover without rotating glow */

@@ -12,6 +12,7 @@ import LandingPage from './components/LandingPage';
 import DashboardSelector from './components/DashboardSelector';
 import CyberBackground from './components/CyberBackground';
 import "./App.css";
+import "./nav.css";
 import './amplifyConfig';
 import { signInWithRedirect, signIn } from 'aws-amplify/auth';
 
@@ -28,6 +29,48 @@ const Navigation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isLandingPage = location.pathname === '/';
+  const [scrolled, setScrolled] = React.useState(false);
+  const [section, setSection] = React.useState('top');
+  const rail: string[] = Array.isArray(t('landing.rail')) ? t('landing.rail') : [];
+  const NAV_SECTIONS = ['strategies', 'simulator', 'process', 'why'];
+
+  const goSection = (id: string) => {
+    setMobileMenuOpen(false);
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById(id)?.scrollIntoView({ behavior: calm ? 'auto' : 'smooth' });
+  };
+
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setLoginDropdownOpen(false);
+      setUserDropdownOpen(false);
+      setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  // Highlights the nav link of the section nearest the viewport middle
+  React.useEffect(() => {
+    if (!isLandingPage || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(
+      (es) => es.forEach((e) => e.isIntersecting && setSection(e.target.id)),
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+    ['top', ...NAV_SECTIONS, 'start'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+    return () => io.disconnect();
+  }, [isLandingPage]);
   const loginDropdownRef = React.useRef<HTMLDivElement>(null);
   const userDropdownRef = React.useRef<HTMLDivElement>(null);
 
@@ -190,27 +233,45 @@ const Navigation: React.FC = () => {
 
   return (
     <>
-      <nav className="cyber-nav sticky top-0 z-50">
+      <a href="#main" className="skip-link">Skip to content</a>
+      <nav className={`cyber-nav sticky top-0 z-50 ${scrolled ? 'is-scrolled' : ''}`} aria-label="Main">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3">
+            <Link
+              to="/"
+              className="nav-brand"
+              aria-label="Znit.io"
+              onClick={(e) => {
+                if (isLandingPage) {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+            >
               <div className="nav-logo">
-                <Zap className="h-8 w-8 text-white" />
+                <Zap className="h-7 w-7 text-white" aria-hidden="true" />
               </div>
-              {isLandingPage ? (
-                <div>
-                  <span className="text-2xl font-bold gradient-text">Znit.io</span>
-                  <div className="text-xs text-purple-400 font-mono">{t('landing.tagline')}</div>
-                </div>
-              ) : (
-                <div>
-                  <span className="text-2xl font-bold gradient-text">{t('nav.brand')}</span>
-                  <div className="text-xs text-purple-400 font-mono">{t('nav.subtitle')}</div>
-                </div>
-              )}
+              <div>
+                <span className="nav-name">Znit<i>.io</i></span>
+                <span className="nav-tag">{t(isLandingPage ? 'landing.tagline' : 'nav.subtitle')}</span>
+              </div>
             </Link>
 
+            {isLandingPage && (
+              <div className="nav-links hidden lg:flex">
+                {NAV_SECTIONS.map((id, i) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={`nav-link ${section === id ? 'on' : ''}`}
+                    aria-current={section === id ? 'location' : undefined}
+                    onClick={() => goSection(id)}
+                  >
+                    {rail[i + 1] || id}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Desktop Right Side */}
             <div className="hidden md:flex items-center space-x-4">
@@ -222,6 +283,8 @@ const Navigation: React.FC = () => {
                   <button
                     onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                     className="cyber-button flex items-center space-x-2"
+                    aria-expanded={userDropdownOpen}
+                    aria-haspopup="menu"
                   >
                     <Users className="h-4 w-4" />
                     <span className="hidden lg:inline">{userEmail.split('@')[0]}</span>
@@ -236,7 +299,7 @@ const Navigation: React.FC = () => {
                   </button>
 
                   {userDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-64 bg-gray-900 border border-purple-500/30 rounded-2xl shadow-2xl p-4 z-50 backdrop-blur-xl">
+                    <div className="nav-pop absolute right-0 mt-3 w-64 p-4 z-50">
                       <div className="mb-3 pb-3 border-b border-gray-700">
                         <p className="text-xs text-gray-400 mb-1">Signed in as</p>
                         <p className="text-sm text-white font-semibold truncate">{userEmail}</p>
@@ -245,7 +308,7 @@ const Navigation: React.FC = () => {
                       <div className="space-y-2">
                         <Link
                           to="/dashboard-selector"
-                          className="w-full flex items-center justify-center px-4 py-2 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-400 hover:text-purple-300 transition-all"
+                          className="w-full flex items-center justify-center px-4 py-2 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-400 hover:text-purple-300 transition-colors"
                           onClick={() => setUserDropdownOpen(false)}
                         >
                           <Activity className="h-4 w-4 mr-2" />
@@ -254,7 +317,7 @@ const Navigation: React.FC = () => {
 
                         <button
                           onClick={handleSignOut}
-                          className="w-full flex items-center justify-center px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 hover:text-red-300 transition-all"
+                          className="w-full flex items-center justify-center px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 hover:text-red-300 transition-colors"
                         >
                           <LogOut className="h-4 w-4 mr-2" />
                           Sign Out
@@ -269,6 +332,8 @@ const Navigation: React.FC = () => {
                   <button
                     onClick={() => setLoginDropdownOpen(!loginDropdownOpen)}
                     className="cyber-button"
+                    aria-expanded={loginDropdownOpen}
+                    aria-haspopup="dialog"
                   >
                     <Users className="h-4 w-4 mr-2" />
                     {t('nav.login')}
@@ -276,14 +341,15 @@ const Navigation: React.FC = () => {
 
                   {/* Login Dropdown */}
                   {loginDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-80 bg-gray-900 border border-purple-500/30 rounded-2xl shadow-2xl p-6 z-50 backdrop-blur-xl login-dropdown">
+                    <div className="nav-pop login-dropdown absolute right-0 mt-3 w-80 p-6 z-50">
                       <div className="flex items-center justify-between mb-6">
                         <h3 className="text-xl font-bold gradient-text">{t('login.title')}</h3>
                         <button
                           onClick={() => setLoginDropdownOpen(false)}
                           className="text-gray-400 hover:text-white transition-colors"
+                          aria-label="Close"
                         >
-                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
@@ -344,7 +410,7 @@ const Navigation: React.FC = () => {
                           <div className="w-full border-t border-gray-700"></div>
                         </div>
                         <div className="relative flex justify-center text-sm">
-                          <span className="px-2 bg-gray-900 text-gray-400">{t('login.orContinueWith')}</span>
+                          <span className="px-2 bg-[#08061a] text-gray-400">{t('login.orContinueWith')}</span>
                         </div>
                       </div>
 
@@ -352,7 +418,7 @@ const Navigation: React.FC = () => {
                         <button
                           onClick={() => handleSocialLogin('google')}
                           disabled={isLoggingIn}
-                          className="w-full flex items-center justify-center px-4 py-3 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-800 hover:border-purple-500 transition-all disabled:opacity-50"
+                          className="w-full flex items-center justify-center px-4 py-3 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-800 hover:border-purple-500 transition-colors disabled:opacity-50"
                         >
                           <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -366,7 +432,7 @@ const Navigation: React.FC = () => {
                         <button
                           onClick={() => handleSocialLogin('apple')}
                           disabled={isLoggingIn}
-                          className="w-full flex items-center justify-center px-4 py-3 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-800 hover:border-purple-500 transition-all disabled:opacity-50"
+                          className="w-full flex items-center justify-center px-4 py-3 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-800 hover:border-purple-500 transition-colors disabled:opacity-50"
                         >
                           <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
@@ -391,8 +457,8 @@ const Navigation: React.FC = () => {
               {/* Language Flag */}
               <button
                 onClick={() => setMobileMenuOpen(true)}
-                className="text-2xl"
-                aria-label="Current Language"
+                className="nav-flag"
+                aria-label="Language"
               >
                 {currentLang?.flag}
               </button>
@@ -418,19 +484,13 @@ const Navigation: React.FC = () => {
 
               {/* Hamburger Menu Button */}
               <button
+                type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-purple-400 hover:text-purple-300 transition-colors"
-                aria-label="Menu"
+                className={`nav-burger ${mobileMenuOpen ? 'open' : ''}`}
+                aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={mobileMenuOpen}
               >
-                {mobileMenuOpen ? (
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                ) : (
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                )}
+                <i /><i /><i />
               </button>
             </div>
           </div>
@@ -441,7 +501,7 @@ const Navigation: React.FC = () => {
       {loginDropdownOpen && isLandingPage && (
         <div className="md:hidden fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center p-4" onClick={() => setLoginDropdownOpen(false)}>
           <div 
-            className="w-full max-w-md bg-gray-900 border border-purple-500/30 rounded-2xl shadow-2xl p-6"
+            className="nav-pop relative w-full max-w-md p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-6">
@@ -449,8 +509,9 @@ const Navigation: React.FC = () => {
               <button
                 onClick={() => setLoginDropdownOpen(false)}
                 className="text-gray-400 hover:text-white transition-colors"
+                          aria-label="Close"
               >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -511,7 +572,7 @@ const Navigation: React.FC = () => {
                 <div className="w-full border-t border-gray-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-900 text-gray-400">{t('login.orContinueWith')}</span>
+                <span className="px-2 bg-[#08061a] text-gray-400">{t('login.orContinueWith')}</span>
               </div>
             </div>
 
@@ -519,7 +580,7 @@ const Navigation: React.FC = () => {
               <button
                 onClick={() => handleSocialLogin('google')}
                 disabled={isLoggingIn}
-                className="w-full flex items-center justify-center px-4 py-3 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-800 hover:border-purple-500 transition-all disabled:opacity-50"
+                className="w-full flex items-center justify-center px-4 py-3 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-800 hover:border-purple-500 transition-colors disabled:opacity-50"
               >
                 <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24">
                   <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -533,7 +594,7 @@ const Navigation: React.FC = () => {
               <button
                 onClick={() => handleSocialLogin('apple')}
                 disabled={isLoggingIn}
-                className="w-full flex items-center justify-center px-4 py-3 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-800 hover:border-purple-500 transition-all disabled:opacity-50"
+                className="w-full flex items-center justify-center px-4 py-3 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-800 hover:border-purple-500 transition-colors disabled:opacity-50"
               >
                 <svg className="h-5 w-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
@@ -555,7 +616,7 @@ const Navigation: React.FC = () => {
       {mobileMenuOpen && (
         <div className="md:hidden fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md mobile-menu-overlay" onClick={() => setMobileMenuOpen(false)}>
           <div 
-            className="absolute right-0 top-0 h-full w-72 bg-gray-950 border-l border-purple-500/30 shadow-2xl mobile-menu-panel overflow-y-auto"
+            className="absolute right-0 top-0 h-full w-72 nav-sheet mobile-menu-panel overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
@@ -565,7 +626,7 @@ const Navigation: React.FC = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-purple-400 hover:text-purple-300"
               >
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg aria-hidden="true" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -581,7 +642,7 @@ const Navigation: React.FC = () => {
                 <div className="space-y-2">
                   <Link
                     to="/dashboard-selector"
-                    className="flex items-center justify-center space-x-2 py-3 px-4 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-400 hover:text-purple-300 transition-all"
+                    className="flex items-center justify-center space-x-2 py-3 px-4 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-400 hover:text-purple-300 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <Activity className="h-4 w-4" />
@@ -592,7 +653,7 @@ const Navigation: React.FC = () => {
                       setMobileMenuOpen(false);
                       handleSignOut();
                     }}
-                    className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 hover:text-red-300 transition-all"
+                    className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 hover:text-red-300 transition-colors"
                   >
                     <LogOut className="h-4 w-4" />
                     <span>Sign Out</span>
@@ -601,6 +662,23 @@ const Navigation: React.FC = () => {
               </div>
             )}
 
+
+            {isLandingPage && (
+              <ul className="nav-sheet-links">
+                {NAV_SECTIONS.map((id, i) => (
+                  <li key={id}>
+                    <button
+                      type="button"
+                      className={`sheet-link ${section === id ? 'on' : ''}`}
+                      aria-current={section === id ? 'location' : undefined}
+                      onClick={() => goSection(id)}
+                    >
+                      {rail[i + 1] || id}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
 
             {/* Language Selector */}
             <div className="p-6 border-t border-purple-500/20">
@@ -703,7 +781,7 @@ function AppContent() {
           <ScrollToTop />
           <Navigation />
           
-          <main className="relative z-10">
+          <main id="main" tabIndex={-1} className="relative z-10">
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/dashboard-selector" element={<DashboardSelector />} />
