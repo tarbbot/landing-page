@@ -1,380 +1,356 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
 import {
-  Zap,
-  TrendingUp,
-  Shield,
-  Rocket,
-  Brain,
-  Activity,
-  ChevronRight,
-  Star,
-  Bot,
-  Network,
-  Lock,
-  Coins,
-  BarChart3,
+  ArrowUpRight,
   Cpu,
-  Target,
+  FlaskConical,
+  Lock,
+  Radar,
+  Search,
+  Shield,
+  ShieldCheck,
+  TrendingUp,
   Users,
-  ArrowRight,
-  CheckCircle2,
-  Sparkles,
-  Globe,
-  Layers,
-  Code2
+  Zap,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { Counter, Scramble, reducedMotion, useReveal } from './landing/fx';
+import { ArbitrageDiagram, MarketMakerDiagram, NeuralDiagram, TriangleDiagram } from './landing/Diagrams';
+import Simulator from './landing/Simulator';
+import '../landing.css';
 
-interface Service {
-  id: string;
-  icon: LucideIcon;
-  color: string;
-  glowColor: string;
-}
+const DASHBOARD_URL = 'https://dashboard.znit.io';
+const SECTIONS = ['top', 'strategies', 'simulator', 'process', 'why', 'start'];
+const DIAGRAMS = [MarketMakerDiagram, ArbitrageDiagram, TriangleDiagram, NeuralDiagram];
+const PROCESS_ICONS: LucideIcon[] = [Search, FlaskConical, ShieldCheck, Radar];
+const WHY_ICONS: Record<string, LucideIcon> = {
+  security: Shield,
+  technology: Cpu,
+  performance: TrendingUp,
+  community: Users,
+  transparency: Lock,
+  speed: Zap,
+};
+const PAIRS = ['BTC/USDT', 'ETH/USDT', 'ETH/BTC', 'SOL/USDT', 'BNB/USDT', 'XRP/USDT', 'ARB/ETH', 'LINK/USDT'];
+
+const list = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
+const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
+
+// Simulated spread feed: it illustrates what the scanners watch, it is not market data.
+const Tape: React.FC<{ label: string }> = ({ label }) => {
+  const [bps, setBps] = useState<number[]>(() => PAIRS.map(() => 2 + Math.random() * 10));
+  useEffect(() => {
+    if (reducedMotion()) return;
+    const id = setInterval(
+      () => setBps((p) => p.map((v) => Math.max(0.4, Math.min(24, v + (Math.random() - 0.5) * 3)))),
+      1100
+    );
+    return () => clearInterval(id);
+  }, []);
+  const row = PAIRS.map((p, i) => (
+    <span key={p} className="tape-i">
+      <b>{p}</b>
+      <i className={bps[i] > 9 ? 'hot' : ''}>{bps[i].toFixed(1)} bps</i>
+    </span>
+  ));
+  return (
+    <div className="tape" aria-label={label}>
+      <div className="tape-tag">{label}</div>
+      <div className="tape-track" aria-hidden="true">
+        <div>{row}</div>
+        <div>{row}</div>
+      </div>
+    </div>
+  );
+};
 
 const LandingPage: React.FC = () => {
-  const navigate = useNavigate();
   const { t } = useLanguage();
+  const root = useRef<HTMLDivElement>(null);
+  const stratRef = useRef<HTMLElement>(null);
+  const procRef = useRef<HTMLElement>(null);
+  const [ready, setReady] = useState(false);
+  const [active, setActive] = useState(0);
+  const [step, setStep] = useState(-1);
+  const [current, setCurrent] = useState('top');
 
-  // Auto-rotate active service showcase - Disabled for single service
-  // const [activeService, setActiveService] = useState<number>(0);
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setActiveService((prev) => (prev + 1) % 3);
-  //   }, 5000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
-  const services: Service[] = [
-    {
-      id: 'bots',
-      icon: Bot,
-      color: 'from-purple-500 to-pink-500',
-      glowColor: 'rgba(139, 92, 246, 0.5)',
-    },
-    // Betting and Launch services - Coming Soon
-    // {
-    //   id: 'betting',
-    //   icon: Target,
-    //   color: 'from-pink-500 to-cyan-500',
-    //   glowColor: 'rgba(236, 72, 153, 0.5)',
-    // },
-    // {
-    //   id: 'launch',
-    //   icon: Rocket,
-    //   color: 'from-cyan-500 to-purple-500',
-    //   glowColor: 'rgba(6, 182, 212, 0.5)',
-    // }
+  const items = list<{ title: string; description: string; tags: string[] }>(t('landing.strategies.items'));
+  const steps = list<{ title: string; description: string }>(t('landing.process.steps'));
+  const boot = list<string>(t('landing.boot'));
+  const rail = list<string>(t('landing.rail'));
+  const stats = [
+    { label: t('landing.stats.bots'), value: '50+' },
+    { label: t('landing.stats.users'), value: '10K+' },
+    { label: t('landing.stats.volume'), value: '$5M+' },
+    { label: t('landing.stats.uptime'), value: '99.9%' },
   ];
 
-  const botStrategies = [
-    { icon: Activity, key: 'liquidityPool' },
-    { icon: TrendingUp, key: 'meanReversion' },
-    { icon: BarChart3, key: 'trendingFlow' },
-    { icon: Brain, key: 'machineLearning' },
-    { icon: Zap, key: 'highFrequency' },
-    { icon: Network, key: 'arbitrage' }
-  ];
+  useEffect(() => setReady(true), []);
+  useReveal(root);
 
-  // Betting and Launch features - Coming Soon
-  // const bettingFeatures = [
-  //   { icon: Shield, key: 'anonymity' },
-  //   { icon: Lock, key: 'privacy' },
-  //   { icon: Coins, key: 'crypto' },
-  //   { icon: Users, key: 'decentralized' }
-  // ];
+  // One scroll loop drives every chained piece: page progress, strategy chapters, process line.
+  useEffect(() => {
+    let raf = 0;
+    const run = () => {
+      raf = 0;
+      const vh = window.innerHeight;
+      const doc = document.documentElement;
+      root.current?.style.setProperty('--pg', String(clamp01(window.scrollY / (doc.scrollHeight - vh))));
 
-  // const launchFeatures = [
-  //   { icon: Code2, key: 'smartContracts' },
-  //   { icon: Layers, key: 'tokenomics' },
-  //   { icon: Globe, key: 'multichain' },
-  //   { icon: Sparkles, key: 'innovation' }
-  // ];
+      const s = stratRef.current;
+      if (s && items.length) {
+        const r = s.getBoundingClientRect();
+        const p = clamp01(-r.top / Math.max(1, r.height - vh));
+        s.style.setProperty('--sp', String(p));
+        setActive(Math.min(items.length - 1, Math.floor(p * items.length)));
+      }
+      const pr = procRef.current;
+      if (pr && steps.length) {
+        const r = pr.getBoundingClientRect();
+        const p = clamp01((vh * 0.7 - r.top) / Math.max(1, r.height));
+        pr.style.setProperty('--pp', String(p));
+        setStep(Math.min(steps.length - 1, Math.floor(p * steps.length * 1.05) - (p < 0.02 ? 1 : 0)));
+      }
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(run);
+    };
+    run();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [items.length, steps.length]);
+
+  // Section rail: lights the section nearest the viewport middle.
+  useEffect(() => {
+    if (!('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(
+      (es) => es.forEach((e) => e.isIntersecting && setCurrent(e.target.id)),
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+    SECTIONS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+    return () => io.disconnect();
+  }, []);
+
+  // Pointer-follow highlight on panels.
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const move = (e: PointerEvent) => {
+      const p = (e.target as HTMLElement).closest<HTMLElement>('.zn-panel');
+      if (!p) return;
+      const b = p.getBoundingClientRect();
+      p.style.setProperty('--mx', `${e.clientX - b.left}px`);
+      p.style.setProperty('--my', `${e.clientY - b.top}px`);
+    };
+    el.addEventListener('pointermove', move, { passive: true });
+    return () => el.removeEventListener('pointermove', move);
+  }, []);
+
+  const state = (i: number, a: number) => (i === a ? 'is-active' : i < a ? 'is-past' : 'is-next');
+  const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth' });
 
   return (
-    <div className="relative">
-      {/* Hero Section */}
-      <section className="hero-section min-h-[90vh] flex items-center justify-center">
-        <div className="cyber-grid"></div>
-        <div className="hero-bg-overlay"></div>
+    <div ref={root} className={`zn ${ready ? 'js' : ''}`}>
+      <div className="zn-progress" aria-hidden="true" />
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-          {/* Logo/Brand */}
-          <div className="mb-6 inline-block">
-            <div className="flex items-center justify-center space-x-4">
-              <div className="nav-logo p-4">
-                <Zap className="h-12 w-12 text-white" />
-              </div>
-              <div className="text-left">
-                <h1 className="text-5xl font-bold gradient-text mb-2">Znit.io</h1>
-                <p className="text-purple-400 font-mono text-sm">{t('landing.tagline')}</p>
+      <nav className="zn-rail" aria-label="Sections">
+        {SECTIONS.map((id, i) => (
+          <button key={id} type="button" className={current === id ? 'on' : ''} onClick={() => go(id)} aria-label={rail[i] || id} aria-current={current === id}>
+            <span>{rail[i] || id}</span>
+          </button>
+        ))}
+      </nav>
+
+      {/* HERO */}
+      <section id="top" className="hero">
+        <div className="hero-copy">
+          <ul className="boot" aria-hidden="true">
+            {boot.map((l, i) => (
+              <li key={i} style={{ ['--i' as any]: i }}>
+                <span>&gt;</span> {l}
+              </li>
+            ))}
+          </ul>
+          <h1 className="glitch" data-text={t('landing.hero.title')}>
+            <span className="hl-1">{t('landing.hero.title')}</span>
+            <span className="hl-2">{t('landing.hero.subtitle')}</span>
+          </h1>
+          <p className="hero-sub">{t('landing.hero.description')}</p>
+          <div className="hero-cta">
+            <a className="zn-btn primary" href={DASHBOARD_URL} target="_blank" rel="noopener noreferrer">
+              <span>{t('landing.hero.ctaDashboard')}</span>
+              <ArrowUpRight size={18} />
+            </a>
+            <button type="button" className="zn-btn ghost" onClick={() => go('strategies')}>
+              <span>{t('landing.hero.ctaExplore')}</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="hero-hud zn-panel hud" aria-hidden="true">
+          <i className="c tl" />
+          <i className="c tr" />
+          <i className="c bl" />
+          <i className="c br" />
+          <div className="hud-bar">
+            <span>ZNIT.CORE</span>
+            <span className="live">{t('landing.hud')}</span>
+          </div>
+          <TriangleDiagram />
+        </div>
+
+        <dl className="stats">
+          {stats.map((s, i) => (
+            <div key={i} className="stat" style={{ ['--i' as any]: i }}>
+              <dd>
+                <Counter value={s.value} />
+              </dd>
+              <dt>{s.label}</dt>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <Tape label={t('landing.tape')} />
+
+      {/* STRATEGIES: pinned stage, one chapter per strategy */}
+      <section id="strategies" ref={stratRef} className="strat" style={{ ['--n' as any]: items.length }}>
+        <div className="strat-pin">
+          <header className="sec-head">
+            <h2>
+              <Scramble text={t('landing.strategies.title')} />
+            </h2>
+            <p className="rv">{t('landing.strategies.subtitle')}</p>
+          </header>
+          <div className="strat-stage">
+            <div className="strat-text">
+              {items.map((it, i) => (
+                <article key={i} className={`chap ${state(i, active)}`} aria-hidden={i !== active}>
+                  <span className="chap-n">
+                    {String(i + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}
+                  </span>
+                  <h3>{it.title}</h3>
+                  <p>{it.description}</p>
+                  <ul>
+                    {list<string>(it.tags).map((tg) => (
+                      <li key={tg}>{tg}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+              <div className="chap-dots" aria-hidden="true">
+                {items.map((_, i) => (
+                  <i key={i} className={i <= active ? 'on' : ''} />
+                ))}
               </div>
             </div>
+            <div className="strat-viz zn-panel hud">
+              <i className="c tl" />
+              <i className="c tr" />
+              <i className="c bl" />
+              <i className="c br" />
+              {DIAGRAMS.slice(0, items.length).map((D, i) => (
+                <div key={i} className={`viz ${state(i, active)}`}>
+                  <D />
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+      </section>
 
-          <div className="mb-6">
-            <Badge variant="default" className="sport-badge mb-6 text-base px-6 py-2">
-              <Sparkles className="h-5 w-5" />
-              {t('landing.badge')}
-            </Badge>
-          </div>
+      <div className="gate" aria-hidden="true" />
 
-          <h2 className="hero-title gradient-text mb-6">
-            {t('landing.hero.title')}
-            <br />
-            <span>{t('landing.hero.subtitle')}</span>
+      {/* SIMULATOR */}
+      <section id="simulator" className="sec sim-sec">
+        <header className="sec-head">
+          <h2>
+            <Scramble text={t('landing.sim.title')} />
           </h2>
-
-          <p className="hero-subtitle text-lg max-w-2xl mx-auto mb-8">
-            {t('landing.hero.description')}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-            <Button
-              onClick={() => window.open('https://dashboard.znit.io', '_blank')}
-              size="lg"
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0 text-lg px-8 py-6 h-auto"
-            >
-              <BarChart3 className="h-5 w-5 mr-2" />
-              {t('landing.hero.ctaDashboard')}
-              <ArrowRight className="h-5 w-5 ml-2" />
-            </Button>
-
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-transparent border-2 border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white text-lg px-8 py-6 h-auto"
-            >
-              <Layers className="h-5 w-5 mr-2" />
-              {t('landing.hero.ctaExplore')}
-            </Button>
-          </div>
-
-          {/* Floating Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {[
-              { icon: Bot, label: t('landing.stats.bots'), value: '50+' },
-              { icon: Users, label: t('landing.stats.users'), value: '10K+' },
-              { icon: TrendingUp, label: t('landing.stats.volume'), value: '$5M+' },
-              { icon: Star, label: t('landing.stats.uptime'), value: '99.9%' }
-            ].map((stat, idx) => (
-              <div key={idx} className="cyber-card p-6 text-center">
-                <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center icon-container">
-                  <stat.icon className="h-6 w-6 text-white" />
-                </div>
-                <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                <div className="text-gray-400 text-sm">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+          <p className="rv">{t('landing.sim.subtitle')}</p>
+        </header>
+        <div className="rv">
+          <Simulator />
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="py-24 relative">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
-              {t('landing.services.title')}
-            </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              {t('landing.services.subtitle')}
-            </p>
-          </div>
+      <div className="gate" aria-hidden="true" />
 
-          {/* Service Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-8 mb-20 max-w-2xl mx-auto">
-            {services.map((service, idx) => (
-              <div
-                key={service.id}
-                className={`cyber-card cursor-pointer transition-all duration-500 scale-105`}
-                style={{
-                  boxShadow: `0 0 50px ${service.glowColor}`
-                }}
-              >
-                <div className="text-center p-8">
-                  <div className={`w-20 h-20 mx-auto mb-6 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center icon-container`}>
-                    <service.icon className="h-10 w-10 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-4">
-                    {t(`landing.services.${service.id}.title`)}
-                  </h3>
-                  <p className="text-gray-400 mb-6 leading-relaxed">
-                    {t(`landing.services.${service.id}.description`)}
-                  </p>
-                  <Button
-                    variant="outline"
-                    className="w-full bg-transparent border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white"
-                    onClick={() => window.open('https://dashboard.znit.io', '_blank')}
-                  >
-                    {t('landing.services.bots.cta')}
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                  </Button>
+      {/* PROCESS: a line draws down the page, each step ignites in order */}
+      <section id="process" ref={procRef} className="sec proc">
+        <header className="sec-head">
+          <h2>
+            <Scramble text={t('landing.process.title')} />
+          </h2>
+          <p className="rv">{t('landing.process.subtitle')}</p>
+        </header>
+        <ol className="proc-list">
+          {steps.map((s, i) => {
+            const Icon = PROCESS_ICONS[i % PROCESS_ICONS.length];
+            return (
+              <li key={i} className={`proc-step ${i <= step ? 'on' : ''}`}>
+                <div className="proc-node">
+                  <Icon size={20} />
                 </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Detailed Service Showcase */}
-          <div className="cyber-card p-10 rotating-glow">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className={`inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r ${services[0].color} text-white mb-6`}>
-                  {React.createElement(services[0].icon, { className: "h-5 w-5 mr-2" })}
-                  {t('landing.services.bots.title')}
+                <div className="proc-body zn-panel">
+                  <h3>{s.title}</h3>
+                  <p>{s.description}</p>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-6">
-                  {t('landing.services.bots.detailTitle')}
-                </h3>
-                <p className="text-gray-400 leading-relaxed mb-8">
-                  {t('landing.services.bots.detailDescription')}
-                </p>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
 
-                {/* Features List - Trading Bots Only */}
-                <div className="grid grid-cols-2 gap-4">
-                  {botStrategies.map((strategy, idx) => (
-                    <div key={idx} className="flex items-center space-x-3 bg-gray-800/30 rounded-lg p-3">
-                      <strategy.icon className="h-5 w-5 text-purple-400" />
-                      <span className="text-gray-300 text-sm">
-                        {t(`landing.services.bots.strategies.${strategy.key}`)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+      <div className="gate" aria-hidden="true" />
 
-              <div className="relative">
-                <div className="cyber-card bg-gradient-to-br from-gray-900 to-gray-800 p-8 border-2 border-purple-500/50">
-                  <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full opacity-20 blur-2xl"></div>
-                  <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-full opacity-20 blur-2xl"></div>
-
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-6">
-                      <span className="text-gray-400 font-mono text-sm">{t('landing.showcase.label')}</span>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div className="bg-gray-800/50 rounded-lg p-6 border border-purple-500/30">
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="text-white font-semibold">
-                            {t('landing.showcase.bots.metric1.label')}
-                          </span>
-                          <TrendingUp className="h-5 w-5 text-green-400" />
-                        </div>
-                        <div className="text-3xl font-bold text-white">
-                          {t('landing.showcase.bots.metric1.value')}
-                        </div>
-                      </div>
-
-                      <div className="bg-gray-800/50 rounded-lg p-6 border border-purple-500/30">
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="text-white font-semibold">
-                            {t('landing.showcase.bots.metric2.label')}
-                          </span>
-                          <Activity className="h-5 w-5 text-purple-400" />
-                        </div>
-                        <div className="text-3xl font-bold text-white">
-                          {t('landing.showcase.bots.metric2.value')}
-                        </div>
-                      </div>
-
-                      <div className="bg-gray-800/50 rounded-lg p-6 border border-purple-500/30">
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="text-white font-semibold">
-                            {t('landing.showcase.bots.metric3.label')}
-                          </span>
-                          <CheckCircle2 className="h-5 w-5 text-purple-400" />
-                        </div>
-                        <div className="text-3xl font-bold text-white">
-                          {t('landing.showcase.bots.metric3.value')}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* WHY */}
+      <section id="why" className="sec">
+        <header className="sec-head">
+          <h2>
+            <Scramble text={t('landing.why.title')} />
+          </h2>
+          <p className="rv">{t('landing.why.subtitle')}</p>
+        </header>
+        <div className="bento">
+          {Object.keys(WHY_ICONS).map((k, i) => {
+            const Icon = WHY_ICONS[k];
+            return (
+              <article key={k} className={`bento-i b${i} zn-panel rv`} style={{ ['--i' as any]: i }}>
+                <Icon size={22} />
+                <h3>{t(`landing.why.reasons.${k}.title`)}</h3>
+                <p>{t(`landing.why.reasons.${k}.description`)}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="py-24 relative">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
-              {t('landing.why.title')}
-            </h2>
-            <p className="text-gray-400 text-lg">
-              {t('landing.why.subtitle')}
-            </p>
-          </div>
+      <div className="gate" aria-hidden="true" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { icon: Shield, key: 'security' },
-              { icon: Cpu, key: 'technology' },
-              { icon: TrendingUp, key: 'performance' },
-              { icon: Users, key: 'community' },
-              { icon: Lock, key: 'transparency' },
-              { icon: Zap, key: 'speed' }
-            ].map((item, idx) => (
-              <div key={idx} className="cyber-card p-8">
-                <div className="w-16 h-16 mb-6 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center icon-container">
-                  <item.icon className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-4">
-                  {t(`landing.why.reasons.${item.key}.title`)}
-                </h3>
-                <p className="text-gray-400 leading-relaxed">
-                  {t(`landing.why.reasons.${item.key}.description`)}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 relative">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="cyber-card p-16 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-cyan-500/20"></div>
-            <div className="relative z-10">
-              <Sparkles className="h-16 w-16 text-purple-400 mx-auto mb-6" />
-              <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
-                {t('landing.cta.title')}
-              </h2>
-              <p className="text-gray-300 text-xl mb-12 max-w-2xl mx-auto">
-                {t('landing.cta.description')}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  disabled
-                  className="bg-gray-800/50 border-2 border-gray-600 text-gray-500 text-lg px-10 py-7 h-auto cursor-not-allowed"
-                >
-                  <Target className="h-6 w-6 mr-2" />
-                  {t('landing.cta.primary')}
-                  <ArrowRight className="h-6 w-6 ml-2" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  disabled
-                  className="bg-gray-800/50 border-2 border-gray-600 text-gray-500 text-lg px-10 py-7 h-auto cursor-not-allowed"
-                >
-                  <Rocket className="h-6 w-6 mr-2" />
-                  {t('landing.cta.secondary')}
-                </Button>
-              </div>
-            </div>
+      {/* CTA */}
+      <section id="start" className="sec cta">
+        <div className="cta-box zn-panel rv">
+          <h2>
+            <Scramble text={t('landing.cta.title')} />
+          </h2>
+          <p>{t('landing.cta.description')}</p>
+          <div className="hero-cta">
+            <a className="zn-btn primary" href={DASHBOARD_URL} target="_blank" rel="noopener noreferrer">
+              <span>{t('landing.hero.ctaDashboard')}</span>
+              <ArrowUpRight size={18} />
+            </a>
+            <button type="button" className="zn-btn ghost" onClick={() => go('strategies')}>
+              <span>{t('landing.hero.ctaExplore')}</span>
+            </button>
           </div>
         </div>
       </section>
@@ -383,4 +359,3 @@ const LandingPage: React.FC = () => {
 };
 
 export default LandingPage;
-
