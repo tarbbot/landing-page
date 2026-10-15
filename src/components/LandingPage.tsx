@@ -144,6 +144,7 @@ const LandingPage: React.FC = () => {
     const el = root.current;
     if (!el) return;
     const move = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') return;
       const p = (e.target as HTMLElement).closest<HTMLElement>('.zn-panel');
       if (!p) return;
       const b = p.getBoundingClientRect();

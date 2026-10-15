@@ -16,9 +16,12 @@
 
 .zn-bg {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
   z-index: 0;
   pointer-events: none;
+  contain: strict;
+  transform: translateZ(0);
 }
 
 .zn {
@@ -769,6 +772,12 @@
   .b0, .b1, .b2, .b3, .b4, .b5 { grid-column: auto; }
   .hero-cta .zn-btn { width: 100%; justify-content: center; }
   .tape-tag { padding: 14px 12px; }
+}
+
+/* Touch devices: no live blur over the animated canvas, no full-screen scanline layer */
+@media (pointer: coarse) {
+  .cyber-nav { backdrop-filter: none !important; background: rgba(6, 4, 13, 0.94) !important; }
+  .App::after { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
