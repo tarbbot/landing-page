@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
           <span>{t('landing.tagline')}</span>
         </Link>
         <div className="zn-foot-links">
-          <a href="https://dashboard.znit.io" target="_blank" rel="noopener noreferrer">Dashboard</a>
+          <button type="button" onClick={() => window.dispatchEvent(new Event('znit:login'))}>Dashboard</button>
           {social.map((s) => (
             <a key={s.name} href={s.href} aria-label={s.name}>
               <s.icon size={18} />

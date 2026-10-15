@@ -42,11 +42,10 @@ export const translations: Translations = {
     },
     "landing": {
       "tagline": "Market maker and arbitrage bots",
-      "badge": "Revolutionary DeFi Solutions",
       "hero": {
         "title": "Bots that trade",
         "subtitle": "the spread.",
-        "description": "Market making, simple arbitrage and triangular arbitrage on crypto venues, running around the clock.",
+        "description": "Market making, simple arbitrage and triangular arbitrage on centralized exchanges like Binance, OKX, Bybit, Coinbase and Bitfinex, running around the clock.",
         "ctaDashboard": "Access Dashboard",
         "ctaExplore": "Explore strategies"
       },
@@ -56,69 +55,33 @@ export const translations: Translations = {
         "volume": "Trading Volume",
         "uptime": "Uptime"
       },
-      "services": {
-        "title": "Our Service",
-        "subtitle": "Advanced trading bots with cutting-edge algorithms and strategies",
-        "bots": {
-          "title": "Trading Bots",
-          "description": "Highly scalable bots for crypto and traditional markets with advanced strategies including liquidity pool, mean reversion, trending flow, machine learning, high-frequency trading and arbitrage.",
-          "detailTitle": "Advanced Algorithmic Trading",
-          "detailDescription": "Our sophisticated trading bots leverage cutting-edge algorithms and machine learning to maximize returns across multiple markets. From high-frequency trading to complex arbitrage strategies, we provide institutional-grade tools for everyone.",
-          "cta": "Explore Bots",
-          "strategies": {
-            "liquidityPool": "Liquidity Pool",
-            "meanReversion": "Mean Reversion",
-            "trendingFlow": "Trending Flow",
-            "machineLearning": "Machine Learning",
-            "highFrequency": "High Frequency",
-            "arbitrage": "Arbitrage"
-          }
-        }
-      },
-      "showcase": {
-        "label": "Live Metrics",
-        "bots": {
-          "metric1": {
-            "label": "Success Rate",
-            "value": "94.2%"
-          },
-          "metric2": {
-            "label": "Active Strategies",
-            "value": "156"
-          },
-          "metric3": {
-            "label": "Total Trades",
-            "value": "1.2M+"
-          }
-        }
-      },
       "why": {
         "title": "Why Choose Znit.io?",
-        "subtitle": "The most advanced DeFi ecosystem powered by cutting-edge technology",
+        "subtitle": "Automated strategies built for centralized exchanges.",
         "reasons": {
           "security": {
-            "title": "Bank-Grade Security",
-            "description": "Military-grade encryption and multi-signature wallets protect your assets 24/7"
+            "title": "Funds stay on the exchange",
+            "description": "Bots trade through exchange API keys. Your assets remain in your own exchange account."
           },
           "technology": {
-            "title": "Cutting-Edge Tech",
-            "description": "Built with the latest blockchain technology and AI-powered algorithms"
+            "title": "Quant-grade strategies",
+            "description": "Market making, arbitrage and adaptive models running on low-latency execution engines."
           },
           "performance": {
-            "title": "High Performance",
-            "description": "Lightning-fast execution and 99.9% uptime guarantee for all services"
+            "title": "Always on",
+            "description": "Bots run around the clock with 99.9% uptime."
           },
           "community": {
-            "title": "Strong Community",
-            "description": "Join thousands of users in our growing ecosystem and governance"
+            "title": "Many exchanges, one dashboard",
+            "description": "Connect Binance, OKX, Bybit, Coinbase, Bitfinex and more, and manage every bot in one place."
           },
           "transparency": {
-            "title": "Full Transparency",
-            "description": "All operations are on-chain and verifiable with complete audit trails"
+            "title": "Full visibility",
+            "description": "Every order and fill is logged, so you can audit what each bot did."
           },
           "speed": {
-            "title": "Instant Execution",
-            "description": "Sub-second transaction processing and real-time settlement"
+            "title": "Fast execution",
+            "description": "Orders go out through exchange APIs with latency in mind, where spreads close in milliseconds."
           }
         }
       },
@@ -126,12 +89,11 @@ export const translations: Translations = {
         "title": "Ready to put a bot to work?",
         "description": "Open the dashboard to create, monitor and manage your trading bots."
       },
-      "learnMore": "Learn More",
       "hud": "LIVE LOOP",
       "tape": "Simulated spread feed",
       "boot": [
         "znit.core online",
-        "venues linked",
+        "exchange APIs linked",
         "spread scanners armed"
       ],
       "rail": [
@@ -157,9 +119,9 @@ export const translations: Translations = {
           },
           {
             "title": "Simple arbitrage",
-            "description": "Buy an asset where it is cheap and sell it where it is dear, across venues, before the gap closes.",
+            "description": "Buy an asset where it is cheap and sell it where it is dear, across exchanges, before the gap closes.",
             "tags": [
-              "Cross-venue",
+              "Cross-exchange",
               "Millisecond execution",
               "Net of fees"
             ]
@@ -200,7 +162,7 @@ export const translations: Translations = {
         "steps": [
           {
             "title": "Scope",
-            "description": "Define the market, the venues and the edge worth chasing."
+            "description": "Define the market, the exchanges and the edge worth chasing."
           },
           {
             "title": "Backtest",
@@ -262,8 +224,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "Next-Gen DeFi Ecosystem",
-      "badge": "Revolutionary DeFi Solutions",
+      "tagline": "Market maker and arbitrage bots",
       "hero": {
         "title": "Building the Future of",
         "subtitle": "Algorithmic Trading",
@@ -277,77 +238,40 @@ export const translations: Translations = {
         "volume": "Trading Volume",
         "uptime": "Uptime"
       },
-      "services": {
-        "title": "Our Service",
-        "subtitle": "Advanced trading bots with cutting-edge algorithms and strategies",
-        "bots": {
-          "title": "Trading Bots",
-          "description": "Highly scalable bots for crypto and traditional markets with advanced strategies including liquidity pool, mean reversion, trending flow, machine learning, high-frequency trading and arbitrage.",
-          "detailTitle": "Advanced Algorithmic Trading",
-          "detailDescription": "Our sophisticated trading bots leverage cutting-edge algorithms and machine learning to maximise returns across multiple markets. From high-frequency trading to complex arbitrage strategies, we provide institutional-grade tools for everyone.",
-          "cta": "Explore Bots",
-          "strategies": {
-            "liquidityPool": "Liquidity Pool",
-            "meanReversion": "Mean Reversion",
-            "trendingFlow": "Trending Flow",
-            "machineLearning": "Machine Learning",
-            "highFrequency": "High Frequency",
-            "arbitrage": "Arbitrage"
-          }
-        }
-      },
-      "showcase": {
-        "label": "Live Metrics",
-        "bots": {
-          "metric1": {
-            "label": "Success Rate",
-            "value": "94.2%"
-          },
-          "metric2": {
-            "label": "Active Strategies",
-            "value": "156"
-          },
-          "metric3": {
-            "label": "Total Trades",
-            "value": "1.2M+"
-          }
-        }
-      },
       "why": {
         "title": "Why Choose Znit.io?",
-        "subtitle": "The most advanced DeFi ecosystem powered by cutting-edge technology",
+        "subtitle": "Automated strategies built for centralized exchanges.",
         "reasons": {
           "security": {
-            "title": "Bank-Grade Security",
-            "description": "Military-grade encryption and multi-signature wallets protect your assets 24/7"
+            "title": "Funds stay on the exchange",
+            "description": "Bots trade through exchange API keys. Your assets remain in your own exchange account."
           },
           "technology": {
-            "title": "Cutting-Edge Tech",
-            "description": "Built with the latest blockchain technology and AI-powered algorithms"
+            "title": "Quant-grade strategies",
+            "description": "Market making, arbitrage and adaptive models running on low-latency execution engines."
           },
           "performance": {
-            "title": "High Performance",
-            "description": "Lightning-fast execution and 99.9% uptime guarantee for all services"
+            "title": "Always on",
+            "description": "Bots run around the clock with 99.9% uptime."
           },
           "community": {
-            "title": "Strong Community",
-            "description": "Join thousands of users in our growing ecosystem and governance"
+            "title": "Many exchanges, one dashboard",
+            "description": "Connect Binance, OKX, Bybit, Coinbase, Bitfinex and more, and manage every bot in one place."
           },
           "transparency": {
-            "title": "Full Transparency",
-            "description": "All operations are on-chain and verifiable with complete audit trails"
+            "title": "Full visibility",
+            "description": "Every order and fill is logged, so you can audit what each bot did."
           },
           "speed": {
-            "title": "Instant Execution",
-            "description": "Sub-second transaction processing and real-time settlement"
+            "title": "Fast execution",
+            "description": "Orders go out through exchange APIs with latency in mind, where spreads close in milliseconds."
           }
         }
       },
       "cta": {
         "title": "Ready to Get Started?",
-        "description": "Join thousands of users already benefiting from our revolutionary DeFi ecosystem"
-      },
-      "learnMore": "Learn More"
+        "description": "Open the dashboard to create, monitor and manage your trading bots."
+      }
     },
     "toasts": {
       "signedOut": "Signed out successfully",
@@ -395,11 +319,10 @@ export const translations: Translations = {
     },
     "landing": {
       "tagline": "Bots de market maker e arbitragem",
-      "badge": "Soluções DeFi Revolucionárias",
       "hero": {
         "title": "Bots que operam",
         "subtitle": "o spread.",
-        "description": "Market making, arbitragem simples e arbitragem triangular em exchanges de cripto, operando 24 horas por dia.",
+        "description": "Market making, arbitragem simples e arbitragem triangular em exchanges centralizadas como Binance, OKX, Bybit, Coinbase e Bitfinex, operando 24 horas por dia.",
         "ctaDashboard": "Acessar Dashboard",
         "ctaExplore": "Explorar estratégias"
       },
@@ -409,69 +332,33 @@ export const translations: Translations = {
         "volume": "Volume de Trading",
         "uptime": "Uptime"
       },
-      "services": {
-        "title": "Nosso Serviço",
-        "subtitle": "Bots de trading avançados com algoritmos e estratégias de ponta",
-        "bots": {
-          "title": "Bots de Trading",
-          "description": "Bots altamente escaláveis para mercados de cripto e tradicionais com estratégias avançadas incluindo liquidity pool, mean reversion, trending flow, machine learning, trading de alta frequência e arbitragem.",
-          "detailTitle": "Trading Algorítmico Avançado",
-          "detailDescription": "Nossos sofisticados bots de trading aproveitam algoritmos de ponta e machine learning para maximizar retornos em múltiplos mercados. De trading de alta frequência a estratégias complexas de arbitragem, fornecemos ferramentas de nível institucional para todos.",
-          "cta": "Explorar Bots",
-          "strategies": {
-            "liquidityPool": "Liquidity Pool",
-            "meanReversion": "Mean Reversion",
-            "trendingFlow": "Trending Flow",
-            "machineLearning": "Machine Learning",
-            "highFrequency": "Alta Frequência",
-            "arbitrage": "Arbitragem"
-          }
-        }
-      },
-      "showcase": {
-        "label": "Métricas Ao Vivo",
-        "bots": {
-          "metric1": {
-            "label": "Taxa de Sucesso",
-            "value": "94.2%"
-          },
-          "metric2": {
-            "label": "Estratégias Ativas",
-            "value": "156"
-          },
-          "metric3": {
-            "label": "Total de Trades",
-            "value": "1.2M+"
-          }
-        }
-      },
       "why": {
         "title": "Por Que Escolher a Znit.io?",
-        "subtitle": "O ecossistema DeFi mais avançado alimentado por tecnologia de ponta",
+        "subtitle": "Estratégias automatizadas feitas para exchanges centralizadas.",
         "reasons": {
           "security": {
-            "title": "Segurança Bancária",
-            "description": "Criptografia de nível militar e carteiras multi-assinatura protegem seus ativos 24/7"
+            "title": "Os fundos ficam na exchange",
+            "description": "Os bots operam por chaves de API da exchange. Seus ativos continuam na sua própria conta."
           },
           "technology": {
-            "title": "Tecnologia de Ponta",
-            "description": "Construído com a mais recente tecnologia blockchain e algoritmos alimentados por IA"
+            "title": "Estratégias de nível quant",
+            "description": "Market making, arbitragem e modelos adaptativos rodando em motores de execução de baixa latência."
           },
           "performance": {
-            "title": "Alto Desempenho",
-            "description": "Execução ultra-rápida e garantia de 99.9% de uptime para todos os serviços"
+            "title": "Sempre ligado",
+            "description": "Os bots operam 24 horas por dia com 99,9% de uptime."
           },
           "community": {
-            "title": "Comunidade Forte",
-            "description": "Junte-se a milhares de usuários em nosso ecossistema crescente e governança"
+            "title": "Várias exchanges, um dashboard",
+            "description": "Conecte Binance, OKX, Bybit, Coinbase, Bitfinex e outras, e gerencie todos os bots em um só lugar."
           },
           "transparency": {
-            "title": "Transparência Total",
-            "description": "Todas as operações estão on-chain e verificáveis com trilhas de auditoria completas"
+            "title": "Visibilidade total",
+            "description": "Cada ordem e execução fica registrada, para você auditar o que cada bot fez."
           },
           "speed": {
-            "title": "Execução Instantânea",
-            "description": "Processamento de transações em subsegundos e liquidação em tempo real"
+            "title": "Execução rápida",
+            "description": "As ordens saem pelas APIs das exchanges pensando em latência, onde os spreads fecham em milissegundos."
           }
         }
       },
@@ -479,12 +366,11 @@ export const translations: Translations = {
         "title": "Pronto para colocar um bot para trabalhar?",
         "description": "Abra o dashboard para criar, monitorar e gerenciar seus bots de trading."
       },
-      "learnMore": "Saiba Mais",
       "hud": "LOOP AO VIVO",
       "tape": "Feed de spreads simulado",
       "boot": [
         "znit.core online",
-        "exchanges conectadas",
+        "APIs das exchanges conectadas",
         "scanners de spread armados"
       ],
       "rail": [
@@ -615,8 +501,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "Ecosistema DeFi de Nueva Generación",
-      "badge": "Soluciones DeFi Revolucionarias",
+      "tagline": "Bots de market maker y arbitraje",
       "hero": {
         "title": "Construyendo el Futuro del",
         "subtitle": "Trading Algorítmico",
@@ -630,77 +515,40 @@ export const translations: Translations = {
         "volume": "Volumen de Trading",
         "uptime": "Uptime"
       },
-      "services": {
-        "title": "Nuestro Servicio",
-        "subtitle": "Bots de trading avanzados con algoritmos y estrategias de vanguardia",
-        "bots": {
-          "title": "Bots de Trading",
-          "description": "Bots altamente escalables para mercados cripto y tradicionales con estrategias avanzadas incluyendo liquidity pool, mean reversion, trending flow, machine learning, trading de alta frecuencia y arbitraje.",
-          "detailTitle": "Trading Algorítmico Avanzado",
-          "detailDescription": "Nuestros sofisticados bots de trading aprovechan algoritmos de vanguardia y machine learning para maximizar retornos en múltiples mercados. Desde trading de alta frecuencia hasta estrategias complejas de arbitraje, proporcionamos herramientas de nivel institucional para todos.",
-          "cta": "Explorar Bots",
-          "strategies": {
-            "liquidityPool": "Liquidity Pool",
-            "meanReversion": "Mean Reversion",
-            "trendingFlow": "Trending Flow",
-            "machineLearning": "Machine Learning",
-            "highFrequency": "Alta Frecuencia",
-            "arbitrage": "Arbitraje"
-          }
-        }
-      },
-      "showcase": {
-        "label": "Métricas en Vivo",
-        "bots": {
-          "metric1": {
-            "label": "Tasa de Éxito",
-            "value": "94.2%"
-          },
-          "metric2": {
-            "label": "Estrategias Activas",
-            "value": "156"
-          },
-          "metric3": {
-            "label": "Total de Trades",
-            "value": "1.2M+"
-          }
-        }
-      },
       "why": {
         "title": "¿Por Qué Elegir Znit.io?",
-        "subtitle": "El ecosistema DeFi más avanzado impulsado por tecnología de vanguardia",
+        "subtitle": "Estrategias automatizadas para exchanges centralizados.",
         "reasons": {
           "security": {
-            "title": "Seguridad Bancaria",
-            "description": "Encriptación de nivel militar y billeteras multi-firma protegen tus activos 24/7"
+            "title": "Los fondos se quedan en el exchange",
+            "description": "Los bots operan mediante claves API del exchange. Tus activos siguen en tu propia cuenta."
           },
           "technology": {
-            "title": "Tecnología de Vanguardia",
-            "description": "Construido con la última tecnología blockchain y algoritmos impulsados por IA"
+            "title": "Estrategias de nivel quant",
+            "description": "Market making, arbitraje y modelos adaptativos sobre motores de ejecución de baja latencia."
           },
           "performance": {
-            "title": "Alto Rendimiento",
-            "description": "Ejecución ultrarrápida y garantía de 99.9% de uptime para todos los servicios"
+            "title": "Siempre activo",
+            "description": "Los bots operan las 24 horas con 99,9 % de disponibilidad."
           },
           "community": {
-            "title": "Comunidad Fuerte",
-            "description": "Únete a miles de usuarios en nuestro ecosistema creciente y gobernanza"
+            "title": "Varios exchanges, un panel",
+            "description": "Conecta Binance, OKX, Bybit, Coinbase, Bitfinex y más, y gestiona todos los bots en un solo lugar."
           },
           "transparency": {
-            "title": "Transparencia Total",
-            "description": "Todas las operaciones están on-chain y verificables con auditorías completas"
+            "title": "Visibilidad total",
+            "description": "Cada orden y ejecución queda registrada para que puedas auditar lo que hizo cada bot."
           },
           "speed": {
-            "title": "Ejecución Instantánea",
-            "description": "Procesamiento de transacciones en subsegundos y liquidación en tiempo real"
+            "title": "Ejecución rápida",
+            "description": "Las órdenes salen por las API de los exchanges pensando en la latencia, donde los spreads se cierran en milisegundos."
           }
         }
       },
       "cta": {
         "title": "¿Listo Para Comenzar?",
-        "description": "Únete a miles de usuarios ya beneficiándose de nuestro ecosistema DeFi revolucionario"
-      },
-      "learnMore": "Saber Más"
+        "description": "Abre el panel para crear, monitorizar y gestionar tus bots de trading."
+      }
     },
     "toasts": {
       "signedOut": "Sesión cerrada exitosamente",
@@ -747,8 +595,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "Écosystème DeFi de Nouvelle Génération",
-      "badge": "Solutions DeFi Révolutionnaires",
+      "tagline": "Bots de market making et d'arbitrage",
       "hero": {
         "title": "Construire l'Avenir du",
         "subtitle": "Trading Algorithmique",
@@ -762,77 +609,40 @@ export const translations: Translations = {
         "volume": "Volume de Trading",
         "uptime": "Disponibilité"
       },
-      "services": {
-        "title": "Notre Service",
-        "subtitle": "Bots de trading avancés avec des algorithmes et stratégies de pointe",
-        "bots": {
-          "title": "Bots de Trading",
-          "description": "Bots hautement évolutifs pour les marchés crypto et traditionnels avec des stratégies avancées.",
-          "detailTitle": "Trading Algorithmique Avancé",
-          "detailDescription": "Nos bots de trading sophistiqués exploitent des algorithmes de pointe et le machine learning pour maximiser les rendements.",
-          "cta": "Explorer les Bots",
-          "strategies": {
-            "liquidityPool": "Liquidity Pool",
-            "meanReversion": "Mean Reversion",
-            "trendingFlow": "Trending Flow",
-            "machineLearning": "Machine Learning",
-            "highFrequency": "Haute Fréquence",
-            "arbitrage": "Arbitrage"
-          }
-        }
-      },
-      "showcase": {
-        "label": "Métriques en Direct",
-        "bots": {
-          "metric1": {
-            "label": "Taux de Réussite",
-            "value": "94.2%"
-          },
-          "metric2": {
-            "label": "Stratégies Actives",
-            "value": "156"
-          },
-          "metric3": {
-            "label": "Total Trades",
-            "value": "1.2M+"
-          }
-        }
-      },
       "why": {
         "title": "Pourquoi Choisir Znit.io?",
-        "subtitle": "L'écosystème DeFi le plus avancé alimenté par une technologie de pointe",
+        "subtitle": "Des stratégies automatisées pour les plateformes d'échange centralisées.",
         "reasons": {
           "security": {
-            "title": "Sécurité Bancaire",
-            "description": "Cryptage de niveau militaire et portefeuilles multi-signatures protègent vos actifs 24/7"
+            "title": "Les fonds restent sur la plateforme",
+            "description": "Les bots opèrent via les clés API de la plateforme. Vos actifs restent sur votre propre compte."
           },
           "technology": {
-            "title": "Technologie de Pointe",
-            "description": "Construit avec la dernière technologie blockchain et algorithmes IA"
+            "title": "Stratégies de niveau quant",
+            "description": "Market making, arbitrage et modèles adaptatifs sur des moteurs d'exécution à faible latence."
           },
           "performance": {
-            "title": "Haute Performance",
-            "description": "Exécution ultra-rapide et garantie de disponibilité de 99.9%"
+            "title": "Toujours actif",
+            "description": "Les bots tournent 24 h/24 avec 99,9 % de disponibilité."
           },
           "community": {
-            "title": "Communauté Forte",
-            "description": "Rejoignez des milliers d'utilisateurs dans notre écosystème croissant"
+            "title": "Plusieurs plateformes, un tableau de bord",
+            "description": "Connectez Binance, OKX, Bybit, Coinbase, Bitfinex et d'autres, et gérez tous vos bots au même endroit."
           },
           "transparency": {
-            "title": "Transparence Totale",
-            "description": "Toutes les opérations sont on-chain et vérifiables"
+            "title": "Visibilité totale",
+            "description": "Chaque ordre et chaque exécution est enregistré pour auditer l'activité de chaque bot."
           },
           "speed": {
-            "title": "Exécution Instantanée",
-            "description": "Traitement des transactions en sous-seconde"
+            "title": "Exécution rapide",
+            "description": "Les ordres partent par les API des plateformes en visant la latence, là où les spreads se referment en millisecondes."
           }
         }
       },
       "cta": {
         "title": "Prêt à Commencer?",
-        "description": "Rejoignez des milliers d'utilisateurs qui bénéficient déjà de notre écosystème DeFi révolutionnaire"
-      },
-      "learnMore": "En Savoir Plus"
+        "description": "Ouvrez le tableau de bord pour créer, surveiller et gérer vos bots de trading."
+      }
     },
     "toasts": {
       "signedOut": "Déconnecté avec succès",
@@ -879,8 +689,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "Next-Gen DeFi Ökosystem",
-      "badge": "Revolutionäre DeFi Lösungen",
+      "tagline": "Market-Maker- und Arbitrage-Bots",
       "hero": {
         "title": "Die Zukunft des",
         "subtitle": "Algorithmischen Handels Bauen",
@@ -894,77 +703,40 @@ export const translations: Translations = {
         "volume": "Handelsvolumen",
         "uptime": "Verfügbarkeit"
       },
-      "services": {
-        "title": "Unser Dienst",
-        "subtitle": "Fortschrittliche Trading-Bots mit modernsten Algorithmen und Strategien",
-        "bots": {
-          "title": "Trading Bots",
-          "description": "Hochskalierbare Bots für Krypto- und traditionelle Märkte mit fortgeschrittenen Strategien.",
-          "detailTitle": "Fortgeschrittener Algorithmischer Handel",
-          "detailDescription": "Unsere ausgefeilten Trading-Bots nutzen modernste Algorithmen und maschinelles Lernen.",
-          "cta": "Bots Erkunden",
-          "strategies": {
-            "liquidityPool": "Liquidity Pool",
-            "meanReversion": "Mean Reversion",
-            "trendingFlow": "Trending Flow",
-            "machineLearning": "Machine Learning",
-            "highFrequency": "Hochfrequenz",
-            "arbitrage": "Arbitrage"
-          }
-        }
-      },
-      "showcase": {
-        "label": "Live-Metriken",
-        "bots": {
-          "metric1": {
-            "label": "Erfolgsquote",
-            "value": "94.2%"
-          },
-          "metric2": {
-            "label": "Aktive Strategien",
-            "value": "156"
-          },
-          "metric3": {
-            "label": "Gesamt Trades",
-            "value": "1.2M+"
-          }
-        }
-      },
       "why": {
         "title": "Warum Znit.io Wählen?",
-        "subtitle": "Das fortschrittlichste DeFi-Ökosystem mit modernster Technologie",
+        "subtitle": "Automatisierte Strategien für zentralisierte Börsen.",
         "reasons": {
           "security": {
-            "title": "Bank-Sicherheit",
-            "description": "Militärische Verschlüsselung und Multi-Signatur-Wallets schützen Ihre Vermögenswerte 24/7"
+            "title": "Gelder bleiben an der Börse",
+            "description": "Die Bots handeln über API-Schlüssel der Börse. Ihre Assets bleiben auf Ihrem eigenen Konto."
           },
           "technology": {
-            "title": "Modernste Technologie",
-            "description": "Gebaut mit der neuesten Blockchain-Technologie und KI-Algorithmen"
+            "title": "Quant-Strategien",
+            "description": "Market Making, Arbitrage und adaptive Modelle auf Ausführungs-Engines mit niedriger Latenz."
           },
           "performance": {
-            "title": "Hohe Leistung",
-            "description": "Blitzschnelle Ausführung und 99.9% Verfügbarkeitsgarantie"
+            "title": "Immer aktiv",
+            "description": "Die Bots laufen rund um die Uhr mit 99,9 % Verfügbarkeit."
           },
           "community": {
-            "title": "Starke Community",
-            "description": "Treten Sie Tausenden von Benutzern in unserem wachsenden Ökosystem bei"
+            "title": "Viele Börsen, ein Dashboard",
+            "description": "Verbinden Sie Binance, OKX, Bybit, Coinbase, Bitfinex und mehr und verwalten Sie alle Bots an einem Ort."
           },
           "transparency": {
             "title": "Volle Transparenz",
-            "description": "Alle Operationen sind on-chain und verifizierbar"
+            "description": "Jede Order und jede Ausführung wird protokolliert, damit Sie nachvollziehen können, was jeder Bot getan hat."
           },
           "speed": {
-            "title": "Sofortige Ausführung",
-            "description": "Sekundenbruchteil-Transaktionsverarbeitung"
+            "title": "Schnelle Ausführung",
+            "description": "Orders gehen über die Börsen-APIs mit Blick auf Latenz hinaus, denn Spreads schließen sich in Millisekunden."
           }
         }
       },
       "cta": {
         "title": "Bereit Loszulegen?",
-        "description": "Treten Sie Tausenden von Benutzern bei, die bereits von unserem revolutionären DeFi-Ökosystem profitieren"
-      },
-      "learnMore": "Mehr Erfahren"
+        "description": "Öffnen Sie das Dashboard, um Ihre Trading-Bots zu erstellen, zu überwachen und zu verwalten."
+      }
     },
     "toasts": {
       "signedOut": "Erfolgreich abgemeldet",
@@ -1011,8 +783,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "下一代DeFi生态系统",
-      "badge": "革命性DeFi解决方案",
+      "tagline": "做市与套利机器人",
       "hero": {
         "title": "构建未来的",
         "subtitle": "算法交易",
@@ -1026,77 +797,40 @@ export const translations: Translations = {
         "volume": "交易量",
         "uptime": "运行时间"
       },
-      "services": {
-        "title": "我们的服务",
-        "subtitle": "具有尖端算法和策略的高级交易机器人",
-        "bots": {
-          "title": "交易机器人",
-          "description": "针对加密和传统市场的高度可扩展机器人，具有先进策略。",
-          "detailTitle": "高级算法交易",
-          "detailDescription": "我们的复杂交易机器人利用尖端算法和机器学习来最大化回报。",
-          "cta": "探索机器人",
-          "strategies": {
-            "liquidityPool": "流动性池",
-            "meanReversion": "均值回归",
-            "trendingFlow": "趋势流",
-            "machineLearning": "机器学习",
-            "highFrequency": "高频",
-            "arbitrage": "套利"
-          }
-        }
-      },
-      "showcase": {
-        "label": "实时指标",
-        "bots": {
-          "metric1": {
-            "label": "成功率",
-            "value": "94.2%"
-          },
-          "metric2": {
-            "label": "活跃策略",
-            "value": "156"
-          },
-          "metric3": {
-            "label": "总交易",
-            "value": "1.2M+"
-          }
-        }
-      },
       "why": {
         "title": "为什么选择Znit.io？",
-        "subtitle": "由尖端技术驱动的最先进DeFi生态系统",
+        "subtitle": "为中心化交易所打造的自动化策略。",
         "reasons": {
           "security": {
-            "title": "银行级安全",
-            "description": "军事级加密和多重签名钱包全天候保护您的资产"
+            "title": "资金留在交易所",
+            "description": "机器人通过交易所 API 密钥交易，您的资产始终保留在自己的账户中。"
           },
           "technology": {
-            "title": "尖端技术",
-            "description": "采用最新区块链技术和AI算法构建"
+            "title": "量化级策略",
+            "description": "做市、套利和自适应模型运行在低延迟执行引擎上。"
           },
           "performance": {
-            "title": "高性能",
-            "description": "闪电般的执行速度和99.9%的正常运行时间保证"
+            "title": "全天候运行",
+            "description": "机器人 24 小时运行，可用性达 99.9%。"
           },
           "community": {
-            "title": "强大社区",
-            "description": "加入我们不断增长的生态系统中的数千名用户"
+            "title": "多家交易所，一个仪表板",
+            "description": "连接 Binance、Bybit、Coinbase、Bitfinex 等，在一处管理所有机器人。"
           },
           "transparency": {
             "title": "完全透明",
-            "description": "所有操作都在链上且可验证"
+            "description": "每笔订单和成交都有记录，方便您审计每个机器人的操作。"
           },
           "speed": {
-            "title": "即时执行",
-            "description": "亚秒级交易处理和实时结算"
+            "title": "快速执行",
+            "description": "订单通过交易所 API 发出并兼顾延迟，因为价差会在毫秒内收敛。"
           }
         }
       },
       "cta": {
         "title": "准备开始了吗？",
-        "description": "加入数千名已从我们革命性DeFi生态系统中受益的用户"
-      },
-      "learnMore": "了解更多"
+        "description": "打开仪表板，创建、监控和管理您的交易机器人。"
+      }
     },
     "toasts": {
       "signedOut": "退出成功",
@@ -1143,8 +877,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "次世代DeFiエコシステム",
-      "badge": "革新的なDeFiソリューション",
+      "tagline": "マーケットメイクと裁定取引のボット",
       "hero": {
         "title": "未来を構築する",
         "subtitle": "アルゴリズム取引",
@@ -1158,77 +891,40 @@ export const translations: Translations = {
         "volume": "取引量",
         "uptime": "稼働時間"
       },
-      "services": {
-        "title": "私たちのサービス",
-        "subtitle": "最先端のアルゴリズムと戦略を備えた高度なトレーディングボット",
-        "bots": {
-          "title": "トレーディングボット",
-          "description": "高度な戦略を持つ暗号通貨と従来市場向けの高度にスケーラブルなボット。",
-          "detailTitle": "高度なアルゴリズム取引",
-          "detailDescription": "当社の洗練されたトレーディングボットは、最先端のアルゴリズムと機械学習を活用してリターンを最大化します。",
-          "cta": "ボットを探索",
-          "strategies": {
-            "liquidityPool": "流動性プール",
-            "meanReversion": "平均回帰",
-            "trendingFlow": "トレンドフロー",
-            "machineLearning": "機械学習",
-            "highFrequency": "高頻度",
-            "arbitrage": "アービトラージ"
-          }
-        }
-      },
-      "showcase": {
-        "label": "ライブメトリクス",
-        "bots": {
-          "metric1": {
-            "label": "成功率",
-            "value": "94.2%"
-          },
-          "metric2": {
-            "label": "アクティブ戦略",
-            "value": "156"
-          },
-          "metric3": {
-            "label": "総取引",
-            "value": "1.2M+"
-          }
-        }
-      },
       "why": {
         "title": "なぜZnit.ioを選ぶのか？",
-        "subtitle": "最先端技術によって支えられた最も先進的なDeFiエコシステム",
+        "subtitle": "中央集権型取引所向けの自動化戦略。",
         "reasons": {
           "security": {
-            "title": "銀行グレードのセキュリティ",
-            "description": "軍事グレードの暗号化とマルチシグネチャウォレットが24/7であなたの資産を保護します"
+            "title": "資金は取引所に残ります",
+            "description": "ボットは取引所のAPIキーを通じて取引します。資産はご自身の口座に残ります。"
           },
           "technology": {
-            "title": "最先端テクノロジー",
-            "description": "最新のブロックチェーン技術とAIアルゴリズムで構築"
+            "title": "クオンツ水準の戦略",
+            "description": "マーケットメイク、裁定取引、適応型モデルを低遅延の執行エンジンで実行します。"
           },
           "performance": {
-            "title": "高性能",
-            "description": "超高速実行と99.9%の稼働時間保証"
+            "title": "常時稼働",
+            "description": "ボットは24時間稼働し、稼働率は99.9%です。"
           },
           "community": {
-            "title": "強力なコミュニティ",
-            "description": "成長するエコシステムで数千人のユーザーに参加"
+            "title": "複数の取引所を1つのダッシュボードで",
+            "description": "Binance、Bybit、Coinbase、Bitfinexなどに接続し、すべてのボットを一か所で管理できます。"
           },
           "transparency": {
-            "title": "完全な透明性",
-            "description": "すべての操作はオンチェーンで検証可能"
+            "title": "完全な可視性",
+            "description": "すべての注文と約定が記録され、各ボットの動作を監査できます。"
           },
           "speed": {
-            "title": "即座の実行",
-            "description": "サブセカンドトランザクション処理とリアルタイム決済"
+            "title": "高速な執行",
+            "description": "スプレッドはミリ秒で縮まるため、レイテンシを意識して取引所APIから注文を送信します。"
           }
         }
       },
       "cta": {
         "title": "始める準備はできましたか？",
-        "description": "すでに革新的なDeFiエコシステムから恩恵を受けている数千人のユーザーに参加しましょう"
-      },
-      "learnMore": "詳細を見る"
+        "description": "ダッシュボードを開いて、トレーディングボットを作成、監視、管理しましょう。"
+      }
     },
     "toasts": {
       "signedOut": "サインアウトしました",

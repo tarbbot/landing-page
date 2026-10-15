@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
 import { toast } from "sonner";
@@ -26,6 +26,7 @@ const Navigation: React.FC = () => {
   const [userEmail, setUserEmail] = React.useState<string>('');
   const [userDropdownOpen, setUserDropdownOpen] = React.useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const isLandingPage = location.pathname === '/';
   const loginDropdownRef = React.useRef<HTMLDivElement>(null);
   const userDropdownRef = React.useRef<HTMLDivElement>(null);
@@ -84,6 +85,16 @@ const Navigation: React.FC = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [loginDropdownOpen, userDropdownOpen]);
+
+  // "Access Dashboard" buttons elsewhere on the page ask the navbar to open login (or go on if already signed in)
+  React.useEffect(() => {
+    const open = () => {
+      if (isAuthenticated) navigate('/dashboard-selector');
+      else setLoginDropdownOpen(true);
+    };
+    window.addEventListener('znit:login', open);
+    return () => window.removeEventListener('znit:login', open);
+  }, [isAuthenticated, navigate]);
 
   const handleSignOut = async () => {
     try {
@@ -364,9 +375,11 @@ const Navigation: React.FC = () => {
                         </button>
                       </div>
 
+                      {/* Create account disabled: sign-ups are closed for now
                       <div className="mt-6 text-center text-xs text-gray-500">
                         {t('login.noAccount')} <a href="#" className="text-purple-400 hover:text-purple-300">{t('login.createAccount')}</a>
                       </div>
+                      */}
                     </div>
                   )}
                 </div>
@@ -384,7 +397,7 @@ const Navigation: React.FC = () => {
                 {currentLang?.flag}
               </button>
 
-              {/* Login or Wallet Mobile */}
+              {/* Login (mobile) */}
               {isAuthenticated ? (
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
@@ -529,9 +542,11 @@ const Navigation: React.FC = () => {
               </button>
             </div>
 
+            {/* Create account disabled: sign-ups are closed for now
             <div className="mt-6 text-center text-xs text-gray-500">
               {t('login.noAccount')} <a href="#" className="text-purple-400 hover:text-purple-300">{t('login.createAccount')}</a>
             </div>
+            */}
           </div>
         </div>
       )}

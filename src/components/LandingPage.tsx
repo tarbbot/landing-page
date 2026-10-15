@@ -10,7 +10,7 @@ import {
   Shield,
   ShieldCheck,
   TrendingUp,
-  Users,
+  Network,
   Zap,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -19,7 +19,7 @@ import { ArbitrageDiagram, MarketMakerDiagram, NeuralDiagram, TriangleDiagram } 
 import Simulator from './landing/Simulator';
 import '../landing.css';
 
-const DASHBOARD_URL = 'https://dashboard.znit.io';
+const openLogin = () => window.dispatchEvent(new Event('znit:login'));
 const SECTIONS = ['top', 'strategies', 'simulator', 'process', 'why', 'start'];
 const DIAGRAMS = [MarketMakerDiagram, ArbitrageDiagram, TriangleDiagram, NeuralDiagram];
 const PROCESS_ICONS: LucideIcon[] = [Search, FlaskConical, ShieldCheck, Radar];
@@ -27,7 +27,7 @@ const WHY_ICONS: Record<string, LucideIcon> = {
   security: Shield,
   technology: Cpu,
   performance: TrendingUp,
-  community: Users,
+  community: Network,
   transparency: Lock,
   speed: Zap,
 };
@@ -186,10 +186,10 @@ const LandingPage: React.FC = () => {
           </h1>
           <p className="hero-sub">{t('landing.hero.description')}</p>
           <div className="hero-cta">
-            <a className="zn-btn primary" href={DASHBOARD_URL} target="_blank" rel="noopener noreferrer">
+            <button type="button" className="zn-btn primary" onClick={openLogin}>
               <span>{t('landing.hero.ctaDashboard')}</span>
               <ArrowUpRight size={18} />
-            </a>
+            </button>
             <button type="button" className="zn-btn ghost" onClick={() => go('strategies')}>
               <span>{t('landing.hero.ctaExplore')}</span>
             </button>
@@ -345,10 +345,10 @@ const LandingPage: React.FC = () => {
           </h2>
           <p>{t('landing.cta.description')}</p>
           <div className="hero-cta">
-            <a className="zn-btn primary" href={DASHBOARD_URL} target="_blank" rel="noopener noreferrer">
+            <button type="button" className="zn-btn primary" onClick={openLogin}>
               <span>{t('landing.hero.ctaDashboard')}</span>
               <ArrowUpRight size={18} />
-            </a>
+            </button>
             <button type="button" className="zn-btn ghost" onClick={() => go('strategies')}>
               <span>{t('landing.hero.ctaExplore')}</span>
             </button>

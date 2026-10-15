@@ -619,10 +619,12 @@
   margin: 56px 0 0;
   padding: 0 0 0 72px;
   list-style: none;
+  isolation: isolate;
 }
 .proc-list::before,
 .proc-list::after {
   content: '';
+  z-index: 0;
   position: absolute;
   left: 23px;
   top: 0;
@@ -638,6 +640,7 @@
 }
 .proc-step {
   position: relative;
+  z-index: 1;
   opacity: 0.32;
   transform: translateX(-14px);
   transition: opacity 0.7s, transform 0.8s var(--ez);
@@ -702,8 +705,10 @@
 .zn-foot-brand { display: flex; align-items: center; gap: 12px; color: var(--zn-ink); text-decoration: none; font: 500 13px var(--mono); }
 .zn-foot-brand svg { color: var(--zn-cy); }
 .zn-foot-links { display: flex; align-items: center; gap: 26px; }
-.zn-foot-links a { color: var(--zn-dim); text-decoration: none; font: 500 14px 'Space Grotesk', sans-serif; transition: color 0.25s; }
-.zn-foot-links a:hover { color: var(--zn-cy); }
+.zn-foot-links a,
+.zn-foot-links button { padding: 0; background: none; border: 0; cursor: pointer; color: var(--zn-dim); text-decoration: none; font: 500 14px 'Space Grotesk', sans-serif; transition: color 0.25s; }
+.zn-foot-links a:hover,
+.zn-foot-links button:hover { color: var(--zn-cy); }
 .zn-foot-word {
   margin: 34px 0 10px;
   font: 700 clamp(84px, 24vw, 400px) / 0.8 'Space Grotesk', sans-serif;
