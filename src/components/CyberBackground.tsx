@@ -18,7 +18,7 @@ interface Tick {
   ph: number;
 }
 
-// Fixed canvas: a market-grid that bends around the cursor, a scan beam that lights
+// Fixed canvas: a market-grid that falls into a gravity well around the cursor, a scan beam that lights
 // intersections, and order-flow ticks rising with trails.
 // Mobile notes: touch never drives the warp, height-only resizes (URL bar) are ignored so
 // ticks are not re-seeded mid-scroll, motion is time-based, and nothing allocates gradients.
@@ -78,7 +78,10 @@ const CyberBackground: React.FC = () => {
       const inf = Math.exp(-d2 / (2 * 170 * 170));
       if (inf < 0.002) return [x, y, 0];
       const d = Math.sqrt(d2) || 1;
-      return [x + (dx / d) * inf * 26, y + (dy / d) * inf * 26, inf];
+      // Gravity well: points fall toward the cursor (never past it) and sink, like a mass bending
+      // spacetime. The pull is strongest close in, so lines bunch up around the centre.
+      const pull = Math.min(d * 0.82, inf * 52);
+      return [x - (dx / d) * pull, y - (dy / d) * pull + inf * 30, inf];
     };
 
     // One grid line: straight where the cursor is far, sampled and warped near it.
@@ -141,6 +144,25 @@ const CyberBackground: React.FC = () => {
       if (on) {
         ctx.strokeStyle = `rgba(34,230,255,${0.42 * ignite})`;
         ctx.stroke(hot);
+      }
+
+      // the singularity: a dark core with a faint accretion ring at the bottom of the well
+      if (on) {
+        const cx = mouse.x;
+        const cy = mouse.y + 30;
+        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 78);
+        g.addColorStop(0, `rgba(0,0,0,${0.7 * ignite})`);
+        g.addColorStop(0.55, `rgba(6,4,13,${0.32 * ignite})`);
+        g.addColorStop(1, 'rgba(6,4,13,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 78, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = `rgba(34,230,255,${0.34 * ignite})`;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, 30, 11, 0, 0, Math.PI * 2);
+        ctx.stroke();
       }
 
       // scan beam lighting the intersections it crosses
