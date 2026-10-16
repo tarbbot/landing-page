@@ -397,6 +397,24 @@
   transition: none;
 }
 .manifesto p { max-width: 20ch; }
+/* kicker above the statement: appears first, as the scroll starts */
+.mani-copy { position: relative; z-index: 1; }
+.mani-k {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: clamp(14px, 2.6vh, 26px);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--zn-lm);
+  opacity: clamp(0, calc(var(--mp, 0) * 14), 1);
+  transform: translateY(calc((1 - clamp(0, var(--mp, 0) * 14, 1)) * 10px));
+}
+.mani-k::before { content: ''; width: 34px; height: 1px; background: linear-gradient(90deg, transparent, var(--zn-lm)); }
+.mani-k::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--zn-lm); box-shadow: 0 0 10px var(--zn-lm); }
+@media (max-width: 900px) { .mani-k { font-size: 10.5px; letter-spacing: 0.2em; } }
+:lang(ja) .mani-k, :lang(zh) .mani-k { letter-spacing: 0.12em; }
 
 /* ---------- hero ---------- */
 .hero {

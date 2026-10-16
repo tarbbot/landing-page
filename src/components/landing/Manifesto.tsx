@@ -47,6 +47,8 @@ const Manifesto: React.FC<{ text: string }> = ({ text }) => {
         <div className="bh-ui" aria-hidden="true">
           <span className={`bh-hint ${hint ? 'on' : ''}`}>{t('landing.manifestoHint')}</span>
         </div>
+        <div className="mani-copy">
+        <span className="mani-k">{t('landing.manifestoKicker')}</span>
         <p>
           {words.map((w, i) => (
             <span key={i} className="mw" style={{ ['--i' as any]: i }}>
@@ -54,6 +56,7 @@ const Manifesto: React.FC<{ text: string }> = ({ text }) => {
             </span>
           ))}
         </p>
+        </div>
       </div>
     </section>
   );

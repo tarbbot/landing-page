@@ -239,7 +239,8 @@ export const translations: Translations = {
         "sell": "> SELL order filled",
         "scanning": "> scanning spreads"
       },
-      "manifestoHint": "Click to feed the black hole"
+      "manifestoHint": "Click to feed the black hole",
+      "manifestoKicker": "A universe of possibilities"
     },
     "toasts": {
       "signedOut": "Signed out successfully",
@@ -502,7 +503,8 @@ export const translations: Translations = {
         "sell": "> SELL order filled",
         "scanning": "> scanning spreads"
       },
-      "manifestoHint": "Click to feed the black hole"
+      "manifestoHint": "Click to feed the black hole",
+      "manifestoKicker": "A universe of possibilities"
     },
     "toasts": {
       "signedOut": "Signed out successfully",
@@ -766,7 +768,8 @@ export const translations: Translations = {
         "sell": "> VENDA executada",
         "scanning": "> escaneando spreads"
       },
-      "manifestoHint": "Clique para alimentar o buraco negro"
+      "manifestoHint": "Clique para alimentar o buraco negro",
+      "manifestoKicker": "Um universo de possibilidades"
     },
     "toasts": {
       "signedOut": "Desconectado com sucesso",
@@ -1029,7 +1032,8 @@ export const translations: Translations = {
         "sell": "> VENTA ejecutada",
         "scanning": "> escaneando spreads"
       },
-      "manifestoHint": "Haz clic para alimentar el agujero negro"
+      "manifestoHint": "Haz clic para alimentar el agujero negro",
+      "manifestoKicker": "Un universo de posibilidades"
     },
     "toasts": {
       "signedOut": "Sesión cerrada exitosamente",
@@ -1292,7 +1296,8 @@ export const translations: Translations = {
         "sell": "> VENTE exécutée",
         "scanning": "> analyse des spreads"
       },
-      "manifestoHint": "Cliquez pour nourrir le trou noir"
+      "manifestoHint": "Cliquez pour nourrir le trou noir",
+      "manifestoKicker": "Un univers de possibilités"
     },
     "toasts": {
       "signedOut": "Déconnecté avec succès",
@@ -1555,7 +1560,8 @@ export const translations: Translations = {
         "sell": "> VERKAUF ausgeführt",
         "scanning": "> Spreads werden gescannt"
       },
-      "manifestoHint": "Klicken, um das Schwarze Loch zu füttern"
+      "manifestoHint": "Klicken, um das Schwarze Loch zu füttern",
+      "manifestoKicker": "Ein Universum voller Möglichkeiten"
     },
     "toasts": {
       "signedOut": "Erfolgreich abgemeldet",
@@ -1818,7 +1824,8 @@ export const translations: Translations = {
         "sell": "> 卖出已成交",
         "scanning": "> 正在扫描价差"
       },
-      "manifestoHint": "点击喂养黑洞"
+      "manifestoHint": "点击喂养黑洞",
+      "manifestoKicker": "充满可能的宇宙"
     },
     "toasts": {
       "signedOut": "退出成功",
@@ -2081,7 +2088,8 @@ export const translations: Translations = {
         "sell": "> 売り約定",
         "scanning": "> スプレッドをスキャン中"
       },
-      "manifestoHint": "クリックしてブラックホールに与える"
+      "manifestoHint": "クリックしてブラックホールに与える",
+      "manifestoKicker": "可能性の宇宙"
     },
     "toasts": {
       "signedOut": "サインアウトしました",
