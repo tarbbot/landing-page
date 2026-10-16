@@ -27,7 +27,7 @@ import '../landing.css';
 
 const openLogin = () => window.dispatchEvent(new Event('znit:login'));
 const SECTIONS = ['top', 'strategies', 'simulator', 'venues', 'process', 'why', 'start'];
-const DIAGRAMS = [MarketMakerDiagram, ArbitrageDiagram, TriangleDiagram, NeuralDiagram];
+const DIAGRAMS: React.FC<{ active?: boolean }>[] = [MarketMakerDiagram, ArbitrageDiagram, TriangleDiagram, NeuralDiagram];
 const PROCESS_ICONS: LucideIcon[] = [Search, FlaskConical, ShieldCheck, Radar];
 const WHY_ICONS: Record<string, LucideIcon> = {
   security: Shield,
@@ -367,7 +367,7 @@ const LandingPage: React.FC = () => {
               </div>
               {DIAGRAMS.slice(0, items.length).map((D, i) => (
                 <div key={i} className={`viz ${state(i, active)}`}>
-                  <D />
+                  <D active={i === active} />
                 </div>
               ))}
             </div>

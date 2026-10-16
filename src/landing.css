@@ -651,6 +651,7 @@
 .viz.is-next { clip-path: inset(100% 0 0 0); opacity: 0; }
 
 .dg { width: 100%; height: 100%; overflow: visible; }
+.dg-canvas { display: block; width: 100%; height: 100%; }
 .dg-t { font: 600 11px var(--mono); letter-spacing: 0.16em; }
 .dg-bar { transform-box: fill-box; animation: bar 2.6s ease-in-out var(--d, 0s) infinite alternate; }
 .dg-flow { stroke-dasharray: 10 8; animation: dash 1.4s linear infinite; }
@@ -761,6 +762,19 @@
     background: #06040d;
     clip-path: var(--chamfer);
   }
+}
+/* phones: no sheet inside a panel. The outer sheet drops its frame and padding so each card uses the full width */
+@media (max-width: 900px) {
+  .stack { padding: 0 12px; margin-top: 70px; }
+  .stack-card { margin-bottom: 36px; }
+  .sheet { padding: 0; background: none; }
+  .sheet.zn-panel { background: none; clip-path: none; }
+  .sheet.zn-panel::before, .sheet.zn-panel::after, .sheet > .lens-canvas { display: none; }
+  .sheet-n { position: static; display: block; margin: 0 0 8px; font-size: 11px; }
+  .sheet .sec-head { padding-right: 0; margin-bottom: 16px; }
+  .sheet .sec-head h2 { font-size: clamp(30px, 9vw, 44px); }
+  .sheet .sim, .sheet .ven { padding: 18px 16px; }
+  .sheet .sec-head p { display: block; }
 }
 .is-covered,
 .is-covered * { animation-play-state: paused !important; }

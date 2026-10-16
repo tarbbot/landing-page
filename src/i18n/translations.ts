@@ -206,7 +206,30 @@ export const translations: Translations = {
         "altMarketMaker": "Order book with the market maker quoting both sides of the spread",
         "altArbitrage": "Two exchanges quote different prices for the same asset; the bot trades the gap",
         "altTriangle": "Triangular arbitrage loop through USDT, BTC and ETH",
-        "altNeural": "Neural network layers adapting to market data"
+        "altNeural": "Neural network layers adapting to market data",
+        "tri": {
+          "gap": "GAP",
+          "breakEven": "BREAK-EVEN",
+          "skip": "SKIP",
+          "execute": "EXECUTE",
+          "buy": "BUY",
+          "sell": "SELL",
+          "session": "SESSION",
+          "loops": "LOOPS",
+          "scan": "SCANNING"
+        },
+        "mm": {
+          "inventory": "INVENTORY",
+          "fills": "FILLS"
+        },
+        "arb": {
+          "net": "NET PROFIT"
+        },
+        "nn": {
+          "hold": "HOLD",
+          "retune": "RETUNE",
+          "loss": "LOSS"
+        }
       },
       "chartUi": {
         "simulated": "SIMULATED",
@@ -446,7 +469,30 @@ export const translations: Translations = {
         "altMarketMaker": "Order book with the market maker quoting both sides of the spread",
         "altArbitrage": "Two exchanges quote different prices for the same asset; the bot trades the gap",
         "altTriangle": "Triangular arbitrage loop through USDT, BTC and ETH",
-        "altNeural": "Neural network layers adapting to market data"
+        "altNeural": "Neural network layers adapting to market data",
+        "tri": {
+          "gap": "GAP",
+          "breakEven": "BREAK-EVEN",
+          "skip": "SKIP",
+          "execute": "EXECUTE",
+          "buy": "BUY",
+          "sell": "SELL",
+          "session": "SESSION",
+          "loops": "LOOPS",
+          "scan": "SCANNING"
+        },
+        "mm": {
+          "inventory": "INVENTORY",
+          "fills": "FILLS"
+        },
+        "arb": {
+          "net": "NET PROFIT"
+        },
+        "nn": {
+          "hold": "HOLD",
+          "retune": "RETUNE",
+          "loss": "LOSS"
+        }
       },
       "chartUi": {
         "simulated": "SIMULATED",
@@ -687,7 +733,30 @@ export const translations: Translations = {
         "altMarketMaker": "Livro de ofertas com o market maker cotando os dois lados do spread",
         "altArbitrage": "Duas exchanges cotam preços diferentes para o mesmo ativo; o bot opera a diferença",
         "altTriangle": "Ciclo de arbitragem triangular passando por USDT, BTC e ETH",
-        "altNeural": "Camadas de uma rede neural se adaptando aos dados de mercado"
+        "altNeural": "Camadas de uma rede neural se adaptando aos dados de mercado",
+        "tri": {
+          "gap": "DIFERENÇA",
+          "breakEven": "EQUILÍBRIO",
+          "skip": "IGNORAR",
+          "execute": "EXECUTAR",
+          "buy": "COMPRA",
+          "sell": "VENDA",
+          "session": "SESSÃO",
+          "loops": "CICLOS",
+          "scan": "ANALISANDO"
+        },
+        "mm": {
+          "inventory": "ESTOQUE",
+          "fills": "EXECUÇÕES"
+        },
+        "arb": {
+          "net": "LUCRO LÍQUIDO"
+        },
+        "nn": {
+          "hold": "MANTER",
+          "retune": "REAJUSTE",
+          "loss": "ERRO"
+        }
       },
       "chartUi": {
         "simulated": "SIMULADO",
@@ -927,7 +996,30 @@ export const translations: Translations = {
         "altMarketMaker": "Libro de órdenes con el market maker cotizando ambos lados del spread",
         "altArbitrage": "Dos exchanges cotizan precios distintos para el mismo activo; el bot opera la diferencia",
         "altTriangle": "Ciclo de arbitraje triangular a través de USDT, BTC y ETH",
-        "altNeural": "Capas de una red neuronal adaptándose a los datos de mercado"
+        "altNeural": "Capas de una red neuronal adaptándose a los datos de mercado",
+        "tri": {
+          "gap": "DIFERENCIA",
+          "breakEven": "EQUILIBRIO",
+          "skip": "OMITIR",
+          "execute": "EJECUTAR",
+          "buy": "COMPRA",
+          "sell": "VENTA",
+          "session": "SESIÓN",
+          "loops": "CICLOS",
+          "scan": "ANALIZANDO"
+        },
+        "mm": {
+          "inventory": "INVENTARIO",
+          "fills": "EJECUCIONES"
+        },
+        "arb": {
+          "net": "BENEFICIO NETO"
+        },
+        "nn": {
+          "hold": "MANTENER",
+          "retune": "REAJUSTE",
+          "loss": "ERROR"
+        }
       },
       "chartUi": {
         "simulated": "SIMULADO",
@@ -1167,7 +1259,30 @@ export const translations: Translations = {
         "altMarketMaker": "Carnet d'ordres avec le market maker cotant les deux côtés du spread",
         "altArbitrage": "Deux plateformes cotent des prix différents pour le même actif ; le bot exploite l'écart",
         "altTriangle": "Boucle d'arbitrage triangulaire via USDT, BTC et ETH",
-        "altNeural": "Couches d'un réseau de neurones s'adaptant aux données de marché"
+        "altNeural": "Couches d'un réseau de neurones s'adaptant aux données de marché",
+        "tri": {
+          "gap": "ÉCART",
+          "breakEven": "SEUIL",
+          "skip": "IGNORER",
+          "execute": "EXÉCUTER",
+          "buy": "ACHAT",
+          "sell": "VENTE",
+          "session": "SESSION",
+          "loops": "BOUCLES",
+          "scan": "ANALYSE"
+        },
+        "mm": {
+          "inventory": "STOCK",
+          "fills": "EXÉCUTIONS"
+        },
+        "arb": {
+          "net": "PROFIT NET"
+        },
+        "nn": {
+          "hold": "ATTENDRE",
+          "retune": "RÉGLAGE",
+          "loss": "ERREUR"
+        }
       },
       "chartUi": {
         "simulated": "SIMULÉ",
@@ -1407,7 +1522,30 @@ export const translations: Translations = {
         "altMarketMaker": "Orderbuch, in dem der Market Maker beide Seiten des Spreads stellt",
         "altArbitrage": "Zwei Börsen notieren unterschiedliche Preise für denselben Vermögenswert; der Bot handelt die Lücke",
         "altTriangle": "Dreiecksarbitrage-Kreislauf über USDT, BTC und ETH",
-        "altNeural": "Schichten eines neuronalen Netzes, das sich an Marktdaten anpasst"
+        "altNeural": "Schichten eines neuronalen Netzes, das sich an Marktdaten anpasst",
+        "tri": {
+          "gap": "ABWEICHUNG",
+          "breakEven": "SCHWELLE",
+          "skip": "ÜBERSPRINGEN",
+          "execute": "AUSFÜHREN",
+          "buy": "KAUF",
+          "sell": "VERKAUF",
+          "session": "SITZUNG",
+          "loops": "KREISLÄUFE",
+          "scan": "ANALYSE"
+        },
+        "mm": {
+          "inventory": "BESTAND",
+          "fills": "AUSFÜHRUNGEN"
+        },
+        "arb": {
+          "net": "NETTOGEWINN"
+        },
+        "nn": {
+          "hold": "HALTEN",
+          "retune": "ANPASSUNG",
+          "loss": "FEHLER"
+        }
       },
       "chartUi": {
         "simulated": "SIMULIERT",
@@ -1647,7 +1785,30 @@ export const translations: Translations = {
         "altMarketMaker": "做市商在价差两侧报价的订单簿",
         "altArbitrage": "两家交易所对同一资产报出不同价格；机器人交易这一价差",
         "altTriangle": "经由 USDT、BTC 和 ETH 的三角套利循环",
-        "altNeural": "适应市场数据的神经网络层"
+        "altNeural": "适应市场数据的神经网络层",
+        "tri": {
+          "gap": "价差",
+          "breakEven": "盈亏平衡",
+          "skip": "跳过",
+          "execute": "执行",
+          "buy": "买入",
+          "sell": "卖出",
+          "session": "本次",
+          "loops": "循环",
+          "scan": "扫描中"
+        },
+        "mm": {
+          "inventory": "库存",
+          "fills": "成交"
+        },
+        "arb": {
+          "net": "净利润"
+        },
+        "nn": {
+          "hold": "持有",
+          "retune": "重新调优",
+          "loss": "损失"
+        }
       },
       "chartUi": {
         "simulated": "模拟",
@@ -1887,7 +2048,30 @@ export const translations: Translations = {
         "altMarketMaker": "マーケットメイカーがスプレッドの両側に気配を出している板",
         "altArbitrage": "2つの取引所が同じ資産に異なる価格を提示し、ボットがその差を取引する様子",
         "altTriangle": "USDT、BTC、ETHを通る三角裁定ループ",
-        "altNeural": "市場データに適応するニューラルネットワークの層"
+        "altNeural": "市場データに適応するニューラルネットワークの層",
+        "tri": {
+          "gap": "価格差",
+          "breakEven": "損益分岐",
+          "skip": "スキップ",
+          "execute": "実行",
+          "buy": "買い",
+          "sell": "売り",
+          "session": "セッション",
+          "loops": "ループ",
+          "scan": "スキャン中"
+        },
+        "mm": {
+          "inventory": "在庫",
+          "fills": "約定"
+        },
+        "arb": {
+          "net": "純利益"
+        },
+        "nn": {
+          "hold": "保持",
+          "retune": "再調整",
+          "loss": "損失"
+        }
       },
       "chartUi": {
         "simulated": "シミュレーション",

@@ -85,6 +85,7 @@ const VenueMap: React.FC<MapProps> = ({ active, filter, onPick, alt, simulated }
     let raf = 0;
     let visible = true;
     let scale = 1;
+    let tm = 1; // text grows when the scene is shown small (phones)
     let nextAt = performance.now() + 500;
     let last = performance.now();
     const packets: Packet[] = [];
@@ -101,6 +102,7 @@ const VenueMap: React.FC<MapProps> = ({ active, filter, onPick, alt, simulated }
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round((w * H * dpr) / W);
       scale = (w * dpr) / W;
+      tm = Math.min(1.45, Math.max(1, 0.62 / (w / W)));
     };
     const pushLog = (txt: string, color: string) => {
       log.unshift({ txt, color });
@@ -220,7 +222,7 @@ const VenueMap: React.FC<MapProps> = ({ active, filter, onPick, alt, simulated }
       last = now;
       ctx.setTransform(scale, 0, 0, scale, 0, 0);
       ctx.clearRect(0, 0, W, H);
-      ctx.font = '600 11px "JetBrains Mono", monospace';
+      ctx.font = `600 ${11 * tm}px "JetBrains Mono", monospace`;
 
       if (!calm && now >= nextAt) {
         spawn();
@@ -350,9 +352,9 @@ const VenueMap: React.FC<MapProps> = ({ active, filter, onPick, alt, simulated }
       ctx.stroke();
       ctx.fillStyle = '#b6ff3b';
       ctx.textAlign = 'center';
-      ctx.font = '700 15px "JetBrains Mono", monospace';
+      ctx.font = `700 ${15 * Math.min(tm, 1.2)}px "JetBrains Mono", monospace`;
       ctx.fillText('ZNIT', CORE.x + 2, CORE.y + 5);
-      ctx.font = '600 11px "JetBrains Mono", monospace';
+      ctx.font = `600 ${11 * tm}px "JetBrains Mono", monospace`;
 
       // floating results
       for (let n = floats.length - 1; n >= 0; n--) {
@@ -368,7 +370,7 @@ const VenueMap: React.FC<MapProps> = ({ active, filter, onPick, alt, simulated }
 
       // activity log (simulated), newest first
       ctx.textAlign = 'left';
-      ctx.font = '500 10px "JetBrains Mono", monospace';
+      ctx.font = `500 ${10 * tm}px "JetBrains Mono", monospace`;
       log.forEach((l, n) => {
         ctx.fillStyle = l.color;
         ctx.globalAlpha = 0.95 - n * 0.22;
