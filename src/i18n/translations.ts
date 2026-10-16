@@ -215,7 +215,8 @@ export const translations: Translations = {
         "buy": "> BUY  order filled",
         "sell": "> SELL order filled",
         "scanning": "> scanning spreads"
-      }
+      },
+      "manifestoHint": "Click to feed the black hole"
     },
     "toasts": {
       "signedOut": "Signed out successfully",
@@ -454,7 +455,8 @@ export const translations: Translations = {
         "buy": "> BUY  order filled",
         "sell": "> SELL order filled",
         "scanning": "> scanning spreads"
-      }
+      },
+      "manifestoHint": "Click to feed the black hole"
     },
     "toasts": {
       "signedOut": "Signed out successfully",
@@ -694,7 +696,8 @@ export const translations: Translations = {
         "buy": "> COMPRA executada",
         "sell": "> VENDA executada",
         "scanning": "> escaneando spreads"
-      }
+      },
+      "manifestoHint": "Clique para alimentar o buraco negro"
     },
     "toasts": {
       "signedOut": "Desconectado com sucesso",
@@ -933,7 +936,8 @@ export const translations: Translations = {
         "buy": "> COMPRA ejecutada",
         "sell": "> VENTA ejecutada",
         "scanning": "> escaneando spreads"
-      }
+      },
+      "manifestoHint": "Haz clic para alimentar el agujero negro"
     },
     "toasts": {
       "signedOut": "Sesión cerrada exitosamente",
@@ -1172,7 +1176,8 @@ export const translations: Translations = {
         "buy": "> ACHAT exécuté",
         "sell": "> VENTE exécutée",
         "scanning": "> analyse des spreads"
-      }
+      },
+      "manifestoHint": "Cliquez pour nourrir le trou noir"
     },
     "toasts": {
       "signedOut": "Déconnecté avec succès",
@@ -1411,7 +1416,8 @@ export const translations: Translations = {
         "buy": "> KAUF ausgeführt",
         "sell": "> VERKAUF ausgeführt",
         "scanning": "> Spreads werden gescannt"
-      }
+      },
+      "manifestoHint": "Klicken, um das Schwarze Loch zu füttern"
     },
     "toasts": {
       "signedOut": "Erfolgreich abgemeldet",
@@ -1650,7 +1656,8 @@ export const translations: Translations = {
         "buy": "> 买入已成交",
         "sell": "> 卖出已成交",
         "scanning": "> 正在扫描价差"
-      }
+      },
+      "manifestoHint": "点击喂养黑洞"
     },
     "toasts": {
       "signedOut": "退出成功",
@@ -1889,7 +1896,8 @@ export const translations: Translations = {
         "buy": "> 買い約定",
         "sell": "> 売り約定",
         "scanning": "> スプレッドをスキャン中"
-      }
+      },
+      "manifestoHint": "クリックしてブラックホールに与える"
     },
     "toasts": {
       "signedOut": "サインアウトしました",
