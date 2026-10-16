@@ -40,13 +40,18 @@
 }
 
 /* ---------- shared pieces ---------- */
+@property --hv { syntax: '<number>'; inherits: false; initial-value: 0; }
 .zn-panel {
+  --tc: 34, 230, 255;
   --edge: linear-gradient(135deg, rgba(34, 230, 255, 0.75), rgba(139, 92, 246, 0.28) 45%, rgba(255, 60, 207, 0.65));
+  --lens: radial-gradient(260px circle at var(--mx, 50%) var(--my, -80%), rgba(var(--tc), calc(var(--hv) * 0.95)), rgba(var(--tc), calc(var(--hv) * 0.25)) 38%, transparent 72%);
   position: relative;
   isolation: isolate;
   clip-path: var(--chamfer);
-  background: var(--edge);
+  background: var(--lens), var(--edge); /* the border lights up smoothly around the cursor */
+  transition: --hv 0.45s ease;
 }
+.zn-panel:hover { --hv: 1; }
 .zn-panel::before {
   content: '';
   position: absolute;
@@ -62,11 +67,18 @@
   z-index: -1;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.35s;
-  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, -60%), rgba(34, 230, 255, 0.18), transparent 62%);
+  transition: opacity 0.4s;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, -80%), rgba(var(--tc), 0.1), transparent 65%);
 }
-.zn-panel:hover::after {
-  opacity: 1;
+.zn-panel:hover::after { opacity: 1; }
+/* the spacetime mesh drawn by lib/lens.ts: between the panel fill and its content */
+.lens-canvas {
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  pointer-events: none;
 }
 
 .hud .c {
@@ -216,8 +228,8 @@
 .zn.js .rv {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.8s var(--ez), transform 0.8s var(--ez);
-  transition-delay: calc(var(--i, 0) * 90ms);
+  /* the stagger delay belongs to the entrance only, never to the hover light (--hv) */
+  transition: opacity 0.8s var(--ez) calc(var(--i, 0) * 90ms), transform 0.8s var(--ez) calc(var(--i, 0) * 90ms), --hv 0.45s ease 0s;
 }
 .zn.js .rv.in {
   opacity: 1;
@@ -696,6 +708,7 @@
 .sim { padding: clamp(24px, 4vw, 52px); }
 .sim.is-win {
   --res: var(--zn-lm);
+  --tc: 182, 255, 59;
   --edge: linear-gradient(135deg, rgba(182, 255, 59, 0.85), rgba(34, 230, 255, 0.3) 50%, rgba(182, 255, 59, 0.6));
   --bc1: 182, 255, 59;
   --bc2: 34, 230, 255;
@@ -980,6 +993,7 @@
   --bc2: 255, 60, 207;
   background:
     conic-gradient(from var(--a), transparent 0deg 200deg, rgba(var(--bc2), calc(var(--o) * 0.6)) 255deg, rgba(var(--bc1), calc(var(--o) * 0.95)) 330deg, rgba(255, 255, 255, var(--o)) 352deg, rgba(255, 255, 255, var(--o)) 358deg, transparent 360deg),
+    var(--lens),
     var(--edge);
   animation: beam 7.5s linear var(--bd, 0s) infinite;
 }

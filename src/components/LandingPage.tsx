@@ -22,6 +22,7 @@ import Simulator from './landing/Simulator';
 import Venues from './landing/Venues';
 import Manifesto from './landing/Manifesto';
 import { tint } from './CyberBackground';
+import { attachLens } from '../lib/lens';
 import '../landing.css';
 
 const openLogin = () => window.dispatchEvent(new Event('znit:login'));
@@ -241,21 +242,8 @@ const LandingPage: React.FC = () => {
     };
   }, []);
 
-  // Pointer-follow highlight on panels.
-  useEffect(() => {
-    const el = root.current;
-    if (!el) return;
-    const move = (e: PointerEvent) => {
-      if (e.pointerType === 'touch') return;
-      const p = (e.target as HTMLElement).closest<HTMLElement>('.zn-panel');
-      if (!p) return;
-      const b = p.getBoundingClientRect();
-      p.style.setProperty('--mx', `${e.clientX - b.left}px`);
-      p.style.setProperty('--my', `${e.clientY - b.top}px`);
-    };
-    el.addEventListener('pointermove', move, { passive: true });
-    return () => el.removeEventListener('pointermove', move);
-  }, []);
+  // Panel light follows the cursor with inertia (see lib/lens.ts).
+  useEffect(() => attachLens(), []);
 
   const state = (i: number, a: number) => (i === a ? 'is-active' : i < a ? 'is-past' : 'is-next');
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth' });
