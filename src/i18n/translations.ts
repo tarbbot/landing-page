@@ -232,6 +232,10 @@ export const translations: Translations = {
       "dashboard": "Dashboard",
       "signOut": "Sign Out",
       "sections": "Sections"
+    },
+    "seo": {
+      "title": "Znit.io | Automated Trading Bots for Crypto Exchanges",
+      "description": "Market making, simple and triangular arbitrage bots for Binance, OKX, Bybit, Coinbase and Bitfinex. Run strategies around the clock from one dashboard."
     }
   },
   "en-GB": {
@@ -465,6 +469,10 @@ export const translations: Translations = {
       "dashboard": "Dashboard",
       "signOut": "Sign Out",
       "sections": "Sections"
+    },
+    "seo": {
+      "title": "Znit.io | Automated Trading Bots for Crypto Exchanges",
+      "description": "Market making, simple and triangular arbitrage bots for Binance, OKX, Bybit, Coinbase and Bitfinex. Run strategies around the clock from one dashboard."
     }
   },
   "pt-BR": {
@@ -699,6 +707,10 @@ export const translations: Translations = {
       "dashboard": "Dashboard",
       "signOut": "Sair",
       "sections": "Seções"
+    },
+    "seo": {
+      "title": "Znit.io | Bots de Trading Automatizados para Exchanges",
+      "description": "Bots de market making e arbitragem simples e triangular para Binance, OKX, Bybit, Coinbase e Bitfinex. Estratégias 24 horas em um só dashboard."
     }
   },
   "es-ES": {
@@ -932,6 +944,10 @@ export const translations: Translations = {
       "dashboard": "Panel",
       "signOut": "Cerrar sesión",
       "sections": "Secciones"
+    },
+    "seo": {
+      "title": "Znit.io | Bots de Trading Automatizados para Exchanges",
+      "description": "Bots de market making y arbitraje simple y triangular para Binance, OKX, Bybit, Coinbase y Bitfinex. Estrategias 24 horas desde un solo panel."
     }
   },
   "fr-FR": {
@@ -1165,6 +1181,10 @@ export const translations: Translations = {
       "dashboard": "Tableau de bord",
       "signOut": "Se déconnecter",
       "sections": "Sections"
+    },
+    "seo": {
+      "title": "Znit.io | Bots de Trading Automatisés pour Plateformes Crypto",
+      "description": "Bots de market making et d'arbitrage simple et triangulaire pour Binance, OKX, Bybit, Coinbase et Bitfinex. Stratégies 24 h/24 depuis un tableau de bord."
     }
   },
   "de-DE": {
@@ -1398,6 +1418,10 @@ export const translations: Translations = {
       "dashboard": "Dashboard",
       "signOut": "Abmelden",
       "sections": "Abschnitte"
+    },
+    "seo": {
+      "title": "Znit.io | Automatisierte Trading-Bots für Krypto-Börsen",
+      "description": "Market-Making- sowie einfache und Dreiecksarbitrage-Bots für Binance, OKX, Bybit, Coinbase und Bitfinex. Strategien rund um die Uhr in einem Dashboard."
     }
   },
   "zh-CN": {
@@ -1631,6 +1655,10 @@ export const translations: Translations = {
       "dashboard": "仪表板",
       "signOut": "退出登录",
       "sections": "栏目"
+    },
+    "seo": {
+      "title": "Znit.io | 面向加密货币交易所的自动化交易机器人",
+      "description": "为 Binance、OKX、Bybit、Coinbase 和 Bitfinex 提供做市、简单套利和三角套利机器人，全天候在一个仪表板中运行。"
     }
   },
   "ja-JP": {
@@ -1864,6 +1892,10 @@ export const translations: Translations = {
       "dashboard": "ダッシュボード",
       "signOut": "ログアウト",
       "sections": "セクション"
+    },
+    "seo": {
+      "title": "Znit.io | 暗号資産取引所向け自動売買ボット",
+      "description": "Binance、OKX、Bybit、Coinbase、Bitfinex向けのマーケットメイク、単純裁定、三角裁定ボット。24時間、1つのダッシュボードで運用。"
     }
   }
 };

@@ -9,6 +9,7 @@ import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 import LanguageSelector from './components/LanguageSelector';
 import Footer from './components/Footer';
 import LandingPage from './components/LandingPage';
+import { isLandingPath, LANG_CODES, LANG_PATH } from './i18n/locales';
 import ZMark from './components/brand/ZMark';
 import DashboardSelector from './components/DashboardSelector';
 import CyberBackground from './components/CyberBackground';
@@ -19,7 +20,7 @@ import { signInWithRedirect, signIn } from 'aws-amplify/auth';
 
 // Navigation Component
 const Navigation: React.FC = () => {
-  const { t, changeLanguage, getAvailableLanguages, getCurrentLanguageInfo } = useLanguage();
+  const { t, language, changeLanguage, getAvailableLanguages, getCurrentLanguageInfo } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [loginDropdownOpen, setLoginDropdownOpen] = React.useState(false);
   const [loginForm, setLoginForm] = React.useState({ email: '', password: '' });
@@ -29,7 +30,7 @@ const Navigation: React.FC = () => {
   const [userDropdownOpen, setUserDropdownOpen] = React.useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const isLandingPage = location.pathname === '/';
+  const isLandingPage = isLandingPath(location.pathname);
   const [scrolled, setScrolled] = React.useState(false);
   const [section, setSection] = React.useState('top');
   const rail: string[] = Array.isArray(t('landing.rail')) ? t('landing.rail') : [];
@@ -233,7 +234,7 @@ const Navigation: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link
-              to="/"
+              to={LANG_PATH[language as keyof typeof LANG_PATH] || '/'}
               className="nav-brand"
               aria-label="Znit.io"
               onClick={(e) => {
@@ -255,15 +256,18 @@ const Navigation: React.FC = () => {
             {isLandingPage && (
               <div className="nav-links hidden lg:flex">
                 {NAV_SECTIONS.map((id, i) => (
-                  <button
+                  <a
                     key={id}
-                    type="button"
+                    href={`#${id}`}
                     className={`nav-link ${section === id ? 'on' : ''}`}
                     aria-current={section === id ? 'location' : undefined}
-                    onClick={() => goSection(id)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      goSection(id);
+                    }}
                   >
                     {rail[i + 1] || id}
-                  </button>
+                  </a>
                 ))}
               </div>
             )}
@@ -662,14 +666,17 @@ const Navigation: React.FC = () => {
               <ul className="nav-sheet-links">
                 {NAV_SECTIONS.map((id, i) => (
                   <li key={id}>
-                    <button
-                      type="button"
+                    <a
+                      href={`#${id}`}
                       className={`sheet-link ${section === id ? 'on' : ''}`}
                       aria-current={section === id ? 'location' : undefined}
-                      onClick={() => goSection(id)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        goSection(id);
+                      }}
                     >
                       {rail[i + 1] || id}
-                    </button>
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -714,17 +721,17 @@ const Navigation: React.FC = () => {
 const ScrollToTop: React.FC = () => {
   const location = useLocation();
 
+  // A language switch moves between landing URLs; that must not throw the visitor back to the top.
+  const key = isLandingPath(location.pathname) ? 'landing' : location.pathname;
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+    if (!location.hash) window.scrollTo(0, 0);
+  }, [key]); // eslint-disable-line
 
   return null;
 };
 
 // Main App Component with Language Provider
 function AppContent() {
-  const { t } = useLanguage();
-  const [isAuthChecking, setIsAuthChecking] = React.useState(true);
 
   // Handle OAuth callback
   React.useEffect(() => {
@@ -742,49 +749,38 @@ function AppContent() {
           localStorage.setItem('accessToken', session.tokens.accessToken?.toString() || '');
 
           // Redirect to dashboard selector if on landing/callback page
-          if (window.location.pathname === '/' || window.location.pathname === '/callback') {
+          if (isLandingPath(window.location.pathname) || window.location.pathname === '/callback') {
             window.location.href = '/dashboard-selector';
           }
         }
       } catch (error) {
         // User not authenticated, continue normally
         console.log('No authenticated user');
-      } finally {
-        setIsAuthChecking(false);
       }
     };
 
     handleOAuthCallback();
   }, []);
 
-  if (isAuthChecking) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-950">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">Verificando autenticação...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
       <div className="App">
         <CyberBackground />
         
-        <BrowserRouter>
+        <>
           <ScrollToTop />
           <Navigation />
           
           <main id="main" tabIndex={-1} className="relative z-10">
             <Routes>
-              <Route path="/" element={<LandingPage />} />
+              {LANG_CODES.map((c) => (
+                <Route key={c} path={LANG_PATH[c]} element={<LandingPage />} />
+              ))}
               <Route path="/dashboard-selector" element={<DashboardSelector />} />
             </Routes>
           </main>
           
           <Footer />
-        </BrowserRouter>
+        </>
         
         <Toaster 
           theme="dark" 
@@ -808,9 +804,11 @@ function AppContent() {
 
 function App() {
   return (
-    <LanguageProvider>
-      <AppContent />
-    </LanguageProvider>
+    <BrowserRouter>
+      <LanguageProvider>
+        <AppContent />
+      </LanguageProvider>
+    </BrowserRouter>
   );
 }
 

@@ -266,9 +266,19 @@ const LandingPage: React.FC = () => {
 
       <nav className="zn-rail" aria-label={t('ui.sections')}>
         {SECTIONS.map((id, i) => (
-          <button key={id} type="button" className={current === id ? 'on' : ''} onClick={() => go(id)} aria-label={rail[i] || id} aria-current={current === id}>
+          <a
+            key={id}
+            href={`#${id}`}
+            className={current === id ? 'on' : ''}
+            onClick={(e) => {
+              e.preventDefault();
+              go(id);
+            }}
+            aria-label={rail[i] || id}
+            aria-current={current === id ? 'location' : undefined}
+          >
             <span>{rail[i] || id}</span>
-          </button>
+          </a>
         ))}
       </nav>
 

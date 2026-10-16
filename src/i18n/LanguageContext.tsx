@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { translations } from './translations';
 import type { LanguageCode } from './types';
+import { langFromPath, LANG_PATH } from './locales';
+
+const SITE = (process.env.REACT_APP_SITE_URL || 'https://znit.io').replace(/\/$/, '');
 
 interface LanguageInfo {
   code: LanguageCode;
@@ -31,7 +35,9 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const [language, setLanguage] = useState<LanguageCode>(() => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [preferred, setPreferred] = useState<LanguageCode>(() => {
     // Get language from localStorage or detect browser language
     const savedLanguage = localStorage.getItem('preferred-language') as LanguageCode;
     if (savedLanguage && translations[savedLanguage]) {
@@ -63,10 +69,45 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     return langMap[browserLang] || langMap[browserLang.split('-')[0]] || 'en-US';
   });
 
+  // The URL decides the language on landing pages; any other route uses the visitor's preference.
+  const pathLang = langFromPath(location.pathname) as LanguageCode | null;
+  const language: LanguageCode = pathLang || preferred;
+
+  // Plain "/" is the English page. Visitors whose saved or browser language is another one are sent
+  // to that language's URL; crawlers (English by default) stay on the page they requested.
   useEffect(() => {
-    localStorage.setItem('preferred-language', language);
+    if (location.pathname === '/' && preferred !== 'en-US') {
+      navigate(LANG_PATH[preferred] + location.hash, { replace: true });
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
     document.documentElement.lang = language.split('-')[0];
   }, [language]);
+
+  // Head tags follow the language and route when the page changes without a reload.
+  useEffect(() => {
+    const set = (sel: string, make: () => HTMLElement, attr: string, value: string) => {
+      let el = document.head.querySelector<HTMLElement>(sel);
+      if (!el) {
+        el = make();
+        document.head.appendChild(el);
+      }
+      el.setAttribute(attr, value);
+    };
+    const meta = (name: string) => () => Object.assign(document.createElement('meta'), { name });
+    if (pathLang) {
+      const seo = translations[language]?.seo || translations['en-US'].seo;
+      document.title = seo.title;
+      set('meta[name="description"]', meta('description'), 'content', seo.description);
+      set('link[rel="canonical"]', () => Object.assign(document.createElement('link'), { rel: 'canonical' }), 'href', SITE + LANG_PATH[language]);
+      document.head.querySelector('meta[name="robots"]')?.remove();
+    } else {
+      // account area: keep it out of search results
+      set('meta[name="robots"]', meta('robots'), 'content', 'noindex, nofollow');
+    }
+  }, [language, pathLang]);
 
   const t = (path: string): any => {
     const keys = path.split('.');
@@ -88,9 +129,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   const changeLanguage = (newLanguage: LanguageCode): void => {
-    if (translations[newLanguage]) {
-      setLanguage(newLanguage);
-    }
+    if (!translations[newLanguage]) return;
+    localStorage.setItem('preferred-language', newLanguage);
+    setPreferred(newLanguage);
+    if (pathLang) navigate(LANG_PATH[newLanguage] + location.hash);
   };
 
   const getAvailableLanguages = (): LanguageInfo[] => {

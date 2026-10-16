@@ -255,7 +255,9 @@
   align-items: flex-end;
   transform: translateY(-50%);
 }
+.zn-rail a,
 .zn-rail button {
+  text-decoration: none;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -265,6 +267,7 @@
   color: var(--zn-dim);
   cursor: pointer;
 }
+.zn-rail a span,
 .zn-rail button span {
   font: 500 10px var(--mono);
   letter-spacing: 0.2em;
@@ -273,6 +276,7 @@
   transform: translateX(8px);
   transition: opacity 0.3s, transform 0.3s var(--ez);
 }
+.zn-rail a::after,
 .zn-rail button::after {
   content: '';
   width: 9px;
@@ -281,9 +285,18 @@
   transform: rotate(45deg);
   transition: background 0.3s, transform 0.4s var(--ez), box-shadow 0.3s;
 }
-.zn-rail button:hover span,
-
-.zn-rail button.on::after {
+.zn-rail a:hover span,
+.zn-rail button:hover span {
+  opacity: 1;
+  transform: none;
+}
+@media (min-width: 1620px) {
+  .zn-rail a.on span {
+    opacity: 1;
+    transform: none;
+  }
+}
+.zn-rail a.on::after {
   background: var(--zn-cy);
   transform: rotate(45deg) scale(1.5);
   box-shadow: 0 0 14px var(--zn-cy);
