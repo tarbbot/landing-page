@@ -37,7 +37,9 @@ const head = (code) => {
     `<meta property="og:image" content="${SITE}/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">` +
     `<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(description)}"><meta name="twitter:image" content="${SITE}/og-image.png">` +
     `<script type="application/ld+json">${JSON.stringify(ld)}</script>` +
-    `<style>#seo-snapshot{max-width:960px;margin:0 auto;padding:40px 24px;font:16px/1.6 system-ui,sans-serif;color:#eef0ff}#seo-snapshot h1{font-size:44px;line-height:1.1}#seo-snapshot h2{margin-top:40px}#seo-snapshot a{color:#22e6ff}body{background:#06040d;margin:0}</style>`
+    `<style>body{background:#06040d;margin:0}#seo-snapshot{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}</style>` +
+    // without JavaScript the text is the page: show it as a plain readable document
+    `<noscript><style>#seo-snapshot{position:static;width:auto;height:auto;margin:0 auto;padding:40px 24px;overflow:visible;clip:auto;clip-path:none;white-space:normal;max-width:960px;font:16px/1.6 system-ui,sans-serif;color:#eef0ff}#seo-snapshot h1{font-size:44px;line-height:1.1}#seo-snapshot h2{margin-top:40px}#seo-snapshot a{color:#22e6ff}</style></noscript>`
   );
 };
 
