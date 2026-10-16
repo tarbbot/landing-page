@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const CY = '#22e6ff';
 const MG = '#ff3ccf';
 const LM = '#b6ff3b';
+
+// True on phones/tablets portrait: diagrams switch to simpler, larger-stroke variants.
+const useCompact = () => {
+  const q = '(max-width: 900px)';
+  const [c, setC] = useState(() => typeof window !== 'undefined' && window.matchMedia(q).matches);
+  useEffect(() => {
+    const m = window.matchMedia(q);
+    const on = () => setC(m.matches);
+    m.addEventListener('change', on);
+    return () => m.removeEventListener('change', on);
+  }, []);
+  return c;
+};
 
 const Frame: React.FC<{ children: React.ReactNode; label: string }> = ({ children, label }) => (
   <svg viewBox="0 0 480 360" className="dg" role="img" aria-label={label}>
@@ -95,28 +108,95 @@ export const TriangleDiagram: React.FC = () => {
 };
 
 // Layered network: signal pulses travel left to right, the model reweights as the market shifts.
+// Compact (mobile) variant: fewer nodes, bigger nodes, thicker and brighter edges so it stays readable.
 export const NeuralDiagram: React.FC = () => {
-  const layers = [3, 5, 5, 2];
+  const compact = useCompact();
+  const layers = compact ? [3, 4, 4, 2] : [3, 5, 5, 2];
   const xs = [70, 195, 320, 430];
+  const gap = compact ? 64 : 56;
   const pts = layers.map((n, li) =>
-    Array.from({ length: n }, (_, i) => ({ x: xs[li], y: 180 + (i - (n - 1) / 2) * 56 }))
+    Array.from({ length: n }, (_, i) => ({ x: xs[li], y: 180 + (i - (n - 1) / 2) * gap }))
   );
   return (
     <Frame label="Neural network layers adapting to market data">
       {pts.slice(0, -1).map((layer, li) =>
         layer.map((p, i) =>
           pts[li + 1].map((q, j) => (
-            <line key={`${li}${i}${j}`} className="dg-edge" x1={p.x} y1={p.y} x2={q.x} y2={q.y} stroke="#8b5cf6" strokeOpacity={0.35} style={{ animationDelay: `${((i * 3 + j * 5 + li * 7) % 11) * 0.22}s` }} />
+            <line
+              key={`${li}${i}${j}`}
+              className="dg-edge"
+              x1={p.x} y1={p.y} x2={q.x} y2={q.y}
+              stroke={compact ? '#a78bfa' : '#8b5cf6'}
+              strokeOpacity={compact ? 0.6 : 0.35}
+              strokeWidth={compact ? 2 : 1}
+              style={{ animationDelay: `${((i * 3 + j * 5 + li * 7) % 11) * 0.22}s` }}
+            />
           ))
         )
       )}
       {pts.map((layer, li) =>
         layer.map((p, i) => (
-          <circle key={`n${li}${i}`} className="dg-node" cx={p.x} cy={p.y} r={9} fill="#06040d" stroke={li === 3 ? LM : CY} strokeWidth={2} style={{ animationDelay: `${(li * 0.5 + i * 0.12).toFixed(2)}s` }} />
+          <circle
+            key={`n${li}${i}`}
+            className="dg-node"
+            cx={p.x} cy={p.y}
+            r={compact ? 13 : 9}
+            fill="#06040d"
+            stroke={li === 3 ? LM : CY}
+            strokeWidth={compact ? 3 : 2}
+            style={{ animationDelay: `${(li * 0.5 + i * 0.12).toFixed(2)}s` }}
+          />
         ))
       )}
-      <text x={70} y={330} fill={CY} className="dg-t">MARKET DATA</text>
-      <text x={400} y={330} fill={LM} className="dg-t">SIGNAL</text>
+      <text x={70} y={338} textAnchor="middle" fill={CY} className="dg-t">MARKET DATA</text>
+      <text x={430} y={338} textAnchor="middle" fill={LM} className="dg-t">SIGNAL</text>
     </Frame>
   );
 };
+
+// The whole bot in one picture: market feed in, decision core, orders out to centralized exchanges.
+export const BotDiagram: React.FC = () => {
+  const price = 'M24 238 L52 214 L78 228 L104 176 L130 194 L156 146 L182 160 L204 120';
+  const venues = ['BINANCE', 'BYBIT', 'COINBASE', 'BITFINEX'];
+  const ys = [62, 124, 186, 248];
+  const hex = '240,136 280,158 280,202 240,224 200,202 200,158';
+  return (
+    <Frame label="Trading bot: market feed in, decision core, orders out to exchanges">
+      <text x={24} y={52} fill={CY} className="dg-t">MARKET FEED</text>
+      <g stroke="#fff" strokeOpacity={0.08}>
+        {[100, 150, 200, 250].map((y) => <line key={y} x1={24} x2={204} y1={y} y2={y} />)}
+      </g>
+      <path className="dg-draw" d={price} fill="none" stroke={CY} strokeWidth={2.5} filter="url(#dg-glow)" />
+      <circle r={4} fill="#fff"><animateMotion dur="3.6s" repeatCount="indefinite" path={price} /></circle>
+
+      <path className="dg-flow" d="M204 120 C224 120 226 150 232 160" fill="none" stroke={CY} strokeWidth={2} />
+
+      <g>
+        <circle className="dg-spin" cx={240} cy={180} r={62} fill="none" stroke="#8b5cf6" strokeWidth={2} strokeDasharray="6 10" />
+        <polygon className="dg-node" points={hex} fill="#0a0818" stroke={LM} strokeWidth={2.5} filter="url(#dg-glow)" />
+        <text x={240} y={186} textAnchor="middle" fill={LM} className="dg-t dg-t-lg">BOT</text>
+      </g>
+
+      <text x={364} y={46} fill={MG} className="dg-t">EXCHANGES</text>
+      {venues.map((v, i) => {
+        const y = ys[i];
+        const path = `M280 180 C320 180 330 ${y + 15} 364 ${y + 15}`;
+        return (
+          <g key={v}>
+            <path className="dg-flow" d={path} fill="none" stroke={MG} strokeWidth={2} style={{ animationDelay: `${-i * 0.3}s` }} />
+            <circle r={4} fill={LM}>
+              <animateMotion dur="2.4s" begin={`${i * 0.6}s`} repeatCount="indefinite" path={path} />
+            </circle>
+            <rect className="dg-venue" x={364} y={y} width={96} height={30} fill="#06040d" stroke={MG} strokeWidth={1.5} style={{ animationDelay: `${i * 0.6 + 1.6}s` }} />
+            <text x={412} y={y + 19} textAnchor="middle" fill="#eef0ff" className="dg-t dg-t-sm">{v}</text>
+          </g>
+        );
+      })}
+
+      {['> scan spreads', '> send orders', '> fills confirmed'].map((l, i) => (
+        <text key={l} className="dg-log" x={24} y={322} fill={LM} style={{ animationDelay: `${i * 2}s` }}>{l}</text>
+      ))}
+    </Frame>
+  );
+};
+

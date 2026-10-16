@@ -89,7 +89,7 @@ export const translations: Translations = {
         "title": "Ready to put a bot to work?",
         "description": "Open the dashboard to create, monitor and manage your trading bots."
       },
-      "hud": "LIVE LOOP",
+      "hud": "BOT ONLINE",
       "tape": "Simulated spread feed",
       "boot": [
         "znit.core online",
@@ -366,7 +366,7 @@ export const translations: Translations = {
         "title": "Pronto para colocar um bot para trabalhar?",
         "description": "Abra o dashboard para criar, monitorar e gerenciar seus bots de trading."
       },
-      "hud": "LOOP AO VIVO",
+      "hud": "BOT ONLINE",
       "tape": "Feed de spreads simulado",
       "boot": [
         "znit.core online",

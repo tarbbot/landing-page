@@ -35,10 +35,11 @@
 
 /* ---------- shared pieces ---------- */
 .zn-panel {
+  --edge: linear-gradient(135deg, rgba(34, 230, 255, 0.75), rgba(139, 92, 246, 0.28) 45%, rgba(255, 60, 207, 0.65));
   position: relative;
   isolation: isolate;
   clip-path: var(--chamfer);
-  background: linear-gradient(135deg, rgba(34, 230, 255, 0.75), rgba(139, 92, 246, 0.28) 45%, rgba(255, 60, 207, 0.65));
+  background: var(--edge);
 }
 .zn-panel::before {
   content: '';
@@ -527,11 +528,35 @@
 .dg-edge { stroke-dasharray: 3 9; animation: dash 1.1s linear infinite; }
 .dg-node { transform-box: fill-box; transform-origin: center; animation: nodepulse 2.8s ease-in-out infinite; }
 .dg-pulse { animation: blink 1s steps(2) infinite; }
+.dg-draw { stroke-dasharray: 420; animation: draw 3.6s ease-in-out infinite; }
+.dg-spin { transform-box: fill-box; transform-origin: center; animation: spin 14s linear infinite; }
+.dg-venue { animation: venue 2.4s ease-out infinite; }
+.dg-log { font: 500 12px var(--mono); opacity: 0; animation: log 6s linear infinite; }
+.dg-t-sm { font-size: 10px; letter-spacing: 0.1em; }
+.dg-t-lg { font-size: 16px; letter-spacing: 0.3em; }
+.hero-hud .dg-t { font-size: 12.5px; }
+.hero-hud .dg-t-sm { font-size: 11px; }
+.hero-hud .dg-t-lg { font-size: 17px; }
+.hero-hud .dg-log { font-size: 13.5px; }
+.strat-viz .hud-bar { position: absolute; top: 0; left: 0; right: 0; z-index: 3; }
+.strat-viz .viz { padding-top: 46px; }
+@media (max-width: 900px) {
+  .dg-t { font-size: 15px; }
+  .dg-t-sm { font-size: 12px; }
+  .dg-t-lg { font-size: 20px; }
+  .dg-log { font-size: 16px; }
+  .strat-viz .viz { padding: 40px 10px 10px; }
+}
 
 /* ---------- simulator ---------- */
 .sim-sec .sec-head { margin-bottom: 48px; }
 .sim { padding: clamp(24px, 4vw, 52px); }
-.sim.is-win { --res: var(--zn-lm); background: linear-gradient(135deg, rgba(182, 255, 59, 0.85), rgba(34, 230, 255, 0.3) 50%, rgba(182, 255, 59, 0.6)); }
+.sim.is-win {
+  --res: var(--zn-lm);
+  --edge: linear-gradient(135deg, rgba(182, 255, 59, 0.85), rgba(34, 230, 255, 0.3) 50%, rgba(182, 255, 59, 0.6));
+  --bc1: 182, 255, 59;
+  --bc2: 34, 230, 255;
+}
 .sim.is-loss { --res: var(--zn-mg); }
 .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); }
 .sim-notional { display: flex; flex-wrap: wrap; gap: 10px; min-width: 0; margin: 0; padding: 0; border: 0; }
@@ -725,10 +750,50 @@
 }
 .zn-foot-bot { font: 500 12px var(--mono); color: var(--zn-dim); }
 
+
+/* ---------- light beam travelling along a panel border ----------
+   The 1px ring is the panel's own background showing around the dark fill, so a rotating
+   conic-gradient on that background follows the chamfered outline with no extra markup. */
+@property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@property --o { syntax: '<number>'; inherits: false; initial-value: 0; }
+.beam {
+  --bc1: 34, 230, 255;
+  --bc2: 255, 60, 207;
+  background:
+    conic-gradient(from var(--a), transparent 0deg 200deg, rgba(var(--bc2), calc(var(--o) * 0.6)) 255deg, rgba(var(--bc1), calc(var(--o) * 0.95)) 330deg, rgba(255, 255, 255, var(--o)) 352deg, rgba(255, 255, 255, var(--o)) 358deg, transparent 360deg),
+    var(--edge);
+  animation: beam 7.5s linear var(--bd, 0s) infinite;
+}
+/* opaque fill: a translucent one would let the sweeping gradient glow through the panel */
+.beam::before { inset: 2px; background: #0a0818; }
+.hero-hud.beam { --bd: 2.6s; }
+/* the hero entrance animation would otherwise replace the beam: run both */
+.zn.js .hero-hud.beam { animation: power 1.1s var(--ez) 1.5s both, beam 7.5s linear var(--bd) infinite; }
+.strat-viz.beam { --bd: 1s; }
+.sim.beam { --bd: 3.5s; animation-duration: 9s; }
+.b0.beam { --bd: 0.6s; animation-duration: 8.5s; }
+.cta-box.beam { --bd: 1.2s; animation-duration: 10s; }
+@keyframes beam {
+  0% { --a: 0deg; --o: 0; }
+  6% { --o: 1; }
+  58% { --o: 1; }
+  68% { --a: 360deg; --o: 0; }
+  100% { --a: 360deg; --o: 0; }
+}
+/* touch devices: only the two light panels animate, the repaint cost is not worth it elsewhere */
+@media (pointer: coarse) {
+  .beam:not(.beam-lite) { animation: none; background: var(--edge); }
+  .beam:not(.beam-lite)::before { inset: 1px; }
+}
+
 /* ---------- keyframes ---------- */
 @keyframes blink { 50% { opacity: 0.15; } }
 @keyframes tape { to { transform: translateX(-50%); } }
 @keyframes sheen { to { background-position: -300% 0; } }
+@keyframes draw { 0% { stroke-dashoffset: 420; } 70%, 100% { stroke-dashoffset: 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes venue { 0%, 60%, 100% { stroke: #ff3ccf; stroke-width: 1.5; } 70% { stroke: #b6ff3b; stroke-width: 3; } }
+@keyframes log { 0%, 100% { opacity: 0; } 6%, 28% { opacity: 1; } 34% { opacity: 0; } }
 @keyframes dash { to { stroke-dashoffset: -36; } }
 @keyframes bar { from { transform: scaleX(0.55); } to { transform: scaleX(1.05); } }
 @keyframes nodepulse { 50% { transform: scale(1.18); stroke-width: 3.5; } }

@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Counter, Scramble, reducedMotion, useReveal } from './landing/fx';
-import { ArbitrageDiagram, MarketMakerDiagram, NeuralDiagram, TriangleDiagram } from './landing/Diagrams';
+import { ArbitrageDiagram, BotDiagram, MarketMakerDiagram, NeuralDiagram, TriangleDiagram } from './landing/Diagrams';
 import Simulator from './landing/Simulator';
 import '../landing.css';
 
@@ -196,7 +196,7 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="hero-hud zn-panel hud" aria-hidden="true">
+        <div className="hero-hud zn-panel hud beam beam-lite" aria-hidden="true">
           <i className="c tl" />
           <i className="c tr" />
           <i className="c bl" />
@@ -205,7 +205,7 @@ const LandingPage: React.FC = () => {
             <span>ZNIT.CORE</span>
             <span className="live">{t('landing.hud')}</span>
           </div>
-          <TriangleDiagram />
+          <BotDiagram />
         </div>
 
         <dl className="stats">
@@ -253,11 +253,15 @@ const LandingPage: React.FC = () => {
                 ))}
               </div>
             </div>
-            <div className="strat-viz zn-panel hud">
+            <div className="strat-viz zn-panel hud beam">
               <i className="c tl" />
               <i className="c tr" />
               <i className="c bl" />
               <i className="c br" />
+              <div className="hud-bar">
+                <span>{(items[active]?.title || '').toUpperCase()}</span>
+                <span className="live">{t('landing.hud')}</span>
+              </div>
               {DIAGRAMS.slice(0, items.length).map((D, i) => (
                 <div key={i} className={`viz ${state(i, active)}`}>
                   <D />
@@ -325,7 +329,7 @@ const LandingPage: React.FC = () => {
           {Object.keys(WHY_ICONS).map((k, i) => {
             const Icon = WHY_ICONS[k];
             return (
-              <article key={k} className={`bento-i b${i} zn-panel rv`} style={{ ['--i' as any]: i }}>
+              <article key={k} className={`bento-i b${i} zn-panel rv${i === 0 ? ' beam' : ''}`} style={{ ['--i' as any]: i }}>
                 <Icon size={22} />
                 <h3>{t(`landing.why.reasons.${k}.title`)}</h3>
                 <p>{t(`landing.why.reasons.${k}.description`)}</p>
@@ -339,7 +343,7 @@ const LandingPage: React.FC = () => {
 
       {/* CTA */}
       <section id="start" className="sec cta">
-        <div className="cta-box zn-panel rv">
+        <div className="cta-box zn-panel rv beam beam-lite">
           <h2>
             <Scramble text={t('landing.cta.title')} />
           </h2>

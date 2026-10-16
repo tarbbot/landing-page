@@ -22,7 +22,7 @@ const Simulator: React.FC = () => {
   const n = (v: number, d = 2) => v.toLocaleString(undefined, { maximumFractionDigits: d, minimumFractionDigits: d });
 
   return (
-    <div className={`sim zn-panel ${win ? 'is-win' : 'is-loss'}`}>
+    <div className={`sim zn-panel beam ${win ? 'is-win' : 'is-loss'}`}>
       <div className="sim-grid">
         <div className="sim-controls">
           <fieldset className="sim-notional">
