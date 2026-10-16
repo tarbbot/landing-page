@@ -65,6 +65,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   useEffect(() => {
     localStorage.setItem('preferred-language', language);
+    document.documentElement.lang = language.split('-')[0];
   }, [language]);
 
   const t = (path: string): any => {

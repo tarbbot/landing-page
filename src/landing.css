@@ -29,6 +29,11 @@
   position: relative;
   color: var(--zn-ink);
 }
+.hero h1,
+.sec-head h2,
+.cta-box h2,
+.chap h3,
+.proc-body h3 { text-wrap: balance; }
 .zn :focus-visible {
   outline: 2px solid var(--zn-lm);
   outline-offset: 3px;
@@ -287,6 +292,49 @@
   .zn-rail { display: none; }
 }
 
+/* ---------- hero depth: copy drifts up and fades, the HUD comes forward and leans to the cursor ---------- */
+.hero-stage { grid-area: hud; perspective: 1000px; }
+.zn.js .hero-copy {
+  transform: translate3d(0, calc(var(--hp, 0) * -56px), 0);
+  opacity: calc(1 - var(--hp, 0) * 0.9);
+  will-change: transform, opacity;
+}
+.zn.js .hero-stage {
+  transform: translate3d(0, calc(var(--hp, 0) * -70px), 0) scale(calc(1 + var(--hp, 0) * 0.07));
+  will-change: transform;
+}
+.hero-tilt {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ---------- manifesto: words light up with the scroll ---------- */
+.manifesto { position: relative; height: calc(var(--n, 30) * 11vh + 100vh); margin-top: clamp(40px, 6vw, 90px); }
+.manifesto-pin {
+  position: sticky;
+  top: 0;
+  display: grid;
+  align-items: center;
+  height: 100svh;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 90px clamp(20px, 5vw, 72px) 40px;
+}
+.manifesto p {
+  margin: 0;
+  max-width: 22ch;
+  font: 700 clamp(34px, 6.2vw, 98px) / 1.04 'Space Grotesk', sans-serif;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.mw {
+  --k: calc(var(--mp, 0) * (var(--n) + 4) - var(--i));
+  opacity: clamp(0.14, calc(0.14 + var(--k) * 0.5), 1);
+  color: color-mix(in srgb, #fff calc(clamp(0, var(--k) - 0.6, 1) * 100%), var(--zn-cy));
+  transition: none;
+}
+.manifesto p { max-width: 20ch; }
+
 /* ---------- hero ---------- */
 .hero {
   display: grid;
@@ -300,7 +348,7 @@
   padding: clamp(16px, 2.6vh, 40px) clamp(20px, 5vw, 72px) clamp(14px, 1.8vh, 28px);
 }
 .hero-copy { grid-area: copy; }
-.hero-hud { grid-area: hud; padding-bottom: 14px; }
+.hero-hud { padding-bottom: 14px; }
 .hero-chart { display: block; width: 100%; aspect-ratio: 4 / 3; }
 .stats { grid-area: stats; }
 
@@ -904,7 +952,23 @@
 
 /* ---------- small screens ---------- */
 @media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; grid-template-areas: 'copy' 'hud' 'stats'; min-height: 0; padding-top: 32px; }
+  .hero { grid-template-columns: 1fr; grid-template-areas: 'copy' 'hud' 'stats'; min-height: 0; padding-top: 32px; gap: 0; }
+  /* three blocks (copy, chart, numbers) kept apart by space and a lit divider above and below the chart */
+  .hero-stage { position: relative; margin-top: 44px; padding: 44px 0; }
+  .hero-stage::before,
+  .hero-stage::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 4%, var(--zn-cy), var(--zn-mg), transparent 96%);
+    box-shadow: 0 0 12px rgba(34, 230, 255, 0.55);
+  }
+  .hero-stage::before { top: 0; }
+  .hero-stage::after { bottom: 0; }
+  .hero-sub { margin: 20px 0 28px; }
+  .stats { margin-top: 0; gap: 12px; }
   .hero-hud { max-width: 460px; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .strat { height: calc(var(--n, 4) * 80vh + 100vh); }
@@ -937,6 +1001,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .zn.js .hero-copy, .zn.js .hero-stage { transform: none; opacity: 1; }
+  .hero-tilt { transform: none; }
   .zn *, .zn *::before, .zn *::after { animation: none !important; transition: none !important; }
   .zn.js .rv, .zn.js .gate { opacity: 1; transform: none; }
   .tape-track { transform: none; }

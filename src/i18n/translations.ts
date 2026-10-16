@@ -186,7 +186,8 @@ export const translations: Translations = {
         "status": "Supported",
         "alt": "Znit bot core connected to Binance, OKX, Bybit, Coinbase and Bitfinex",
         "note": "Exchange names are trademarks of their respective owners. Listing an exchange does not imply a partnership or endorsement."
-      }
+      },
+      "manifesto": "The market never closes. Spreads open and shut in milliseconds, on every pair, on every exchange. Znit bots watch them all, so you do not have to."
     },
     "toasts": {
       "signedOut": "Signed out successfully",
@@ -472,7 +473,8 @@ export const translations: Translations = {
         "status": "Suportada",
         "alt": "Núcleo do bot Znit conectado a Binance, OKX, Bybit, Coinbase e Bitfinex",
         "note": "Os nomes das exchanges são marcas registradas de seus respectivos donos. Listar uma exchange não implica parceria ou endosso."
-      }
+      },
+      "manifesto": "O mercado nunca fecha. Os spreads abrem e fecham em milissegundos, em cada par, em cada exchange. Os bots da Znit acompanham todos, para que você não precise."
     },
     "toasts": {
       "signedOut": "Desconectado com sucesso",

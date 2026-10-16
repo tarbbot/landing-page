@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import {
+  ArrowDown,
   ArrowUpRight,
   Cpu,
   FlaskConical,
@@ -19,6 +20,8 @@ import { ArbitrageDiagram, MarketMakerDiagram, NeuralDiagram, TriangleDiagram } 
 import HeroBot from './landing/HeroBot';
 import Simulator from './landing/Simulator';
 import Venues from './landing/Venues';
+import Manifesto from './landing/Manifesto';
+import { tint } from './CyberBackground';
 import '../landing.css';
 
 const openLogin = () => window.dispatchEvent(new Event('znit:login'));
@@ -32,6 +35,15 @@ const WHY_ICONS: Record<string, LucideIcon> = {
   community: Network,
   transparency: Lock,
   speed: Zap,
+};
+const CHAPTER_TINT: Record<string, string> = {
+  top: '139,92,246',
+  strategies: '34,230,255',
+  simulator: '182,255,59',
+  venues: '255,60,207',
+  process: '34,230,255',
+  why: '139,92,246',
+  start: '255,60,207',
 };
 const PAIRS = ['BTC/USDT', 'ETH/USDT', 'ETH/BTC', 'SOL/USDT', 'BNB/USDT', 'XRP/USDT', 'ARB/ETH', 'LINK/USDT'];
 
@@ -71,6 +83,7 @@ const LandingPage: React.FC = () => {
   const root = useRef<HTMLDivElement>(null);
   const stratRef = useRef<HTMLElement>(null);
   const procRef = useRef<HTMLElement>(null);
+  const tiltRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [active, setActive] = useState(0);
   const [step, setStep] = useState(-1);
@@ -97,6 +110,7 @@ const LandingPage: React.FC = () => {
       raf = 0;
       const vh = window.innerHeight;
       const doc = document.documentElement;
+      root.current?.style.setProperty('--hp', String(clamp01(window.scrollY / (vh * 0.9))));
       root.current?.style.setProperty('--pg', String(clamp01(window.scrollY / (doc.scrollHeight - vh))));
 
       const s = stratRef.current;
@@ -139,6 +153,36 @@ const LandingPage: React.FC = () => {
       if (el) io.observe(el);
     });
     return () => io.disconnect();
+  }, []);
+
+  // Chapter colour: the background grid takes the hue of the section on screen
+  useEffect(() => {
+    tint.c = CHAPTER_TINT[current] || CHAPTER_TINT.top;
+  }, [current]);
+
+  // Hero HUD leans toward the cursor (fine pointers only)
+  useEffect(() => {
+    const el = tiltRef.current;
+    const host = el?.closest('section');
+    if (!el || !host || reducedMotion()) return;
+    const move = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') return;
+      const b = host.getBoundingClientRect();
+      const x = (e.clientX - b.left) / b.width - 0.5;
+      const y = (e.clientY - b.top) / b.height - 0.5;
+      el.style.setProperty('--ry', `${(x * 10).toFixed(2)}deg`);
+      el.style.setProperty('--rx', `${(-y * 8).toFixed(2)}deg`);
+    };
+    const leave = () => {
+      el.style.setProperty('--ry', '0deg');
+      el.style.setProperty('--rx', '0deg');
+    };
+    host.addEventListener('pointermove', move, { passive: true });
+    host.addEventListener('pointerleave', leave);
+    return () => {
+      host.removeEventListener('pointermove', move);
+      host.removeEventListener('pointerleave', leave);
+    };
   }, []);
 
   // Pointer-follow highlight on panels.
@@ -188,17 +232,16 @@ const LandingPage: React.FC = () => {
           </h1>
           <p className="hero-sub">{t('landing.hero.description')}</p>
           <div className="hero-cta">
-            <button type="button" className="zn-btn primary" onClick={openLogin}>
-              <span>{t('landing.hero.ctaDashboard')}</span>
-              <ArrowUpRight size={18} />
-            </button>
-            <button type="button" className="zn-btn ghost" onClick={() => go('strategies')}>
+            <button type="button" className="zn-btn primary" onClick={() => go('strategies')}>
               <span>{t('landing.hero.ctaExplore')}</span>
+              <ArrowDown size={18} />
             </button>
           </div>
         </div>
 
-        <div className="hero-hud zn-panel hud beam beam-lite" aria-hidden="true">
+        <div className="hero-stage">
+         <div className="hero-tilt" ref={tiltRef}>
+          <div className="hero-hud zn-panel hud beam beam-lite" aria-hidden="true">
           <i className="c tl" />
           <i className="c tr" />
           <i className="c bl" />
@@ -208,6 +251,8 @@ const LandingPage: React.FC = () => {
             <span className="live">{t('landing.hud')}</span>
           </div>
           <HeroBot label={t('landing.chart')} />
+          </div>
+         </div>
         </div>
 
         <dl className="stats">
@@ -223,6 +268,8 @@ const LandingPage: React.FC = () => {
       </section>
 
       <Tape label={t('landing.tape')} />
+
+      <Manifesto text={t('landing.manifesto')} />
 
       {/* STRATEGIES: pinned stage, one chapter per strategy */}
       <section id="strategies" ref={stratRef} className="strat" style={{ ['--n' as any]: items.length }}>

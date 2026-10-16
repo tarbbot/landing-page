@@ -5,6 +5,9 @@ const STEP = 14;
 const REACH = 420; // grid is only subdivided this far from the cursor
 const COLORS = ['34,230,255', '255,60,207', '139,92,246', '182,255,59'];
 
+// Set by the landing page: the RGB the grid should drift toward (one hue per chapter).
+export const tint = { c: '139,92,246' };
+
 interface Tick {
   x: number;
   y: number;
@@ -35,6 +38,7 @@ const CyberBackground: React.FC = () => {
     let last = performance.now();
     const mouse = { x: -9999, y: -9999, tx: -9999, ty: -9999 };
     let ticks: Tick[] = [];
+    const col = [139, 92, 246];
     const t0 = performance.now();
 
     const spawn = (fromBottom: boolean): Tick => ({
@@ -130,7 +134,9 @@ const CyberBackground: React.FC = () => {
       for (let x = 0; x <= w + CELL; x += CELL) line(base, hot, true, x, h, on);
       for (let y = off; y <= h + CELL; y += CELL) line(base, hot, false, y, w, on);
       ctx.lineWidth = 1;
-      ctx.strokeStyle = `rgba(139,92,246,${0.1 * ignite})`;
+      const goal = tint.c.split(',').map(Number);
+      for (let i = 0; i < 3; i++) col[i] += (goal[i] - col[i]) * Math.min(1, 0.04 * k);
+      ctx.strokeStyle = `rgba(${col[0] | 0},${col[1] | 0},${col[2] | 0},${0.12 * ignite})`;
       ctx.stroke(base);
       if (on) {
         ctx.strokeStyle = `rgba(34,230,255,${0.42 * ignite})`;
