@@ -90,6 +90,7 @@ export const translations: Translations = {
         "description": "Open the dashboard to create, monitor and manage your trading bots."
       },
       "hud": "BOT ONLINE",
+      "chart": "BTC/USDT  BOT ACTIVITY",
       "tape": "Simulated spread feed",
       "boot": [
         "znit.core online",
@@ -375,6 +376,7 @@ export const translations: Translations = {
         "description": "Abra o dashboard para criar, monitorar e gerenciar seus bots de trading."
       },
       "hud": "BOT ONLINE",
+      "chart": "BTC/USDT  ATIVIDADE DO BOT",
       "tape": "Feed de spreads simulado",
       "boot": [
         "znit.core online",

@@ -300,6 +300,7 @@
 }
 .hero-copy { grid-area: copy; }
 .hero-hud { grid-area: hud; padding-bottom: 14px; }
+.hero-chart { display: block; width: 100%; aspect-ratio: 4 / 3; }
 .stats { grid-area: stats; }
 
 .boot {
@@ -528,24 +529,12 @@
 .dg-edge { stroke-dasharray: 3 9; animation: dash 1.1s linear infinite; }
 .dg-node { transform-box: fill-box; transform-origin: center; animation: nodepulse 2.8s ease-in-out infinite; }
 .dg-pulse { animation: blink 1s steps(2) infinite; }
-.dg-draw { stroke-dasharray: 420; animation: draw 3.6s ease-in-out infinite; }
 .dg-spin { transform-box: fill-box; transform-origin: center; animation: spin 14s linear infinite; }
-.dg-venue { animation: venue 2.4s ease-out infinite; }
-.dg-log { font: 500 12px var(--mono); opacity: 0; animation: log 6s linear infinite; }
-.dg-t-sm { font-size: 10px; letter-spacing: 0.1em; }
-.dg-t-lg { font-size: 16px; letter-spacing: 0.3em; }
-.hero-hud .dg-t { font-size: 12.5px; }
-.hero-hud .dg-t-sm { font-size: 11px; }
-.hero-hud .dg-t-lg { font-size: 17px; }
-.hero-hud .dg-log { font-size: 13.5px; }
-.strat-viz .hud-bar { position: absolute; top: 0; left: 0; right: 0; z-index: 3; }
+.hero-hud .hero-hud .hero-hud .strat-viz .hud-bar { position: absolute; top: 0; left: 0; right: 0; z-index: 3; }
 .strat-viz .viz { padding-top: 46px; }
 @media (max-width: 900px) {
   .dg-t { font-size: 15px; }
-  .dg-t-sm { font-size: 12px; }
-  .dg-t-lg { font-size: 20px; }
-  .dg-log { font-size: 16px; }
-  .strat-viz .viz { padding: 40px 10px 10px; }
+        .strat-viz .viz { padding: 40px 10px 10px; }
 }
 
 /* ---------- simulator ---------- */
@@ -866,10 +855,7 @@
 @keyframes blink { 50% { opacity: 0.15; } }
 @keyframes tape { to { transform: translateX(-50%); } }
 @keyframes sheen { to { background-position: -300% 0; } }
-@keyframes draw { 0% { stroke-dashoffset: 420; } 70%, 100% { stroke-dashoffset: 0; } }
 @keyframes spin { to { transform: rotate(360deg); } }
-@keyframes venue { 0%, 60%, 100% { stroke: #ff3ccf; stroke-width: 1.5; } 70% { stroke: #b6ff3b; stroke-width: 3; } }
-@keyframes log { 0%, 100% { opacity: 0; } 6%, 28% { opacity: 1; } 34% { opacity: 0; } }
 @keyframes dash { to { stroke-dashoffset: -36; } }
 @keyframes bar { from { transform: scaleX(0.55); } to { transform: scaleX(1.05); } }
 @keyframes nodepulse { 50% { transform: scale(1.18); stroke-width: 3.5; } }

@@ -15,7 +15,8 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Counter, Scramble, reducedMotion, useReveal } from './landing/fx';
-import { ArbitrageDiagram, BotDiagram, MarketMakerDiagram, NeuralDiagram, TriangleDiagram } from './landing/Diagrams';
+import { ArbitrageDiagram, MarketMakerDiagram, NeuralDiagram, TriangleDiagram } from './landing/Diagrams';
+import HeroBot from './landing/HeroBot';
 import Simulator from './landing/Simulator';
 import Venues from './landing/Venues';
 import '../landing.css';
@@ -206,7 +207,7 @@ const LandingPage: React.FC = () => {
             <span>ZNIT.CORE</span>
             <span className="live">{t('landing.hud')}</span>
           </div>
-          <BotDiagram />
+          <HeroBot label={t('landing.chart')} />
         </div>
 
         <dl className="stats">
