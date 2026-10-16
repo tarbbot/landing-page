@@ -916,6 +916,12 @@
   .beam:not(.beam-lite)::before { inset: 1px; }
 }
 
+/* sections scrolled out of view stop animating (class set from LandingPage) */
+.is-off,
+.is-off *,
+.is-off *::before,
+.is-off *::after { animation-play-state: paused !important; }
+
 /* ---------- keyframes ---------- */
 @keyframes blink { 50% { opacity: 0.15; } }
 @keyframes tape { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
@@ -952,6 +958,8 @@
 
 /* ---------- small screens ---------- */
 @media (max-width: 900px) {
+  /* no room for the label on phones: the pairs run edge to edge (still announced via aria-label) */
+  .tape-tag { display: none; }
   .hero { grid-template-columns: 1fr; grid-template-areas: 'copy' 'hud' 'stats'; min-height: 0; padding-top: 32px; gap: 0; }
   /* three blocks (copy, chart, numbers) kept apart by space and a lit divider above and below the chart */
   .hero-stage { position: relative; margin-top: 44px; padding: 44px 0; }
@@ -991,7 +999,6 @@
   .bento { grid-template-columns: 1fr; }
   .b0, .b1, .b2, .b3, .b4, .b5 { grid-column: auto; }
   .hero-cta .zn-btn { width: 100%; justify-content: center; }
-  .tape-tag { padding: 14px 12px; }
 }
 
 /* Touch devices: no live blur over the animated canvas, no full-screen scanline layer */

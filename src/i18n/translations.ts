@@ -41,7 +41,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "Market maker and arbitrage bots",
+      "tagline": "Trading Bot Ecosystem",
       "hero": {
         "title": "Bots that trade",
         "subtitle": "the spread.",
@@ -51,8 +51,8 @@ export const translations: Translations = {
       },
       "stats": {
         "bots": "Active Bots",
-        "users": "Active Users",
-        "volume": "Trading Volume",
+        "strategies": "Different Strategies",
+        "volume": "Trading Volume per Month",
         "uptime": "Uptime"
       },
       "why": {
@@ -234,7 +234,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "Market maker and arbitrage bots",
+      "tagline": "Trading Bot Ecosystem",
       "hero": {
         "title": "Building the Future of",
         "subtitle": "Algorithmic Trading",
@@ -328,7 +328,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "Bots de market maker e arbitragem",
+      "tagline": "Estratégias de Trading Bot",
       "hero": {
         "title": "Bots que operam",
         "subtitle": "o spread.",
@@ -521,7 +521,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "Bots de market maker y arbitraje",
+      "tagline": "Estrategias de Trading Bot",
       "hero": {
         "title": "Construyendo el Futuro del",
         "subtitle": "Trading Algorítmico",
@@ -615,7 +615,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "Bots de market making et d'arbitrage",
+      "tagline": "Stratégies de Trading Bot",
       "hero": {
         "title": "Construire l'Avenir du",
         "subtitle": "Trading Algorithmique",
@@ -709,7 +709,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "Market-Maker- und Arbitrage-Bots",
+      "tagline": "Trading-Bot-Strategien",
       "hero": {
         "title": "Die Zukunft des",
         "subtitle": "Algorithmischen Handels Bauen",
@@ -803,7 +803,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "做市与套利机器人",
+      "tagline": "交易机器人策略",
       "hero": {
         "title": "构建未来的",
         "subtitle": "算法交易",
@@ -897,7 +897,7 @@ export const translations: Translations = {
       }
     },
     "landing": {
-      "tagline": "マーケットメイクと裁定取引のボット",
+      "tagline": "トレーディングボット戦略",
       "hero": {
         "title": "未来を構築する",
         "subtitle": "アルゴリズム取引",

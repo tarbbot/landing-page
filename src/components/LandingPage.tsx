@@ -95,8 +95,8 @@ const LandingPage: React.FC = () => {
   const rail = list<string>(t('landing.rail'));
   const stats = [
     { label: t('landing.stats.bots'), value: '50+' },
-    { label: t('landing.stats.users'), value: '10K+' },
-    { label: t('landing.stats.volume'), value: '$5M+' },
+    { label: t('landing.stats.strategies'), value: '3+' },
+    { label: t('landing.stats.volume'), value: '$15M+' },
     { label: t('landing.stats.uptime'), value: '99.9%' },
   ];
 
@@ -152,6 +152,24 @@ const LandingPage: React.FC = () => {
       const el = document.getElementById(id);
       if (el) io.observe(el);
     });
+    return () => io.disconnect();
+  }, []);
+
+  // Pause every CSS and SVG animation of a section while it is off screen: dozens of looping
+  // animations (beams, dashes, SMIL dots) kept running offscreen, a steady GPU/memory cost on phones.
+  useEffect(() => {
+    const el = root.current;
+    if (!el || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(
+      (es) =>
+        es.forEach((e) => {
+          const off = !e.isIntersecting;
+          e.target.classList.toggle('is-off', off);
+          e.target.querySelectorAll('svg').forEach((s) => (off ? s.pauseAnimations?.() : s.unpauseAnimations?.()));
+        }),
+      { rootMargin: '120px 0px' }
+    );
+    el.querySelectorAll('section, .tape').forEach((n) => io.observe(n));
     return () => io.disconnect();
   }, []);
 
