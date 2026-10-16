@@ -9,6 +9,7 @@ import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 import LanguageSelector from './components/LanguageSelector';
 import Footer from './components/Footer';
 import LandingPage from './components/LandingPage';
+import ZMark from './components/brand/ZMark';
 import DashboardSelector from './components/DashboardSelector';
 import CyberBackground from './components/CyberBackground';
 import "./App.css";
@@ -249,7 +250,7 @@ const Navigation: React.FC = () => {
               }}
             >
               <div className="nav-logo">
-                <Zap className="h-7 w-7 text-white" aria-hidden="true" />
+                <ZMark className="h-7 w-7" />
               </div>
               <div>
                 <span className="nav-name">Znit<i>.io</i></span>

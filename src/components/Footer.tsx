@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Github, Mail, MessageCircle, Twitter, Zap } from 'lucide-react';
+import { Github, Mail, MessageCircle, Twitter } from 'lucide-react';
+import ZMark from './brand/ZMark';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const social = [
@@ -16,7 +17,7 @@ const Footer: React.FC = () => {
     <footer className="zn-foot">
       <div className="zn-foot-top">
         <Link to="/" className="zn-foot-brand">
-          <Zap size={20} />
+          <ZMark className="zn-foot-z" color="#22e6ff" />
           <span>{t('landing.tagline')}</span>
         </Link>
         <div className="zn-foot-links">

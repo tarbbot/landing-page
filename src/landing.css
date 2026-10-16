@@ -793,7 +793,7 @@
 }
 .zn-foot-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
 .zn-foot-brand { display: flex; align-items: center; gap: 12px; color: var(--zn-ink); text-decoration: none; font: 500 13px var(--mono); }
-.zn-foot-brand svg { color: var(--zn-cy); }
+.zn-foot-z { width: 22px; height: 22px; }
 .zn-foot-links { display: flex; align-items: center; gap: 26px; }
 .zn-foot-links a,
 .zn-foot-links button { padding: 0; background: none; border: 0; cursor: pointer; color: var(--zn-dim); text-decoration: none; font: 500 14px 'Space Grotesk', sans-serif; transition: color 0.25s; }
