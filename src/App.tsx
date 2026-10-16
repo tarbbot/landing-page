@@ -59,18 +59,12 @@ const Navigation: React.FC = () => {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // Highlights the nav link of the section nearest the viewport middle
+  // The landing page announces which section is on screen (it also handles the stacked sheets)
   React.useEffect(() => {
-    if (!isLandingPage || !('IntersectionObserver' in window)) return;
-    const io = new IntersectionObserver(
-      (es) => es.forEach((e) => e.isIntersecting && setSection(e.target.id)),
-      { rootMargin: '-45% 0px -50% 0px' }
-    );
-    ['top', ...NAV_SECTIONS, 'start'].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) io.observe(el);
-    });
-    return () => io.disconnect();
+    if (!isLandingPage) return;
+    const on = (e: Event) => setSection((e as CustomEvent<string>).detail);
+    window.addEventListener('znit:section', on);
+    return () => window.removeEventListener('znit:section', on);
   }, [isLandingPage]);
   const loginDropdownRef = React.useRef<HTMLDivElement>(null);
   const userDropdownRef = React.useRef<HTMLDivElement>(null);

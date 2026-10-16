@@ -603,7 +603,82 @@
 }
 
 /* ---------- simulator ---------- */
-.sim-sec .sec-head { margin-bottom: 48px; }
+.stack { position: relative; max-width: 1360px; margin: clamp(80px, 10vw, 150px) auto 0; padding: 0 clamp(12px, 3vw, 40px); }
+.stack-card { --cut: 28px; position: relative; margin-bottom: 28px; }
+.sheet {
+  --cut: 28px;
+  padding: clamp(16px, 3vh, 30px) clamp(20px, 4vw, 52px) clamp(18px, 3.4vh, 40px);
+}
+.sheet::before { background: #07050f; }
+.sheet-n {
+  position: absolute;
+  top: 16px;
+  right: 34px;
+  font: 500 11px var(--mono);
+  letter-spacing: 0.24em;
+  color: var(--zn-lm);
+}
+.sheet .sec-head { margin-bottom: clamp(12px, 2.4vh, 28px); padding-right: 90px; }
+.sheet .sec-head h2 { margin-bottom: clamp(6px, 1.2vh, 12px); font-size: clamp(28px, min(4.4vw, 6.2vh), 62px); }
+.sheet .sec-head p { font-size: 16px; }
+.sheet .ven-wrap { margin-top: 0; }
+/* compact the content so a whole sheet fits the screen it is pinned on */
+.sheet .sim { padding: clamp(14px, 3vh, 52px) clamp(18px, 3vw, 52px); }
+.sheet .sim-range { margin-top: clamp(14px, 3vh, 34px); }
+.sheet .sim-note { margin-top: clamp(14px, 3vh, 34px); }
+.sheet .sim-legs { margin-bottom: clamp(12px, 2.6vh, 28px); }
+.sheet .sim-foot,
+.sheet .ven-foot { margin-top: clamp(10px, 2.4vh, 36px); }
+.sheet .ven { padding: clamp(14px, 3vh, 52px) clamp(18px, 3vw, 52px); }
+.sheet .ven-tile { padding-block: clamp(8px, 1.5vh, 14px); }
+@media (max-height: 860px) {
+  .sheet .sec-head p { display: none; }
+}
+
+/* wide, tall screens: a pinned stage. Only the first sheet is on screen; the second stays below
+   the fold and rises over it as the page scrolls (--slide goes 0 to 1, set from LandingPage). */
+@media (min-width: 901px) and (min-height: 780px) and (prefers-reduced-motion: no-preference) {
+  .stack {
+    --pin-h: calc(100svh - 100px);
+    height: calc(var(--pin-h) + 150vh);
+    padding-bottom: 0;
+  }
+  .stack-pin {
+    position: sticky;
+    top: 88px;
+    height: var(--pin-h);
+  }
+  .stack-card {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+  .stack-card .sheet { width: 100%; }
+  .stack-card:nth-child(2) {
+    transform: translate3d(0, calc((1 - var(--slide, 0)) * 112vh), 0);
+    will-change: transform;
+  }
+  .sheet {
+    transform-origin: 50% 0;
+    transform: scale(calc(1 - var(--slide, 0) * 0.05));
+  }
+  .stack-card:nth-child(2) .sheet { transform: none; }
+  .stack-card:nth-child(1) .sheet::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    transition: none;
+    opacity: calc(var(--slide, 0) * 0.72);
+    background: #06040d;
+    clip-path: var(--chamfer);
+  }
+}
+.is-covered,
+.is-covered * { animation-play-state: paused !important; }
 .sim { padding: clamp(24px, 4vw, 52px); }
 .sim.is-win {
   --res: var(--zn-lm);

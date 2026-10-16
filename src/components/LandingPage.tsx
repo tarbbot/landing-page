@@ -84,6 +84,8 @@ const LandingPage: React.FC = () => {
   const stratRef = useRef<HTMLElement>(null);
   const procRef = useRef<HTMLElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);
+  const stackRef = useRef<HTMLDivElement>(null);
+  const lastSection = useRef('top');
   const [ready, setReady] = useState(false);
   const [active, setActive] = useState(0);
   const [step, setStep] = useState(-1);
@@ -120,6 +122,34 @@ const LandingPage: React.FC = () => {
         s.style.setProperty('--sp', String(p));
         setActive(Math.min(items.length - 1, Math.floor(p * items.length)));
       }
+      // stacked sheets: the pinned stage slides sheet 2 over sheet 1 between 12% and 80% of its scroll
+      const stack = stackRef.current;
+      let stackOn = false;
+      let slide = 0;
+      if (stack && window.matchMedia('(min-width: 901px) and (min-height: 780px) and (prefers-reduced-motion: no-preference)').matches) {
+        stackOn = true;
+        const range = Math.max(1, stack.offsetHeight - (stack.firstElementChild as HTMLElement).offsetHeight);
+        const p = clamp01((88 - stack.getBoundingClientRect().top) / range);
+        slide = clamp01((p - 0.12) / 0.68);
+        stack.style.setProperty('--slide', slide.toFixed(3));
+        stack.firstElementChild?.querySelector('.stack-card')?.classList.toggle('is-covered', slide > 0.97);
+      }
+
+      // active section: the last one whose top passed the middle of the screen (works for sticky sheets)
+      let now = 'top';
+      for (const id of SECTIONS) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        // inside the pinned stage both sheets share one spot: the second counts once it is mostly in
+        const top = stackOn && id === 'venues' ? (slide > 0.5 ? 0 : Infinity) : el.getBoundingClientRect().top;
+        if (top <= vh * 0.5) now = id;
+      }
+      if (now !== lastSection.current) {
+        lastSection.current = now;
+        setCurrent(now);
+        window.dispatchEvent(new CustomEvent('znit:section', { detail: now }));
+      }
+
       const pr = procRef.current;
       if (pr && steps.length) {
         const r = pr.getBoundingClientRect();
@@ -140,20 +170,6 @@ const LandingPage: React.FC = () => {
       if (raf) cancelAnimationFrame(raf);
     };
   }, [items.length, steps.length]);
-
-  // Section rail: lights the section nearest the viewport middle.
-  useEffect(() => {
-    if (!('IntersectionObserver' in window)) return;
-    const io = new IntersectionObserver(
-      (es) => es.forEach((e) => e.isIntersecting && setCurrent(e.target.id)),
-      { rootMargin: '-45% 0px -50% 0px' }
-    );
-    SECTIONS.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) io.observe(el);
-    });
-    return () => io.disconnect();
-  }, []);
 
   // Pause every CSS and SVG animation of a section while it is off screen: dozens of looping
   // animations (beams, dashes, SMIL dots) kept running offscreen, a steady GPU/memory cost on phones.
@@ -341,33 +357,40 @@ const LandingPage: React.FC = () => {
 
       <div className="gate" aria-hidden="true" />
 
-      {/* SIMULATOR */}
-      <section id="simulator" className="sec sim-sec">
-        <header className="sec-head">
-          <h2>
-            <Scramble text={t('landing.sim.title')} />
-          </h2>
-          <p className="rv">{t('landing.sim.subtitle')}</p>
-        </header>
-        <div className="rv">
-          <Simulator />
-        </div>
-      </section>
+      {/* SIMULATOR + VENUES: two sheets, the second slides over the first as you scroll */}
+      <div ref={stackRef} className="stack">
+        <div className="stack-pin">
+        <section id="simulator" className="stack-card">
+          <div className="sheet zn-panel">
+            <span className="sheet-n" aria-hidden="true">01 / 02</span>
+            <header className="sec-head">
+              <h2>
+                <Scramble text={t('landing.sim.title')} />
+              </h2>
+              <p className="rv">{t('landing.sim.subtitle')}</p>
+            </header>
+            <div className="rv">
+              <Simulator />
+            </div>
+          </div>
+        </section>
 
-      <div className="gate" aria-hidden="true" />
-
-      {/* VENUES */}
-      <section id="venues" className="sec">
-        <header className="sec-head">
-          <h2>
-            <Scramble text={t('landing.venues.title')} />
-          </h2>
-          <p className="rv">{t('landing.venues.subtitle')}</p>
-        </header>
-        <div className="rv ven-wrap">
-          <Venues />
+        <section id="venues" className="stack-card">
+          <div className="sheet zn-panel">
+            <span className="sheet-n" aria-hidden="true">02 / 02</span>
+            <header className="sec-head">
+              <h2>
+                <Scramble text={t('landing.venues.title')} />
+              </h2>
+              <p className="rv">{t('landing.venues.subtitle')}</p>
+            </header>
+            <div className="rv ven-wrap">
+              <Venues />
+            </div>
+          </div>
+        </section>
         </div>
-      </section>
+      </div>
 
       <div className="gate" aria-hidden="true" />
 
