@@ -188,7 +188,9 @@ export const translations: Translations = {
         "subtitle": "Connected to the largest centralized exchanges, all managed from one dashboard.",
         "status": "Supported",
         "alt": "Znit bot core connected to Binance, OKX, Bybit, Coinbase and Bitfinex",
-        "note": "Exchange names are trademarks of their respective owners. Listing an exchange does not imply a partnership or endorsement."
+        "note": "Exchange names are trademarks of their respective owners. Listing an exchange does not imply a partnership or endorsement.",
+        "all": "All",
+        "simulated": "Simulated activity"
       },
       "manifesto": "The market never closes. Spreads open and shut in milliseconds, on every pair, on every exchange. Znit bots watch them all, so you do not have to.",
       "diagrams": {
@@ -425,7 +427,9 @@ export const translations: Translations = {
         "subtitle": "Connected to the largest centralized exchanges, all managed from one dashboard.",
         "status": "Supported",
         "alt": "Znit bot core connected to Binance, OKX, Bybit, Coinbase and Bitfinex",
-        "note": "Exchange names are trademarks of their respective owners. Listing an exchange does not imply a partnership or endorsement."
+        "note": "Exchange names are trademarks of their respective owners. Listing an exchange does not imply a partnership or endorsement.",
+        "all": "All",
+        "simulated": "Simulated activity"
       },
       "manifesto": "The market never closes. Spreads open and shut in milliseconds, on every pair, on every exchange. Znit bots watch them all, so you do not have to.",
       "diagrams": {
@@ -663,7 +667,9 @@ export const translations: Translations = {
         "subtitle": "Conectados às maiores exchanges centralizadas, tudo gerenciado em um só dashboard.",
         "status": "Suportada",
         "alt": "Núcleo do bot Znit conectado a Binance, OKX, Bybit, Coinbase e Bitfinex",
-        "note": "Os nomes das exchanges são marcas registradas de seus respectivos donos. Listar uma exchange não implica parceria ou endosso."
+        "note": "Os nomes das exchanges são marcas registradas de seus respectivos donos. Listar uma exchange não implica parceria ou endosso.",
+        "all": "Todas",
+        "simulated": "Atividade simulada"
       },
       "manifesto": "O mercado nunca fecha. Os spreads abrem e fecham em milissegundos, em cada par, em cada exchange. Os bots da Znit acompanham todos, para que você não precise.",
       "diagrams": {
@@ -900,7 +906,9 @@ export const translations: Translations = {
         "subtitle": "Conectados a los mayores exchanges centralizados, todo gestionado desde un solo panel.",
         "status": "Compatible",
         "alt": "Núcleo del bot Znit conectado a Binance, OKX, Bybit, Coinbase y Bitfinex",
-        "note": "Los nombres de los exchanges son marcas registradas de sus respectivos propietarios. Mencionar un exchange no implica una alianza ni un respaldo."
+        "note": "Los nombres de los exchanges son marcas registradas de sus respectivos propietarios. Mencionar un exchange no implica una alianza ni un respaldo.",
+        "all": "Todas",
+        "simulated": "Actividad simulada"
       },
       "manifesto": "El mercado nunca cierra. Los spreads se abren y se cierran en milisegundos, en cada par, en cada exchange. Los bots de Znit los vigilan todos, para que tú no tengas que hacerlo.",
       "diagrams": {
@@ -1137,7 +1145,9 @@ export const translations: Translations = {
         "subtitle": "Connectés aux plus grandes plateformes d'échange centralisées, le tout géré depuis un seul tableau de bord.",
         "status": "Compatible",
         "alt": "Cœur du bot Znit connecté à Binance, OKX, Bybit, Coinbase et Bitfinex",
-        "note": "Les noms des plateformes sont des marques déposées de leurs propriétaires respectifs. Citer une plateforme n'implique ni partenariat ni parrainage."
+        "note": "Les noms des plateformes sont des marques déposées de leurs propriétaires respectifs. Citer une plateforme n'implique ni partenariat ni parrainage.",
+        "all": "Toutes",
+        "simulated": "Activité simulée"
       },
       "manifesto": "Le marché ne ferme jamais. Les spreads s'ouvrent et se referment en quelques millisecondes, sur chaque paire, sur chaque plateforme. Les bots Znit les surveillent tous, pour que vous n'ayez pas à le faire.",
       "diagrams": {
@@ -1374,7 +1384,9 @@ export const translations: Translations = {
         "subtitle": "Verbunden mit den größten zentralisierten Börsen, alles verwaltet in einem Dashboard.",
         "status": "Unterstützt",
         "alt": "Znit-Bot-Kern verbunden mit Binance, OKX, Bybit, Coinbase und Bitfinex",
-        "note": "Börsennamen sind Marken ihrer jeweiligen Inhaber. Die Nennung einer Börse bedeutet keine Partnerschaft oder Empfehlung."
+        "note": "Börsennamen sind Marken ihrer jeweiligen Inhaber. Die Nennung einer Börse bedeutet keine Partnerschaft oder Empfehlung.",
+        "all": "Alle",
+        "simulated": "Simulierte Aktivität"
       },
       "manifesto": "Der Markt schließt nie. Spreads öffnen und schließen sich in Millisekunden, bei jedem Paar, an jeder Börse. Znit-Bots behalten alle im Blick, damit Sie es nicht müssen.",
       "diagrams": {
@@ -1611,7 +1623,9 @@ export const translations: Translations = {
         "subtitle": "已连接各大中心化交易所，全部在一个仪表板中管理。",
         "status": "已支持",
         "alt": "Znit 机器人核心连接 Binance、OKX、Bybit、Coinbase 和 Bitfinex",
-        "note": "交易所名称为其各自所有者的商标。列出某个交易所并不代表合作或背书。"
+        "note": "交易所名称为其各自所有者的商标。列出某个交易所并不代表合作或背书。",
+        "all": "全部",
+        "simulated": "模拟活动"
       },
       "manifesto": "市场从不收盘。价差在毫秒间开合，覆盖每个交易对、每家交易所。Znit 机器人全程盯盘，让你不必亲自盯着。",
       "diagrams": {
@@ -1848,7 +1862,9 @@ export const translations: Translations = {
         "subtitle": "主要な中央集権型取引所に接続し、すべて1つのダッシュボードで管理できます。",
         "status": "対応",
         "alt": "Znitのボットコアが Binance、OKX、Bybit、Coinbase、Bitfinex に接続されている様子",
-        "note": "取引所の名称は各所有者の商標です。取引所の掲載は、提携や推奨を意味するものではありません。"
+        "note": "取引所の名称は各所有者の商標です。取引所の掲載は、提携や推奨を意味するものではありません。",
+        "all": "すべて",
+        "simulated": "シミュレーション活動"
       },
       "manifesto": "市場は閉まりません。スプレッドはミリ秒で開いては閉じ、あらゆる通貨ペア、あらゆる取引所で動いています。Znitのボットがすべてを見守るので、あなたが張り付く必要はありません。",
       "diagrams": {

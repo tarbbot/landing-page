@@ -653,7 +653,28 @@
 .sheet .sim-note { margin-top: clamp(14px, 3vh, 34px); }
 .sheet .sim-legs { margin-bottom: clamp(12px, 2.6vh, 28px); }
 .sheet .sim-foot,
-.sheet .ven-foot { margin-top: clamp(10px, 2.4vh, 36px); }
+.sheet .ven-right { position: relative; min-width: 0; }
+.ven-stage { position: relative; }
+.ven-map { display: block; width: 100%; aspect-ratio: 520 / 420; }
+.ven-sim { position: absolute; top: 0; right: 0; padding: 4px 8px; font: 500 10px var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--zn-faint); }
+.ven-filters { position: absolute; z-index: 2; top: 4px; left: 0; display: flex; flex-wrap: wrap; gap: 6px; max-width: 54%; }
+.ven-filters button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  background: rgba(6, 4, 13, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--zn-dim);
+  font: 600 11px var(--mono);
+  letter-spacing: 0.04em;
+  transition: border-color 0.25s, color 0.25s, background-color 0.25s;
+  touch-action: manipulation;
+}
+.ven-filters button i { width: 8px; height: 8px; background: var(--c, #fff); }
+.ven-filters button:hover { color: #fff; border-color: var(--c, var(--zn-cy)); }
+.ven-filters button.on { color: #fff; border-color: var(--c, var(--zn-cy)); background: rgba(255, 255, 255, 0.07); }
+.ven-foot { margin-top: clamp(10px, 2.4vh, 36px); }
 .sheet .ven { padding: clamp(14px, 3vh, 52px) clamp(18px, 3vw, 52px); }
 .sheet .ven-tile { padding-block: clamp(8px, 1.5vh, 14px); }
 @media (max-height: 860px) {
@@ -852,21 +873,13 @@
   background: var(--zn-lm);
   animation: blink 1.6s steps(2) infinite;
 }
-.ven-map { width: 100%; height: auto; overflow: visible; }
-.ven-line { stroke: rgba(139, 92, 246, 0.55); stroke-width: 1.5; stroke-dasharray: 4 8; animation: dash 1.6s linear infinite; transition: stroke 0.3s, stroke-width 0.3s; }
-.ven-line.on { stroke: var(--zn-cy); stroke-width: 3; stroke-dasharray: 10 8; filter: drop-shadow(0 0 6px var(--zn-cy)); }
-.ven-node rect { fill: #06040d; stroke: rgba(255, 60, 207, 0.7); stroke-width: 1.5; transition: stroke 0.3s, fill 0.3s; }
-.ven-node text { fill: var(--zn-dim); font: 600 12px var(--mono); letter-spacing: 0.12em; transition: fill 0.3s; }
-.ven-node.on rect { stroke: var(--zn-lm); stroke-width: 3; fill: #0d1a10; }
-.ven-node.on text { fill: #fff; }
-.ven-core { fill: var(--zn-lm); font: 700 15px var(--mono); letter-spacing: 0.28em; }
 .ven-foot { margin: 36px 0 0; font-size: 13px; color: var(--zn-dim); }
 @media (max-width: 900px) {
   .ven-grid { grid-template-columns: minmax(0, 1fr); }
-  .ven-map { order: -1; }
-  .ven-node text { font-size: 15px; }
-  .ven-core { font-size: 18px; }
-}
+  .ven-right { order: -1; }
+  .ven-filters { position: static; max-width: none; margin-bottom: 10px; }
+  .ven-sim { position: static; display: block; padding: 8px 0 0; text-align: right; }
+      }
 
 /* ---------- process ---------- */
 .proc-list {
