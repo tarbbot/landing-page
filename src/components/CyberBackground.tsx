@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 const CELL = 56;
 const STEP = 14;
 const REACH = 420; // grid is only subdivided this far from the cursor
+const GLOW_BANDS = 10; // glow steps from the grid colour (edge of the well) to cyan (centre)
 const COLORS = ['34,230,255', '255,60,207', '139,92,246', '182,255,59'];
 
 // Set by the landing page: the RGB the grid should drift toward (one hue per chapter).
@@ -85,7 +86,7 @@ const CyberBackground: React.FC = () => {
     };
 
     // One grid line: straight where the cursor is far, sampled and warped near it.
-    const line = (base: Path2D, hot: Path2D, vertical: boolean, c: number, len: number, on: boolean) => {
+    const line = (base: Path2D, hot: Path2D[], vertical: boolean, c: number, len: number, on: boolean) => {
       const m = vertical ? mouse.x : mouse.y;
       const along = vertical ? mouse.y : mouse.x;
       const pt = (s: number): [number, number] => (vertical ? [c, s] : [s, c]);
@@ -105,9 +106,11 @@ const CyberBackground: React.FC = () => {
       for (let s = s0 + STEP; s <= s1 + STEP; s += STEP) {
         const [qx, qy, inf] = warp(...pt(Math.min(s, s1)));
         base.lineTo(qx, qy);
-        if (inf > 0.18) {
-          hot.moveTo(px, py);
-          hot.lineTo(qx, qy);
+        if (hot.length && inf > 0.012) {
+          // bucket by how deep in the well this segment is, so the light fades in gradually
+          const band = hot[Math.min(GLOW_BANDS - 1, Math.floor(Math.pow(inf, 0.65) * GLOW_BANDS))];
+          band.moveTo(px, py);
+          band.lineTo(qx, qy);
         }
         px = qx;
         py = qy;
@@ -133,7 +136,7 @@ const CyberBackground: React.FC = () => {
 
       const off = (-scrollY * 0.18) % CELL;
       const base = new Path2D();
-      const hot = new Path2D();
+      const hot = on ? Array.from({ length: GLOW_BANDS }, () => new Path2D()) : [];
       for (let x = 0; x <= w + CELL; x += CELL) line(base, hot, true, x, h, on);
       for (let y = off; y <= h + CELL; y += CELL) line(base, hot, false, y, w, on);
       ctx.lineWidth = 1;
@@ -141,10 +144,19 @@ const CyberBackground: React.FC = () => {
       for (let i = 0; i < 3; i++) col[i] += (goal[i] - col[i]) * Math.min(1, 0.04 * k);
       ctx.strokeStyle = `rgba(${col[0] | 0},${col[1] | 0},${col[2] | 0},${0.12 * ignite})`;
       ctx.stroke(base);
-      if (on) {
-        ctx.strokeStyle = `rgba(34,230,255,${0.42 * ignite})`;
-        ctx.stroke(hot);
+      // well glow: each band blends the grid colour into cyan and gets brighter and slightly thicker
+      // toward the centre, so there is no visible edge where the light starts
+      for (let i = 0; i < hot.length; i++) {
+        const f = (i + 0.5) / GLOW_BANDS;
+        const m = f * f * (3 - 2 * f); // smoothstep
+        const r = col[0] + (34 - col[0]) * m;
+        const g = col[1] + (230 - col[1]) * m;
+        const bl = col[2] + (255 - col[2]) * m;
+        ctx.strokeStyle = `rgba(${r | 0},${g | 0},${bl | 0},${(0.04 + 0.5 * f * f) * ignite})`;
+        ctx.lineWidth = 1 + f * 0.7;
+        ctx.stroke(hot[i]);
       }
+      ctx.lineWidth = 1;
 
       // the singularity: a dark core with a faint accretion ring at the bottom of the well
       if (on) {
