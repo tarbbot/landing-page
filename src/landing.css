@@ -9,6 +9,7 @@
   --zn-lm: #b6ff3b;
   --zn-panel: rgba(10, 8, 24, 0.86);
   --cut: 16px;
+  --tape-h: 48px;
   --ez: cubic-bezier(0.2, 0.8, 0.2, 1);
   --mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
   --chamfer: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
@@ -294,9 +295,9 @@
   gap: 28px 56px;
   align-items: center;
   max-width: 1360px;
-  min-height: calc(100svh - 80px);
+  min-height: calc(100svh - 81px - var(--tape-h)); /* nav 80px + 1px border */
   margin: 0 auto;
-  padding: 48px clamp(20px, 5vw, 72px) 32px;
+  padding: clamp(16px, 2.6vh, 40px) clamp(20px, 5vw, 72px) clamp(14px, 1.8vh, 28px);
 }
 .hero-copy { grid-area: copy; }
 .hero-hud { grid-area: hud; padding-bottom: 14px; }
@@ -304,7 +305,7 @@
 .stats { grid-area: stats; }
 
 .boot {
-  margin: 0 0 30px;
+  margin: 0 0 clamp(14px, 2.2vh, 30px);
   padding: 0;
   list-style: none;
   font: 500 13px / 1.9 var(--mono);
@@ -340,7 +341,7 @@
 
 .hero-sub {
   max-width: 50ch;
-  margin: 28px 0 38px;
+  margin: clamp(16px, 2.2vh, 28px) 0 clamp(20px, 3vh, 38px);
   font-size: 20px;
   line-height: 1.55;
   color: var(--zn-dim);
@@ -355,10 +356,10 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
-  margin: 28px 0 0;
+  margin: clamp(10px, 1.6vh, 28px) 0 0;
 }
 .stat {
-  padding: 22px 24px;
+  padding: clamp(12px, 1.8vh, 22px) 24px;
   background: rgba(255, 255, 255, 0.035);
   border-left: 2px solid var(--zn-cy);
 }
@@ -387,8 +388,10 @@
 .tape {
   position: relative;
   display: flex;
+  align-items: stretch;
+  height: var(--tape-h);
   overflow: hidden;
-  margin-top: 24px;
+  contain: layout paint;
   background: rgba(10, 8, 24, 0.7);
   border-block: 1px solid rgba(34, 230, 255, 0.18);
 }
@@ -396,7 +399,9 @@
   position: relative;
   z-index: 2;
   flex: none;
-  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  padding: 0 22px;
   background: var(--zn-cy);
   color: var(--zn-bg);
   font: 600 11px var(--mono);
@@ -407,21 +412,33 @@
 .tape-track {
   display: flex;
   width: max-content;
+  will-change: transform;
   animation: tape 46s linear infinite;
 }
 .tape-track > div {
   display: flex;
+  align-items: center;
   gap: 44px;
-  padding: 14px 44px 14px 0;
+  padding-right: 44px;
 }
 .tape-i {
   display: flex;
+  flex: none;
   gap: 12px;
   font: 500 13px var(--mono);
   white-space: nowrap;
 }
 .tape-i b { font-weight: 600; }
-.tape-i i { font-style: normal; color: var(--zn-lm); font-variant-numeric: tabular-nums; transition: color 0.4s; }
+/* fixed-width value: the track is translated by -50% of its own width, so its width must never change */
+.tape-i i {
+  display: inline-block;
+  min-width: 9ch;
+  text-align: right;
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  color: var(--zn-lm);
+  transition: color 0.4s;
+}
 .tape-i i.hot { color: var(--zn-mg); }
 
 /* ---------- strategies: pinned stage, one chapter per scroll slice ---------- */
@@ -853,7 +870,7 @@
 
 /* ---------- keyframes ---------- */
 @keyframes blink { 50% { opacity: 0.15; } }
-@keyframes tape { to { transform: translateX(-50%); } }
+@keyframes tape { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
 @keyframes sheen { to { background-position: -300% 0; } }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes dash { to { stroke-dashoffset: -36; } }
@@ -876,6 +893,13 @@
   93% { clip-path: inset(40% 0 38% 0); transform: translate(6px, 0); }
   95% { clip-path: inset(8% 0 78% 0); transform: translate(-5px, 0); }
   97% { clip-path: inset(66% 0 14% 0); transform: translate(3px, 0); }
+}
+
+/* short desktop screens: drop the boot lines so hero + tape still fit in the first screen */
+@media (min-width: 901px) and (max-height: 780px) {
+  .boot { display: none; }
+  .hero h1 { font-size: clamp(46px, 5.6vw, 84px); }
+  .hero-sub { font-size: 18px; }
 }
 
 /* ---------- small screens ---------- */
