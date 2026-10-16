@@ -640,7 +640,7 @@
 @media (min-width: 901px) and (min-height: 780px) and (prefers-reduced-motion: no-preference) {
   .stack {
     --pin-h: calc(100svh - 100px);
-    height: calc(var(--pin-h) + 150vh);
+    height: calc(var(--pin-h) + 190vh);
     padding-bottom: 0;
   }
   .stack-pin {
@@ -657,7 +657,8 @@
   }
   .stack-card .sheet { width: 100%; }
   .stack-card:nth-child(2) {
-    transform: translate3d(0, calc((1 - var(--slide, 0)) * 112vh), 0);
+    transform: translate3d(0, calc((1 - var(--slide, 0)) * 112vh), 0) scale(calc(0.955 + var(--slide, 0) * 0.045));
+    transform-origin: 50% 0;
     will-change: transform;
   }
   .sheet {

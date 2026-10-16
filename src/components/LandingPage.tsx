@@ -86,6 +86,11 @@ const LandingPage: React.FC = () => {
   const tiltRef = useRef<HTMLDivElement>(null);
   const stackRef = useRef<HTMLDivElement>(null);
   const lastSection = useRef('top');
+  // The stacked sheet follows the scroll through a damped value, so wheel notches glide instead of jumping.
+  const slideTarget = useRef(0);
+  const slideNow = useRef(0);
+  const slideRaf = useRef(0);
+  const stackEased = useRef(0);
   const [ready, setReady] = useState(false);
   const [active, setActive] = useState(0);
   const [step, setStep] = useState(-1);
@@ -122,17 +127,32 @@ const LandingPage: React.FC = () => {
         s.style.setProperty('--sp', String(p));
         setActive(Math.min(items.length - 1, Math.floor(p * items.length)));
       }
-      // stacked sheets: the pinned stage slides sheet 2 over sheet 1 between 12% and 80% of its scroll
+      // stacked sheets: the pinned stage slides sheet 2 over sheet 1 between 10% and 85% of its scroll
       const stack = stackRef.current;
       let stackOn = false;
-      let slide = 0;
       if (stack && window.matchMedia('(min-width: 901px) and (min-height: 780px) and (prefers-reduced-motion: no-preference)').matches) {
         stackOn = true;
         const range = Math.max(1, stack.offsetHeight - (stack.firstElementChild as HTMLElement).offsetHeight);
         const p = clamp01((88 - stack.getBoundingClientRect().top) / range);
-        slide = clamp01((p - 0.12) / 0.68);
-        stack.style.setProperty('--slide', slide.toFixed(3));
-        stack.firstElementChild?.querySelector('.stack-card')?.classList.toggle('is-covered', slide > 0.97);
+        slideTarget.current = clamp01((p - 0.1) / 0.75);
+        if (!slideRaf.current) {
+          let last = performance.now();
+          const glide = (now: number) => {
+            const dt = Math.min(64, now - last);
+            last = now;
+            const gap = slideTarget.current - slideNow.current;
+            // exponential smoothing, independent of frame rate (about 140 ms to close most of the gap)
+            slideNow.current += gap * (1 - Math.exp(-dt / 140));
+            if (Math.abs(gap) < 0.0006) slideNow.current = slideTarget.current;
+            const s = slideNow.current;
+            const eased = s * s * (3 - 2 * s); // smoothstep: slow in, slow out
+            stack.style.setProperty('--slide', eased.toFixed(4));
+            stack.firstElementChild?.querySelector('.stack-card')?.classList.toggle('is-covered', eased > 0.97);
+            stackEased.current = eased;
+            slideRaf.current = slideNow.current === slideTarget.current ? 0 : requestAnimationFrame(glide);
+          };
+          slideRaf.current = requestAnimationFrame(glide);
+        }
       }
 
       // active section: the last one whose top passed the middle of the screen (works for sticky sheets)
@@ -141,7 +161,7 @@ const LandingPage: React.FC = () => {
         const el = document.getElementById(id);
         if (!el) continue;
         // inside the pinned stage both sheets share one spot: the second counts once it is mostly in
-        const top = stackOn && id === 'venues' ? (slide > 0.5 ? 0 : Infinity) : el.getBoundingClientRect().top;
+        const top = stackOn && id === 'venues' ? (stackEased.current > 0.5 ? 0 : Infinity) : el.getBoundingClientRect().top;
         if (top <= vh * 0.5) now = id;
       }
       if (now !== lastSection.current) {
@@ -168,6 +188,8 @@ const LandingPage: React.FC = () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
       if (raf) cancelAnimationFrame(raf);
+      if (slideRaf.current) cancelAnimationFrame(slideRaf.current);
+      slideRaf.current = 0;
     };
   }, [items.length, steps.length]);
 
