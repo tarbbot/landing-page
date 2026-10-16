@@ -7,7 +7,7 @@ const ETH_BTC = 0.05;
 const NOTIONALS = [1000, 10000, 100000];
 
 const Simulator: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [notional, setNotional] = useState(10000);
   const [gap, setGap] = useState(35);
   const [fee, setFee] = useState(10);
@@ -19,7 +19,7 @@ const Simulator: React.FC = () => {
   const net = out - notional;
   const breakeven = (1 / Math.pow(f, 3) - 1) * 1e4;
   const win = net > 0;
-  const n = (v: number, d = 2) => v.toLocaleString(undefined, { maximumFractionDigits: d, minimumFractionDigits: d });
+  const n = (v: number, d = 2) => v.toLocaleString(language, { maximumFractionDigits: d, minimumFractionDigits: d });
 
   return (
     <div className={`sim zn-panel beam ${win ? 'is-win' : 'is-loss'}`}>
@@ -29,7 +29,7 @@ const Simulator: React.FC = () => {
             <legend>{t('landing.sim.notional')}</legend>
             {NOTIONALS.map((v) => (
               <button key={v} type="button" aria-pressed={notional === v} className={notional === v ? 'on' : ''} onClick={() => setNotional(v)}>
-                {v.toLocaleString()} USDT
+                {v.toLocaleString(language)} USDT
               </button>
             ))}
           </fieldset>

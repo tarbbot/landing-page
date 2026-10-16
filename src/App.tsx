@@ -148,13 +148,13 @@ const Navigation: React.FC = () => {
       setIsAuthenticated(false);
       setUserEmail('');
       setUserDropdownOpen(false);
-      toast.success('Signed out successfully', {
+      toast.success(t('toasts.signedOut'), {
         className: 'success-toast'
       });
       window.location.href = '/';
     } catch (error) {
       console.error('Error signing out:', error);
-      toast.error('Error signing out', {
+      toast.error(t('toasts.signOutError'), {
         className: 'error-toast'
       });
     }
@@ -180,7 +180,7 @@ const Navigation: React.FC = () => {
           localStorage.setItem('accessToken', session.tokens.accessToken?.toString() || '');
         }
 
-        toast.success('Login successful!', {
+        toast.success(t('login.success'), {
           className: 'success-toast'
         });
 
@@ -195,9 +195,9 @@ const Navigation: React.FC = () => {
       let errorMessage = t('login.errors.loginNotFound');
 
       if (error.name === 'UserNotFoundException' || error.name === 'NotAuthorizedException') {
-        errorMessage = 'Incorrect email or password';
+        errorMessage = t('login.errors.invalid');
       } else if (error.name === 'UserNotConfirmedException') {
-        errorMessage = 'User not confirmed. Please check your email.';
+        errorMessage = t('login.errors.notConfirmed');
       }
 
       toast.error(errorMessage, {
@@ -234,8 +234,8 @@ const Navigation: React.FC = () => {
 
   return (
     <>
-      <a href="#main" className="skip-link">Skip to content</a>
-      <nav className={`cyber-nav sticky top-0 z-50 ${scrolled ? 'is-scrolled' : ''}`} aria-label="Main">
+      <a href="#main" className="skip-link">{t('ui.skip')}</a>
+      <nav className={`cyber-nav sticky top-0 z-50 ${scrolled ? 'is-scrolled' : ''}`} aria-label={t('ui.mainNav')}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link
@@ -302,7 +302,7 @@ const Navigation: React.FC = () => {
                   {userDropdownOpen && (
                     <div className="nav-pop absolute right-0 mt-3 w-64 p-4 z-50">
                       <div className="mb-3 pb-3 border-b border-gray-700">
-                        <p className="text-xs text-gray-400 mb-1">Signed in as</p>
+                        <p className="text-xs text-gray-400 mb-1">{t('ui.signedInAs')}</p>
                         <p className="text-sm text-white font-semibold truncate">{userEmail}</p>
                       </div>
 
@@ -313,7 +313,7 @@ const Navigation: React.FC = () => {
                           onClick={() => setUserDropdownOpen(false)}
                         >
                           <Activity className="h-4 w-4 mr-2" />
-                          Dashboard
+                          {t('ui.dashboard')}
                         </Link>
 
                         <button
@@ -321,7 +321,7 @@ const Navigation: React.FC = () => {
                           className="w-full flex items-center justify-center px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 hover:text-red-300 transition-colors"
                         >
                           <LogOut className="h-4 w-4 mr-2" />
-                          Sign Out
+                          {t('ui.signOut')}
                         </button>
                       </div>
                     </div>
@@ -348,7 +348,7 @@ const Navigation: React.FC = () => {
                         <button
                           onClick={() => setLoginDropdownOpen(false)}
                           className="text-gray-400 hover:text-white transition-colors"
-                          aria-label="Close"
+                          aria-label={t('ui.close')}
                         >
                           <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -459,7 +459,7 @@ const Navigation: React.FC = () => {
               <button
                 onClick={() => setMobileMenuOpen(true)}
                 className="nav-flag"
-                aria-label="Language"
+                aria-label={t('ui.language')}
               >
                 {currentLang?.flag}
               </button>
@@ -469,7 +469,7 @@ const Navigation: React.FC = () => {
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                   className="cyber-button text-xs px-3 py-2"
-                  aria-label="User Menu"
+                  aria-label={t('ui.userMenu')}
                 >
                   <Users className="h-3 w-3" />
                 </button>
@@ -488,7 +488,7 @@ const Navigation: React.FC = () => {
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={`nav-burger ${mobileMenuOpen ? 'open' : ''}`}
-                aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                aria-label={mobileMenuOpen ? t('ui.closeMenu') : t('ui.openMenu')}
                 aria-expanded={mobileMenuOpen}
               >
                 <i /><i /><i />
@@ -510,7 +510,7 @@ const Navigation: React.FC = () => {
               <button
                 onClick={() => setLoginDropdownOpen(false)}
                 className="text-gray-400 hover:text-white transition-colors"
-                          aria-label="Close"
+                          aria-label={t('ui.close')}
               >
                 <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -622,7 +622,7 @@ const Navigation: React.FC = () => {
           >
             {/* Close Button */}
             <div className="flex justify-between items-center p-6 border-b border-purple-500/20">
-              <span className="text-xl font-bold gradient-text">Menu</span>
+              <span className="text-xl font-bold gradient-text">{t('ui.menu')}</span>
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-purple-400 hover:text-purple-300"
@@ -637,7 +637,7 @@ const Navigation: React.FC = () => {
             {isAuthenticated && (
               <div className="p-6 border-b border-purple-500/20">
                 <div className="bg-purple-500/10 rounded-lg p-4 border border-purple-500/20 mb-4">
-                  <div className="text-xs text-gray-400 mb-1">Signed in as</div>
+                  <div className="text-xs text-gray-400 mb-1">{t('ui.signedInAs')}</div>
                   <div className="text-purple-400 font-semibold text-sm truncate">{userEmail}</div>
                 </div>
                 <div className="space-y-2">
@@ -647,7 +647,7 @@ const Navigation: React.FC = () => {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <Activity className="h-4 w-4" />
-                    <span>Dashboard</span>
+                    <span>{t('ui.dashboard')}</span>
                   </Link>
                   <button
                     onClick={() => {
@@ -657,7 +657,7 @@ const Navigation: React.FC = () => {
                     className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 hover:text-red-300 transition-colors"
                   >
                     <LogOut className="h-4 w-4" />
-                    <span>Sign Out</span>
+                    <span>{t('ui.signOut')}</span>
                   </button>
                 </div>
               </div>
@@ -683,7 +683,7 @@ const Navigation: React.FC = () => {
 
             {/* Language Selector */}
             <div className="p-6 border-t border-purple-500/20">
-              <div className="text-sm text-gray-400 mb-3 uppercase tracking-wider">Language</div>
+              <div className="text-sm text-gray-400 mb-3 uppercase tracking-wider">{t('ui.language')}</div>
               <div className="space-y-2">
                 {availableLanguages.map((lang) => (
                   <button

@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
           <span>{t('landing.tagline')}</span>
         </Link>
         <div className="zn-foot-links">
-          <button type="button" onClick={() => window.dispatchEvent(new Event('znit:login'))}>Dashboard</button>
+          <button type="button" onClick={() => window.dispatchEvent(new Event('znit:login'))}>{t('ui.dashboard')}</button>
           {social.map((s) => (
             <a key={s.name} href={s.href} aria-label={s.name}>
               <s.icon size={18} />

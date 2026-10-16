@@ -916,6 +916,18 @@
   .beam:not(.beam-lite)::before { inset: 1px; }
 }
 
+/* CJK: wider glyphs, no negative tracking */
+:lang(ja) .hero h1,
+:lang(zh) .hero h1 { font-size: clamp(40px, 5.2vw, 80px); letter-spacing: 0; line-height: 1.1; }
+:lang(ja) .sec-head h2,
+:lang(zh) .sec-head h2,
+:lang(ja) .chap h3,
+:lang(zh) .chap h3,
+:lang(ja) .cta-box h2,
+:lang(zh) .cta-box h2,
+:lang(ja) .manifesto p,
+:lang(zh) .manifesto p { letter-spacing: 0; line-height: 1.15; }
+
 /* sections scrolled out of view stop animating (class set from LandingPage) */
 .is-off,
 .is-off *,

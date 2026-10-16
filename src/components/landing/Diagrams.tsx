@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 const CY = '#22e6ff';
 const MG = '#ff3ccf';
@@ -34,9 +35,10 @@ const Frame: React.FC<{ children: React.ReactNode; label: string }> = ({ childre
 
 // Order-book ladder: asks above, bids below, the bot quotes both sides and earns the gap.
 export const MarketMakerDiagram: React.FC = () => {
+  const { t } = useLanguage();
   const rows = [0, 1, 2, 3, 4, 5];
   return (
-    <Frame label="Order book with the market maker quoting both sides of the spread">
+    <Frame label={t('landing.diagrams.altMarketMaker')}>
       {rows.map((i) => (
         <g key={`a${i}`}>
           <rect className="dg-bar" x={240} y={150 - (i + 1) * 22} height={16} width={50 + i * 22} fill={MG} opacity={0.75} style={{ ['--d' as any]: `${i * 0.18}s`, transformOrigin: 'left center' }} />
@@ -50,9 +52,9 @@ export const MarketMakerDiagram: React.FC = () => {
         <path d="M300 156 h20 v48 h-20" fill="none" stroke={LM} strokeWidth={2} />
         <circle className="dg-pulse" cx={310} cy={180} r={4} fill={LM} />
       </g>
-      <text x={330} y={184} fill={LM} className="dg-t">SPREAD CAPTURED</text>
-      <text x={40} y={40} fill={MG} className="dg-t">ASK</text>
-      <text x={40} y={330} fill={CY} className="dg-t">BID</text>
+      <text x={330} y={184} fill={LM} className="dg-t">{t('landing.diagrams.spreadCaptured')}</text>
+      <text x={40} y={40} fill={MG} className="dg-t">{t('landing.diagrams.ask')}</text>
+      <text x={40} y={330} fill={CY} className="dg-t">{t('landing.diagrams.bid')}</text>
       <circle r={3} fill="#fff"><animateMotion dur="2.4s" repeatCount="indefinite" path="M240 160 L240 200" /></circle>
     </Frame>
   );
@@ -60,10 +62,11 @@ export const MarketMakerDiagram: React.FC = () => {
 
 // Same asset, two venues: the gap opens, the bot buys the cheap side and sells the dear one.
 export const ArbitrageDiagram: React.FC = () => {
+  const { t } = useLanguage();
   const a = 'M30 200 C100 190 150 170 210 175 S300 130 340 110 S420 130 450 140';
   const b = 'M30 205 C100 215 150 200 210 205 S300 250 340 262 S420 230 450 224';
   return (
-    <Frame label="Two venues quote different prices for the same asset; the bot trades the gap">
+    <Frame label={t('landing.diagrams.altArbitrage')}>
       <g filter="url(#dg-glow)" fill="none" strokeWidth={2.5}>
         <path className="dg-flow" d={a} stroke={CY} />
         <path className="dg-flow" d={b} stroke={MG} style={{ animationDelay: '-1s' }} />
@@ -71,18 +74,19 @@ export const ArbitrageDiagram: React.FC = () => {
       <g>
         <line x1={340} x2={340} y1={104} y2={268} stroke={LM} strokeWidth={1.5} strokeDasharray="4 5" />
         <path d="M352 112 v152" stroke={LM} strokeWidth={2} fill="none" />
-        <text x={362} y={192} fill={LM} className="dg-t">GAP</text>
+        <text x={362} y={192} fill={LM} className="dg-t">{t('landing.diagrams.gap')}</text>
       </g>
       <circle r={5} fill={CY}><animateMotion dur="4s" repeatCount="indefinite" path={a} /></circle>
       <circle r={5} fill={MG}><animateMotion dur="4s" repeatCount="indefinite" path={b} /></circle>
-      <text x={30} y={150} fill={CY} className="dg-t">VENUE A  SELL</text>
-      <text x={30} y={252} fill={MG} className="dg-t">VENUE B  BUY</text>
+      <text x={30} y={150} fill={CY} className="dg-t">{t('landing.diagrams.venueASell')}</text>
+      <text x={30} y={252} fill={MG} className="dg-t">{t('landing.diagrams.venueBBuy')}</text>
     </Frame>
   );
 };
 
 // Three pairs in one loop. A pulse walks USDT, BTC, ETH, USDT and returns with more or less than it left with.
 export const TriangleDiagram: React.FC = () => {
+  const { t } = useLanguage();
   const nodes = [
     { x: 240, y: 56, l: 'USDT', c: LM, d: '0s' },
     { x: 80, y: 292, l: 'BTC', c: CY, d: '-2.67s' },
@@ -90,7 +94,7 @@ export const TriangleDiagram: React.FC = () => {
   ];
   const loop = 'M240 56 L80 292 L400 292 Z';
   return (
-    <Frame label="Triangular arbitrage loop through USDT, BTC and ETH">
+    <Frame label={t('landing.diagrams.altTriangle')}>
       <g filter="url(#dg-glow)">
         <path className="dg-flow" d={loop} fill="none" stroke="#8b5cf6" strokeWidth={2} />
       </g>
@@ -102,7 +106,7 @@ export const TriangleDiagram: React.FC = () => {
         </g>
       ))}
       <circle r={6} fill="#fff" filter="url(#dg-glow)"><animateMotion dur="4s" repeatCount="indefinite" path={loop} /></circle>
-      <text x={240} y={206} textAnchor="middle" fill={LM} className="dg-t">1 LOOP, 3 TRADES</text>
+      <text x={240} y={206} textAnchor="middle" fill={LM} className="dg-t">{t('landing.diagrams.loop')}</text>
     </Frame>
   );
 };
@@ -110,6 +114,7 @@ export const TriangleDiagram: React.FC = () => {
 // Layered network: signal pulses travel left to right, the model reweights as the market shifts.
 // Compact (mobile) variant: fewer nodes, bigger nodes, thicker and brighter edges so it stays readable.
 export const NeuralDiagram: React.FC = () => {
+  const { t } = useLanguage();
   const compact = useCompact();
   const layers = compact ? [3, 4, 4, 2] : [3, 5, 5, 2];
   const xs = [70, 195, 320, 430];
@@ -118,7 +123,7 @@ export const NeuralDiagram: React.FC = () => {
     Array.from({ length: n }, (_, i) => ({ x: xs[li], y: 180 + (i - (n - 1) / 2) * gap }))
   );
   return (
-    <Frame label="Neural network layers adapting to market data">
+    <Frame label={t('landing.diagrams.altNeural')}>
       {pts.slice(0, -1).map((layer, li) =>
         layer.map((p, i) =>
           pts[li + 1].map((q, j) => (
@@ -148,8 +153,8 @@ export const NeuralDiagram: React.FC = () => {
           />
         ))
       )}
-      <text x={70} y={338} textAnchor="middle" fill={CY} className="dg-t">MARKET DATA</text>
-      <text x={430} y={338} textAnchor="middle" fill={LM} className="dg-t">SIGNAL</text>
+      <text x={70} y={338} textAnchor="middle" fill={CY} className="dg-t">{t('landing.diagrams.marketData')}</text>
+      <text x={430} y={338} textAnchor="middle" fill={LM} className="dg-t">{t('landing.diagrams.signal')}</text>
     </Frame>
   );
 };

@@ -226,7 +226,7 @@ const LandingPage: React.FC = () => {
     <div ref={root} className={`zn ${ready ? 'js' : ''}`}>
       <div className="zn-progress" aria-hidden="true" />
 
-      <nav className="zn-rail" aria-label="Sections">
+      <nav className="zn-rail" aria-label={t('ui.sections')}>
         {SECTIONS.map((id, i) => (
           <button key={id} type="button" className={current === id ? 'on' : ''} onClick={() => go(id)} aria-label={rail[i] || id} aria-current={current === id}>
             <span>{rail[i] || id}</span>
@@ -268,7 +268,7 @@ const LandingPage: React.FC = () => {
             <span>ZNIT.CORE</span>
             <span className="live">{t('landing.hud')}</span>
           </div>
-          <HeroBot label={t('landing.chart')} />
+          <HeroBot label={t('landing.chart')} ui={t('landing.chartUi')} />
           </div>
          </div>
         </div>

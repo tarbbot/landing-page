@@ -21,7 +21,16 @@ interface Candle {
   born: number;
 }
 
-const HeroBot: React.FC<{ label: string }> = ({ label }) => {
+interface HeroBotUi {
+  simulated: string;
+  last: string;
+  equity: string;
+  buy: string;
+  sell: string;
+  scanning: string;
+}
+
+const HeroBot: React.FC<{ label: string; ui: HeroBotUi }> = ({ label, ui }) => {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -128,7 +137,7 @@ const HeroBot: React.FC<{ label: string }> = ({ label }) => {
       ctx.fillStyle = `rgba(${CY},0.9)`;
       ctx.fillText(label, 24, 30);
       ctx.fillStyle = 'rgba(169,166,198,0.9)';
-      ctx.fillText('SIMULATED', W - 24 - ctx.measureText('SIMULATED').width, 30);
+      ctx.fillText(ui.simulated, W - 24 - ctx.measureText(ui.simulated).width, 30);
 
       // candles
       const xAt = (k: number) => W - 44 - (k + p) * PITCH;
@@ -205,9 +214,10 @@ const HeroBot: React.FC<{ label: string }> = ({ label }) => {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = `rgb(${LM})`;
-      ctx.fillRect(W - 24 - 34, ly - 8, 34, 16);
+      const lw = ctx.measureText(ui.last).width + 10;
+      ctx.fillRect(W - 24 - lw, ly - 8, lw, 16);
       ctx.fillStyle = '#06040d';
-      ctx.fillText('LAST', W - 24 - 29, ly + 3.5);
+      ctx.fillText(ui.last, W - 24 - lw + 5, ly + 3.5);
 
       // equity curve
       const eTop = 262;
@@ -218,7 +228,7 @@ const HeroBot: React.FC<{ label: string }> = ({ label }) => {
       const ex = (i: number) => 24 + (i / (equity.length - 1 || 1)) * (W - 48);
       const ey = (v: number) => eBot - ((v - emin) / span) * (eBot - eTop);
       ctx.fillStyle = 'rgba(169,166,198,0.9)';
-      ctx.fillText('EQUITY', 24, 250);
+      ctx.fillText(ui.equity, 24, 250);
       const g = ctx.createLinearGradient(0, eTop, 0, eBot);
       g.addColorStop(0, `rgba(${LM},0.35)`);
       g.addColorStop(1, `rgba(${LM},0)`);
@@ -244,7 +254,7 @@ const HeroBot: React.FC<{ label: string }> = ({ label }) => {
       // bottom log
       const sig = [...candles].reverse().find((c) => c.sig);
       ctx.fillStyle = `rgb(${sig?.sig === 'sell' ? MG : LM})`;
-      ctx.fillText(sig ? (sig.sig === 'buy' ? '> BUY  order filled' : '> SELL order filled') : '> scanning spreads', 24, 348);
+      ctx.fillText(sig ? (sig.sig === 'buy' ? ui.buy : ui.sell) : ui.scanning, 24, 348);
     };
 
     const loop = (now: number) => {
@@ -268,7 +278,7 @@ const HeroBot: React.FC<{ label: string }> = ({ label }) => {
       ro.disconnect();
       io.disconnect();
     };
-  }, [label]);
+  }, [label, ui.simulated, ui.last, ui.equity, ui.buy, ui.sell, ui.scanning]);
 
   return <canvas ref={ref} className="hero-chart" role="img" aria-label={label} />;
 };
