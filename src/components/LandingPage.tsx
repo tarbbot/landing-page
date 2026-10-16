@@ -17,10 +17,11 @@ import type { LucideIcon } from 'lucide-react';
 import { Counter, Scramble, reducedMotion, useReveal } from './landing/fx';
 import { ArbitrageDiagram, BotDiagram, MarketMakerDiagram, NeuralDiagram, TriangleDiagram } from './landing/Diagrams';
 import Simulator from './landing/Simulator';
+import Venues from './landing/Venues';
 import '../landing.css';
 
 const openLogin = () => window.dispatchEvent(new Event('znit:login'));
-const SECTIONS = ['top', 'strategies', 'simulator', 'process', 'why', 'start'];
+const SECTIONS = ['top', 'strategies', 'simulator', 'venues', 'process', 'why', 'start'];
 const DIAGRAMS = [MarketMakerDiagram, ArbitrageDiagram, TriangleDiagram, NeuralDiagram];
 const PROCESS_ICONS: LucideIcon[] = [Search, FlaskConical, ShieldCheck, Radar];
 const WHY_ICONS: Record<string, LucideIcon> = {
@@ -284,6 +285,21 @@ const LandingPage: React.FC = () => {
         </header>
         <div className="rv">
           <Simulator />
+        </div>
+      </section>
+
+      <div className="gate" aria-hidden="true" />
+
+      {/* VENUES */}
+      <section id="venues" className="sec">
+        <header className="sec-head">
+          <h2>
+            <Scramble text={t('landing.venues.title')} />
+          </h2>
+          <p className="rv">{t('landing.venues.subtitle')}</p>
+        </header>
+        <div className="rv ven-wrap">
+          <Venues />
         </div>
       </section>
 

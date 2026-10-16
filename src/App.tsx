@@ -32,7 +32,7 @@ const Navigation: React.FC = () => {
   const [scrolled, setScrolled] = React.useState(false);
   const [section, setSection] = React.useState('top');
   const rail: string[] = Array.isArray(t('landing.rail')) ? t('landing.rail') : [];
-  const NAV_SECTIONS = ['strategies', 'simulator', 'process', 'why'];
+  const NAV_SECTIONS = ['strategies', 'simulator', 'venues', 'process', 'why'];
 
   const goSection = (id: string) => {
     setMobileMenuOpen(false);

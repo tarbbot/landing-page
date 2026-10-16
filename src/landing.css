@@ -636,6 +636,82 @@
 .sim-result em { font: 500 15px var(--mono); font-style: normal; color: var(--res); }
 .sim-foot { margin: 36px 0 0; font-size: 13px; color: var(--zn-dim); }
 
+
+/* ---------- venues: where the bots trade ---------- */
+.ven-wrap { margin-top: 48px; }
+.ven { --bd: 2s; padding: clamp(24px, 4vw, 52px); }
+.ven-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+.ven-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.ven-tile {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 0;
+  color: var(--zn-ink);
+  text-align: left;
+  cursor: pointer;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  transition: background-color 0.3s, transform 0.4s var(--ez);
+  touch-action: manipulation;
+}
+.ven-tile::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--zn-cy);
+  transform: scaleY(0);
+  transition: transform 0.4s var(--ez);
+}
+.ven-tile.on { background: rgba(34, 230, 255, 0.1); transform: translateX(6px); }
+.ven-tile.on::before { transform: scaleY(1); box-shadow: 0 0 14px var(--zn-cy); }
+.ven-mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: #151030;
+  color: var(--zn-cy);
+  font: 700 15px var(--mono);
+  letter-spacing: 0.04em;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  transition: background-color 0.3s, color 0.3s;
+}
+.ven-tile.on .ven-mark { background: var(--zn-cy); color: var(--zn-bg); }
+.ven-name { font: 700 22px 'Space Grotesk', sans-serif; letter-spacing: -0.02em; }
+.ven-status { font: 500 11px var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--zn-dim); }
+.ven-status::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  background: var(--zn-lm);
+  animation: blink 1.6s steps(2) infinite;
+}
+.ven-map { width: 100%; height: auto; overflow: visible; }
+.ven-line { stroke: rgba(139, 92, 246, 0.55); stroke-width: 1.5; stroke-dasharray: 4 8; animation: dash 1.6s linear infinite; transition: stroke 0.3s, stroke-width 0.3s; }
+.ven-line.on { stroke: var(--zn-cy); stroke-width: 3; stroke-dasharray: 10 8; filter: drop-shadow(0 0 6px var(--zn-cy)); }
+.ven-node rect { fill: #06040d; stroke: rgba(255, 60, 207, 0.7); stroke-width: 1.5; transition: stroke 0.3s, fill 0.3s; }
+.ven-node text { fill: var(--zn-dim); font: 600 12px var(--mono); letter-spacing: 0.12em; transition: fill 0.3s; }
+.ven-node.on rect { stroke: var(--zn-lm); stroke-width: 3; fill: #0d1a10; }
+.ven-node.on text { fill: #fff; }
+.ven-core { fill: var(--zn-lm); font: 700 15px var(--mono); letter-spacing: 0.28em; }
+.ven-foot { margin: 36px 0 0; font-size: 13px; color: var(--zn-dim); }
+@media (max-width: 900px) {
+  .ven-grid { grid-template-columns: minmax(0, 1fr); }
+  .ven-map { order: -1; }
+  .ven-node text { font-size: 15px; }
+  .ven-core { font-size: 18px; }
+}
+
 /* ---------- process ---------- */
 .proc-list {
   position: relative;

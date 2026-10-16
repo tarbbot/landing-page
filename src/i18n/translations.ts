@@ -100,6 +100,7 @@ export const translations: Translations = {
         "Start",
         "Strategies",
         "Simulator",
+        "Exchanges",
         "Process",
         "Why Znit",
         "Access"
@@ -177,6 +178,13 @@ export const translations: Translations = {
             "description": "Go live with continuous monitoring and adjustment."
           }
         ]
+      },
+      "venues": {
+        "title": "Where our bots trade",
+        "subtitle": "Connected to the largest centralized exchanges, all managed from one dashboard.",
+        "status": "Supported",
+        "alt": "Znit bot core connected to Binance, OKX, Bybit, Coinbase and Bitfinex",
+        "note": "Exchange names are trademarks of their respective owners. Listing an exchange does not imply a partnership or endorsement."
       }
     },
     "toasts": {
@@ -377,6 +385,7 @@ export const translations: Translations = {
         "Início",
         "Estratégias",
         "Simulador",
+        "Exchanges",
         "Processo",
         "Por que Znit",
         "Acesso"
@@ -454,6 +463,13 @@ export const translations: Translations = {
             "description": "Entrar em produção com monitoramento e ajuste contínuos."
           }
         ]
+      },
+      "venues": {
+        "title": "Onde nossos bots operam",
+        "subtitle": "Conectados às maiores exchanges centralizadas, tudo gerenciado em um só dashboard.",
+        "status": "Suportada",
+        "alt": "Núcleo do bot Znit conectado a Binance, OKX, Bybit, Coinbase e Bitfinex",
+        "note": "Os nomes das exchanges são marcas registradas de seus respectivos donos. Listar uma exchange não implica parceria ou endosso."
       }
     },
     "toasts": {
