@@ -51,8 +51,16 @@ export function attachLens(selector = '.zn-panel'): () => void {
 
     // inertia: the well lags behind the cursor
     const k = 1 - Math.pow(1 - 0.16, dt / 16.667);
-    m.x += (m.tx - m.x) * k;
-    m.y += (m.ty - m.y) * k;
+    let sx = (m.tx - m.x) * k;
+    let sy = (m.ty - m.y) * k;
+    const sd = Math.hypot(sx, sy);
+    const cap = Math.max(0, 26 * (dt / 16.667)); // never faster than ~1,500 px/s, so a shaken cursor does not whip the well
+    if (sd > cap && sd > 0) {
+      sx *= cap / sd;
+      sy *= cap / sd;
+    }
+    m.x += sx;
+    m.y += sy;
 
     const { ctx, w, h } = m;
     const [R, G, B] = m.tc;

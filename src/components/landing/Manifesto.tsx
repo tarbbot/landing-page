@@ -7,9 +7,15 @@ import BlackHole from './BlackHole';
 const Manifesto: React.FC<{ text: string }> = ({ text }) => {
   const ref = useRef<HTMLElement>(null);
   const prog = useRef(0);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [hint, setHint] = useState(false);
-  const words = text.split(/\s+/).filter(Boolean);
+  // ja and zh have no spaces: segment by word (characters where Intl.Segmenter is missing)
+  const spaced = text.trim().split(/\s+/).length > 3;
+  const words = spaced
+    ? text.split(/\s+/).filter(Boolean)
+    : typeof Intl !== 'undefined' && 'Segmenter' in Intl
+      ? Array.from(new (Intl as any).Segmenter(language, { granularity: 'word' }).segment(text), (s: any) => s.segment as string).filter((s) => s.trim())
+      : Array.from(text).filter((s) => s.trim());
 
   useEffect(() => {
     const el = ref.current;
@@ -52,7 +58,7 @@ const Manifesto: React.FC<{ text: string }> = ({ text }) => {
         <p>
           {words.map((w, i) => (
             <span key={i} className="mw" style={{ ['--i' as any]: i }}>
-              {w}{' '}
+              {w}{spaced ? ' ' : ''}
             </span>
           ))}
         </p>

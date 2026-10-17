@@ -86,6 +86,14 @@ const LandingPage: React.FC = () => {
   const procRef = useRef<HTMLElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);
   const stackRef = useRef<HTMLDivElement>(null);
+  // phones pin the first sheet bottom-aligned when it is taller than the screen: it needs its own height
+  useEffect(() => {
+    const first = stackRef.current?.querySelector('.stack-card');
+    if (!first) return;
+    const ro = new ResizeObserver(() => stackRef.current?.style.setProperty('--card-h', `${(first as HTMLElement).offsetHeight}px`));
+    ro.observe(first);
+    return () => ro.disconnect();
+  }, []);
   const lastSection = useRef('top');
   // The stacked sheet follows the scroll through a damped value, so wheel notches glide instead of jumping.
   const slideTarget = useRef(0);

@@ -781,18 +781,28 @@
     clip-path: var(--chamfer);
   }
 }
-/* phones: no sheet inside a panel. The outer sheet drops its frame and padding so each card uses the full width */
+/* phones: same stacked cards as desktop. The first sheet pins under the header (bottom-aligned when it is
+   taller than the screen, --card-h is measured in LandingPage) and the second rises over it. One frame only:
+   the inner panel drops its own chrome so the sheet is the card. */
 @media (max-width: 900px) {
-  .stack { padding: 0 12px; margin-top: 70px; }
-  .stack-card { margin-bottom: 36px; }
-  .sheet { padding: 0; background: none; }
-  .sheet.zn-panel { background: none; clip-path: none; }
-  .sheet.zn-panel::before, .sheet.zn-panel::after, .sheet > .lens-canvas { display: none; }
+  .stack { padding: 0 12px 28px; margin-top: 70px; }
+  .stack-card { margin-bottom: 0; }
+  .stack-card:first-child {
+    position: sticky;
+    top: min(88px, calc(100svh - var(--card-h, 700px) - 14px));
+    z-index: 1;
+  }
+  .stack-card:nth-child(2) { position: relative; z-index: 2; margin-top: 46px; }
+  .stack-card:nth-child(2) .sheet { box-shadow: 0 -26px 50px -10px rgba(0, 0, 0, 0.75); }
+  .sheet { padding: 18px 14px 16px; }
   .sheet-n { position: static; display: block; margin: 0 0 8px; font-size: 11px; }
-  .sheet .sec-head { padding-right: 0; margin-bottom: 16px; }
-  .sheet .sec-head h2 { font-size: clamp(30px, 9vw, 44px); }
-  .sheet .sim, .sheet .ven { padding: 18px 16px; }
+  .sheet .sec-head { padding-right: 0; margin-bottom: 14px; }
+  .sheet .sec-head h2 { font-size: clamp(28px, 8.4vw, 40px); }
   .sheet .sec-head p { display: block; }
+  .sheet .sim.zn-panel, .sheet .ven.zn-panel { background: none; clip-path: none; padding: 0; }
+  .sheet .sim.zn-panel::before, .sheet .sim.zn-panel::after,
+  .sheet .ven.zn-panel::before, .sheet .ven.zn-panel::after,
+  .sheet .sim > .lens-canvas, .sheet .ven > .lens-canvas { display: none; }
 }
 .is-covered,
 .is-covered * { animation-play-state: paused !important; }
@@ -1211,4 +1221,9 @@
   .zn *, .zn *::before, .zn *::after { animation: none !important; transition: none !important; }
   .zn.js .rv, .zn.js .gate { opacity: 1; transform: none; }
   .tape-track { transform: none; }
+}
+/* ja and zh: ch is a half-width unit, so keep the statement off the black hole with an em measure */
+@media (min-width: 901px) {
+  :lang(ja) .manifesto p,
+  :lang(zh) .manifesto p { max-width: 10.5em; }
 }

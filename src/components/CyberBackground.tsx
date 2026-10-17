@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 const CELL = 56;
 const STEP = 14;
 const REACH = 420; // grid is only subdivided this far from the cursor
+const MAX_SPEED = 26; // px per frame at 60 fps, about 1,500 px/s
 const GLOW_BANDS = 10; // glow steps from the grid colour (edge of the well) to cyan (centre)
 const COLORS = ['34,230,255', '255,60,207', '139,92,246', '182,255,59'];
 
@@ -127,9 +128,19 @@ const CyberBackground: React.FC = () => {
       const ignite = Math.min(1, t / 2200);
       const on = !coarse && mouse.tx > -9000;
       if (on) {
-        const f = 1 - Math.pow(1 - 0.12, k);
-        mouse.x += (mouse.tx - mouse.x) * f;
-        mouse.y += (mouse.ty - mouse.y) * f;
+        // the well glides toward the cursor but never faster than MAX_SPEED, so a shaken mouse
+        // makes it travel to where the cursor stopped instead of snapping around
+        const f = 1 - Math.pow(1 - 0.14, k);
+        let sx = (mouse.tx - mouse.x) * f;
+        let sy = (mouse.ty - mouse.y) * f;
+        const sd = Math.hypot(sx, sy);
+        const cap = Math.max(0, MAX_SPEED * k); // k can be negative on the first frame
+        if (sd > cap && sd > 0) {
+          sx *= cap / sd;
+          sy *= cap / sd;
+        }
+        mouse.x += sx;
+        mouse.y += sy;
       }
       const scrollY = window.scrollY; // read live: scroll events lag behind on touch devices
       ctx.clearRect(0, 0, w, h);
