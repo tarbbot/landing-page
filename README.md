@@ -198,7 +198,7 @@ Malha que cai em um poço gravitacional sob o cursor (com banda de brilho gradua
 
 ### Cometa nos painéis (`lib/lens.ts`)
 
-Ao passar o mouse sobre um `.zn-panel`, um cometa acompanha o cursor (com inércia): cauda de íons afilada e cauda de poeira feita dos mesmos ticks do fundo. Atravessar uma camada (painel dentro de painel, ou outro card) provoca uma explosão no ponto de cruzamento. Ao sair do card, o cometa se solta com o impulso, abre um anel de dobra na borda e voa até sumir da tela, em um canvas fixo (`.lens-fly`). O mesmo arquivo existe no `tbot-dashboard`, mantenha os dois iguais.
+Ao passar o mouse sobre um `.zn-panel`, um cometa acompanha o cursor (com inércia): cauda de íons afilada e cauda de poeira feita dos mesmos ticks do fundo. Atravessar uma camada (painel dentro de painel, ou outro card) provoca uma explosão no ponto de cruzamento. Ao sair do card, o cometa se solta com o impulso, abre um anel de dobra na borda e voa até sumir da tela, em um canvas fixo (`.lens-fly`). Enquanto voa, o cometa também deforma a malha do fundo: a posição da cabeça e de um rastro que vai se apagando é publicada em `src/lib/wells.ts` e o `CyberBackground` curva a grade ao redor desses pontos. `lens.ts` e `wells.ts` existem também no `tbot-dashboard`, mantenha as cópias iguais.
 
 ## Internacionalização
 

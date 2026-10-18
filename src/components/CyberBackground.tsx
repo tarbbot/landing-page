@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { flyers } from '../lib/wells';
 
 const CELL = 56;
 const STEP = 14;
@@ -14,6 +15,7 @@ export const tint = { c: '139,92,246' };
 // s is 1 while the hole is on screen and 0 otherwise; the grid eases toward it.
 export const mass = { x: 0, y: 0, r: 0, s: 0 };
 const MASS_GLOW = 8;
+const FLY_REACH = 170;
 
 interface Tick {
   x: number;
@@ -114,6 +116,21 @@ const CyberBackground: React.FC = () => {
           mi *= ms;
         } else mi = 0;
       }
+      // comets in flight: a small, moving well with a wake that fades behind it
+      for (let i = 0; i < flyers.length; i++) {
+        const fl = flyers[i];
+        const dx = x - fl.x;
+        const dy = y - fl.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 > FLY_REACH * FLY_REACH) continue;
+        const fi = Math.exp(-d2 / (2 * 62 * 62)) * fl.s;
+        if (fi < 0.004) continue;
+        const d = Math.sqrt(d2) || 1;
+        const pull = Math.min(d * 0.7, fi * 34);
+        px -= (dx / d) * pull;
+        py += -(dy / d) * pull + fi * 12;
+        if (fi > inf) inf = fi;
+      }
       return [px, py, inf, mi];
     };
 
@@ -127,6 +144,14 @@ const CyberBackground: React.FC = () => {
         const along = vertical ? mouse.y : mouse.x;
         s0 = Math.min(s0, along - REACH);
         s1 = Math.max(s1, along + REACH);
+      }
+      for (let i = 0; i < flyers.length; i++) {
+        const fl = flyers[i];
+        if (Math.abs(c - (vertical ? fl.x : fl.y)) <= FLY_REACH) {
+          const along = vertical ? fl.y : fl.x;
+          s0 = Math.min(s0, along - FLY_REACH);
+          s1 = Math.max(s1, along + FLY_REACH);
+        }
       }
       if (ms > 0.01) {
         const reach = mass.r * 2.7 * 2.6;
@@ -200,7 +225,7 @@ const CyberBackground: React.FC = () => {
       ms += (mass.s - ms) * Math.min(1, 0.06 * k);
       if (ms < 0.004 && mass.s === 0) ms = 0;
       const base = new Path2D();
-      const hot = on ? Array.from({ length: GLOW_BANDS }, () => new Path2D()) : [];
+      const hot = on || flyers.length ? Array.from({ length: GLOW_BANDS }, () => new Path2D()) : [];
       const mhot = ms > 0.01 ? Array.from({ length: MASS_GLOW }, () => new Path2D()) : [];
       for (let x = 0; x <= w + CELL; x += CELL) line(base, hot, mhot, true, x, h);
       for (let y = off; y <= h + CELL; y += CELL) line(base, hot, mhot, false, y, w);

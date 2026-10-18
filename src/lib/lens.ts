@@ -1,3 +1,4 @@
+import { flyers as wells } from './wells';
 // A comet rides the cursor over every panel. The head is the cursor (with inertia), a tapered ion tail
 // follows the path it just travelled, and a dust tail of order-flow ticks streams away from the motion,
 // hot near the head and cooling to violet and magenta. Every time the cursor crosses into another layer
@@ -267,10 +268,21 @@ const runOverlay = (now: number) => {
     // gone: out of the screen and the tail has burnt out
     if (!inside && c.bits.length === 0 && now - c.outSince > 480) fly.splice(i, 1);
   }
+  // publish the comets so the page background bends its grid around the heads and along the wakes
+  wells.length = 0;
+  for (const c of fly) {
+    wells.push({ x: c.x, y: c.y, s: 1 });
+    const n = Math.min(7, c.trail.length);
+    for (let k = 1; k <= n; k++) {
+      const p = c.trail[Math.max(0, c.trail.length - 1 - Math.round((k * (c.trail.length - 1)) / (n + 1)))];
+      wells.push({ x: p.x, y: p.y, s: 0.8 * (1 - k / (n + 1)) });
+    }
+  }
   if (fly.length || rings.length) o.raf = requestAnimationFrame(runOverlay);
   else {
     o.canvas.remove();
     overlay = null;
+    wells.length = 0;
   }
 };
 
