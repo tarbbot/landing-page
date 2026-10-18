@@ -302,6 +302,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         <div className="hero-stage">
+         <span className="mani-k hero-k">{t('landing.heroKicker')}</span>
          <div className="hero-tilt" ref={tiltRef}>
           <div className="hero-hud zn-panel hud beam beam-lite" aria-hidden="true">
           <i className="c tl" />

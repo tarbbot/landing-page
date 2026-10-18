@@ -10,6 +10,11 @@ const COLORS = ['34,230,255', '255,60,207', '139,92,246', '182,255,59'];
 // Set by the landing page: the RGB the grid should drift toward (one hue per chapter).
 export const tint = { c: '139,92,246' };
 
+// Set by the black hole each frame (screen px): a super-massive object the grid must bend around.
+// s is 1 while the hole is on screen and 0 otherwise; the grid eases toward it.
+export const mass = { x: 0, y: 0, r: 0, s: 0 };
+const MASS_GLOW = 8;
+
 interface Tick {
   x: number;
   y: number;
@@ -42,6 +47,7 @@ const CyberBackground: React.FC = () => {
     let ticks: Tick[] = [];
     const col = [139, 92, 246];
     const t0 = performance.now();
+    let ms = 0; // eased mass strength
 
     const spawn = (fromBottom: boolean): Tick => ({
       x: Math.random() * w,
@@ -73,43 +79,88 @@ const CyberBackground: React.FC = () => {
       }
     };
 
-    const warp = (x: number, y: number): [number, number, number] => {
-      const dx = x - mouse.x;
-      const dy = y - mouse.y;
-      const d2 = dx * dx + dy * dy;
-      const inf = Math.exp(-d2 / (2 * 170 * 170));
-      if (inf < 0.002) return [x, y, 0];
-      const d = Math.sqrt(d2) || 1;
-      // Gravity well: points fall toward the cursor (never past it) and sink, like a mass bending
-      // spacetime. The pull is strongest close in, so lines bunch up around the centre.
-      const pull = Math.min(d * 0.82, inf * 52);
-      return [x - (dx / d) * pull, y - (dy / d) * pull + inf * 30, inf];
+    // returns the displaced point, how deep it is in the cursor well and in the black hole's well
+    const warp = (x: number, y: number): [number, number, number, number] => {
+      let px = x;
+      let py = y;
+      let inf = 0;
+      let mi = 0;
+      if (mouse.x > -9000) {
+        const dx = x - mouse.x;
+        const dy = y - mouse.y;
+        const d2 = dx * dx + dy * dy;
+        inf = Math.exp(-d2 / (2 * 170 * 170));
+        if (inf >= 0.002) {
+          const d = Math.sqrt(d2) || 1;
+          // Gravity well: points fall toward the cursor (never past it) and sink, like a mass bending
+          // spacetime. The pull is strongest close in, so lines bunch up around the centre.
+          const pull = Math.min(d * 0.82, inf * 52);
+          px -= (dx / d) * pull;
+          py += -(dy / d) * pull + inf * 30;
+        } else inf = 0;
+      }
+      if (ms > 0.01) {
+        const dx = x - mass.x;
+        const dy = y - mass.y;
+        const sg = mass.r * 2.7;
+        const d2 = dx * dx + dy * dy;
+        mi = Math.exp(-d2 / (2 * sg * sg));
+        if (mi >= 0.003) {
+          const d = Math.sqrt(d2) || 1;
+          // a far heavier well: the grid funnels into the hole and bunches up around its rim
+          const pull = Math.min(d * 0.94, mi * mass.r * 3.3 * ms);
+          px -= (dx / d) * pull;
+          py += -(dy / d) * pull + mi * mass.r * 0.45 * ms;
+          mi *= ms;
+        } else mi = 0;
+      }
+      return [px, py, inf, mi];
     };
 
-    // One grid line: straight where the cursor is far, sampled and warped near it.
-    const line = (base: Path2D, hot: Path2D[], vertical: boolean, c: number, len: number, on: boolean) => {
-      const m = vertical ? mouse.x : mouse.y;
-      const along = vertical ? mouse.y : mouse.x;
+    // One grid line: straight where no well is near, sampled and warped near the cursor or the hole.
+    const line = (base: Path2D, hot: Path2D[], mhot: Path2D[], vertical: boolean, c: number, len: number) => {
       const pt = (s: number): [number, number] => (vertical ? [c, s] : [s, c]);
-      if (!on || Math.abs(c - m) > REACH) {
+      let s0 = Infinity;
+      let s1 = -Infinity;
+      let step = STEP;
+      if (mouse.x > -9000 && Math.abs(c - (vertical ? mouse.x : mouse.y)) <= REACH) {
+        const along = vertical ? mouse.y : mouse.x;
+        s0 = Math.min(s0, along - REACH);
+        s1 = Math.max(s1, along + REACH);
+      }
+      if (ms > 0.01) {
+        const reach = mass.r * 2.7 * 2.6;
+        if (Math.abs(c - (vertical ? mass.x : mass.y)) <= reach) {
+          const along = vertical ? mass.y : mass.x;
+          s0 = Math.min(s0, along - reach);
+          s1 = Math.max(s1, along + reach);
+          step = 16;
+        }
+      }
+      if (s0 === Infinity) {
         const [ax, ay] = pt(0);
         const [bx, by] = pt(len);
         base.moveTo(ax, ay);
         base.lineTo(bx, by);
         return;
       }
-      const s0 = Math.max(0, along - REACH);
-      const s1 = Math.min(len, along + REACH);
+      s0 = Math.max(0, s0);
+      s1 = Math.min(len, s1);
       const [sx, sy] = pt(0);
       base.moveTo(sx, sy);
       let [px, py] = warp(...pt(s0));
       base.lineTo(px, py);
-      for (let s = s0 + STEP; s <= s1 + STEP; s += STEP) {
-        const [qx, qy, inf] = warp(...pt(Math.min(s, s1)));
+      for (let s = s0 + step; s <= s1 + step; s += step) {
+        const [qx, qy, inf, mi] = warp(...pt(Math.min(s, s1)));
         base.lineTo(qx, qy);
+        // bucket by how deep in a well this segment is, so the light fades in gradually
         if (hot.length && inf > 0.012) {
-          // bucket by how deep in the well this segment is, so the light fades in gradually
           const band = hot[Math.min(GLOW_BANDS - 1, Math.floor(Math.pow(inf, 0.65) * GLOW_BANDS))];
+          band.moveTo(px, py);
+          band.lineTo(qx, qy);
+        }
+        if (mi > 0.02) {
+          const band = mhot[Math.min(MASS_GLOW - 1, Math.floor(Math.pow(mi, 0.7) * MASS_GLOW))];
           band.moveTo(px, py);
           band.lineTo(qx, qy);
         }
@@ -146,10 +197,13 @@ const CyberBackground: React.FC = () => {
       ctx.clearRect(0, 0, w, h);
 
       const off = (-scrollY * 0.18) % CELL;
+      ms += (mass.s - ms) * Math.min(1, 0.06 * k);
+      if (ms < 0.004 && mass.s === 0) ms = 0;
       const base = new Path2D();
       const hot = on ? Array.from({ length: GLOW_BANDS }, () => new Path2D()) : [];
-      for (let x = 0; x <= w + CELL; x += CELL) line(base, hot, true, x, h, on);
-      for (let y = off; y <= h + CELL; y += CELL) line(base, hot, false, y, w, on);
+      const mhot = ms > 0.01 ? Array.from({ length: MASS_GLOW }, () => new Path2D()) : [];
+      for (let x = 0; x <= w + CELL; x += CELL) line(base, hot, mhot, true, x, h);
+      for (let y = off; y <= h + CELL; y += CELL) line(base, hot, mhot, false, y, w);
       ctx.lineWidth = 1;
       const goal = tint.c.split(',').map(Number);
       for (let i = 0; i < 3; i++) col[i] += (goal[i] - col[i]) * Math.min(1, 0.04 * k);
@@ -166,6 +220,17 @@ const CyberBackground: React.FC = () => {
         ctx.strokeStyle = `rgba(${r | 0},${g | 0},${bl | 0},${(0.04 + 0.5 * f * f) * ignite})`;
         ctx.lineWidth = 1 + f * 0.7;
         ctx.stroke(hot[i]);
+      }
+      // the black hole's well: violet at the edge, magenta then cyan-white toward the rim
+      for (let i = 0; i < mhot.length; i++) {
+        const f = (i + 0.5) / MASS_GLOW;
+        const m = f * f * (3 - 2 * f);
+        const r = col[0] + (210 - col[0]) * m;
+        const g = col[1] + (120 - col[1]) * m + 110 * m * m * m;
+        const bl = col[2] + (255 - col[2]) * m;
+        ctx.strokeStyle = `rgba(${r | 0},${g | 0},${bl | 0},${(0.05 + 0.5 * f * f) * ignite})`;
+        ctx.lineWidth = 1 + f * 0.9;
+        ctx.stroke(mhot[i]);
       }
       ctx.lineWidth = 1;
 
@@ -195,7 +260,7 @@ const CyberBackground: React.FC = () => {
         if (dd > 90) continue;
         ctx.fillStyle = `rgba(34,230,255,${(1 - dd / 90) * 0.85 * ignite})`;
         for (let gx = 0; gx <= w; gx += CELL) {
-          const [wx, wy] = on ? warp(gx, gy) : [gx, gy];
+          const [wx, wy] = warp(gx, gy);
           ctx.fillRect(wx - 1.5, wy - 1.5, 3, 3);
         }
       }

@@ -387,7 +387,7 @@
 }
 @media (max-width: 900px) {
   /* the hole takes the top of the screen, the statement sits below it */
-  .manifesto-pin { align-items: end; padding-bottom: 9vh; }
+  .manifesto-pin { align-items: end; padding-bottom: 24vh; }
   .manifesto p { max-width: none; font-size: clamp(28px, 8vw, 44px); }
 }
 .mw {
@@ -411,6 +411,7 @@
   opacity: clamp(0, calc(var(--mp, 0) * 14), 1);
   transform: translateY(calc((1 - clamp(0, var(--mp, 0) * 14, 1)) * 10px));
 }
+.hero-k { display: none; }
 .mani-k::before { content: ''; width: 34px; height: 1px; background: linear-gradient(90deg, transparent, var(--zn-lm)); }
 .mani-k::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--zn-lm); box-shadow: 0 0 10px var(--zn-lm); }
 @media (max-width: 900px) { .mani-k { font-size: 10.5px; letter-spacing: 0.2em; } }
@@ -1168,23 +1169,29 @@
 @media (max-width: 900px) {
   /* no room for the label on phones: the pairs run edge to edge (still announced via aria-label) */
   .tape-tag { display: none; }
-  .hero { grid-template-columns: 1fr; grid-template-areas: 'copy' 'hud' 'stats'; min-height: 0; padding-top: 32px; gap: 0; }
-  /* three blocks (copy, chart, numbers) kept apart by space and a lit divider above and below the chart */
-  .hero-stage { position: relative; margin-top: 44px; padding: 44px 0; }
-  .hero-stage::before,
-  .hero-stage::after {
+  /* two screens: 1) the pitch (headline, strategies, button), 2) the live core (chart, numbers, spreads) */
+  .hero { grid-template-columns: 1fr; grid-template-areas: 'copy' 'hud' 'stats'; min-height: 0; padding-top: 0; gap: 0; }
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100svh - 96px);
+    padding: 12px 0 28px;
+  }
+  .hero-sub { margin: 20px 0 30px; }
+  .hero-stage { position: relative; margin-top: 0; padding: 36px 0 26px; }
+  .hero-k { display: inline-flex; opacity: 1; transform: none; margin-bottom: 18px; }
+  .hero-stage::before {
     content: '';
     position: absolute;
+    top: 0;
     left: 0;
     right: 0;
     height: 1px;
     background: linear-gradient(90deg, transparent 4%, var(--zn-cy), var(--zn-mg), transparent 96%);
     box-shadow: 0 0 12px rgba(34, 230, 255, 0.55);
   }
-  .hero-stage::before { top: 0; }
-  .hero-stage::after { bottom: 0; }
-  .hero-sub { margin: 20px 0 28px; }
-  .stats { margin-top: 0; gap: 12px; }
+  .stats { margin-top: 0; gap: 12px; padding-bottom: 28px; }
   .hero-hud { max-width: 460px; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .strat { height: calc(var(--n, 4) * 80vh + 100vh); }

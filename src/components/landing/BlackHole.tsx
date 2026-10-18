@@ -1,3 +1,4 @@
+import { mass } from '../CyberBackground';
 import React, { useEffect, useRef } from 'react';
 import { reducedMotion } from './fx';
 
@@ -96,7 +97,7 @@ const BlackHole: React.FC<Props> = ({ progress, onExhaust, onFeed, onReset }) =>
       canvas.height = Math.round(h * dpr);
       narrow = w <= 900;
       cx = narrow ? w * 0.5 : w * 0.765;
-      cy = narrow ? h * 0.25 : h * 0.5;
+      cy = narrow ? h * 0.33 : h * 0.5;
       backBuf = document.createElement('canvas');
       frontBuf = document.createElement('canvas');
       for (const b of [backBuf, frontBuf]) {
@@ -130,6 +131,11 @@ const BlackHole: React.FC<Props> = ({ progress, onExhaust, onFeed, onReset }) =>
       const oy = (mouse.y - 0.5) * 10;
       const hx = cx + ox;
       const hy = cy + oy;
+      const rr = canvas.getBoundingClientRect();
+      mass.x = rr.left + hx;
+      mass.y = rr.top + hy;
+      mass.r = R;
+      mass.s = 1;
       const rotate = (x: number, y: number): [number, number] => [hx + x * cr - y * sr, hy + x * sr + y * cr];
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -323,6 +329,7 @@ const BlackHole: React.FC<Props> = ({ progress, onExhaust, onFeed, onReset }) =>
 
     const loop = (now: number) => {
       if (visible && !document.hidden) draw(now);
+      else mass.s = 0;
       raf = requestAnimationFrame(loop);
     };
 
@@ -395,6 +402,7 @@ const BlackHole: React.FC<Props> = ({ progress, onExhaust, onFeed, onReset }) =>
 
     return () => {
       cancelAnimationFrame(raf);
+      mass.s = 0;
       ro.disconnect();
       io.disconnect();
       window.removeEventListener('pointermove', onMove);

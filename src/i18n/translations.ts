@@ -240,7 +240,8 @@ export const translations: Translations = {
         "scanning": "> scanning spreads"
       },
       "manifestoHint": "Click to feed the black hole",
-      "manifestoKicker": "A universe of possibilities"
+      "manifestoKicker": "A universe of possibilities",
+      "heroKicker": "Znit.core in real time"
     },
     "toasts": {
       "signedOut": "Signed out successfully",
@@ -504,7 +505,8 @@ export const translations: Translations = {
         "scanning": "> scanning spreads"
       },
       "manifestoHint": "Click to feed the black hole",
-      "manifestoKicker": "A universe of possibilities"
+      "manifestoKicker": "A universe of possibilities",
+      "heroKicker": "Znit.core in real time"
     },
     "toasts": {
       "signedOut": "Signed out successfully",
@@ -769,7 +771,8 @@ export const translations: Translations = {
         "scanning": "> escaneando spreads"
       },
       "manifestoHint": "Clique para alimentar o buraco negro",
-      "manifestoKicker": "Um universo de possibilidades"
+      "manifestoKicker": "Um universo de possibilidades",
+      "heroKicker": "Znit.core em tempo real"
     },
     "toasts": {
       "signedOut": "Desconectado com sucesso",
@@ -1033,7 +1036,8 @@ export const translations: Translations = {
         "scanning": "> escaneando spreads"
       },
       "manifestoHint": "Haz clic para alimentar el agujero negro",
-      "manifestoKicker": "Un universo de posibilidades"
+      "manifestoKicker": "Un universo de posibilidades",
+      "heroKicker": "Znit.core en tiempo real"
     },
     "toasts": {
       "signedOut": "Sesión cerrada exitosamente",
@@ -1297,7 +1301,8 @@ export const translations: Translations = {
         "scanning": "> analyse des spreads"
       },
       "manifestoHint": "Cliquez pour nourrir le trou noir",
-      "manifestoKicker": "Un univers de possibilités"
+      "manifestoKicker": "Un univers de possibilités",
+      "heroKicker": "Znit.core en temps réel"
     },
     "toasts": {
       "signedOut": "Déconnecté avec succès",
@@ -1561,7 +1566,8 @@ export const translations: Translations = {
         "scanning": "> Spreads werden gescannt"
       },
       "manifestoHint": "Klicken, um das Schwarze Loch zu füttern",
-      "manifestoKicker": "Ein Universum voller Möglichkeiten"
+      "manifestoKicker": "Ein Universum voller Möglichkeiten",
+      "heroKicker": "Znit.core in Echtzeit"
     },
     "toasts": {
       "signedOut": "Erfolgreich abgemeldet",
@@ -1825,7 +1831,8 @@ export const translations: Translations = {
         "scanning": "> 正在扫描价差"
       },
       "manifestoHint": "点击喂养黑洞",
-      "manifestoKicker": "充满可能的宇宙"
+      "manifestoKicker": "充满可能的宇宙",
+      "heroKicker": "Znit.core 实时运行"
     },
     "toasts": {
       "signedOut": "退出成功",
@@ -2089,7 +2096,8 @@ export const translations: Translations = {
         "scanning": "> スプレッドをスキャン中"
       },
       "manifestoHint": "クリックしてブラックホールに与える",
-      "manifestoKicker": "可能性の宇宙"
+      "manifestoKicker": "可能性の宇宙",
+      "heroKicker": "Znit.core リアルタイム"
     },
     "toasts": {
       "signedOut": "サインアウトしました",
