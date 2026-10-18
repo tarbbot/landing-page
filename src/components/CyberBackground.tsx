@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { flyers } from '../lib/wells';
+import { flyers, mass } from '../lib/wells';
 
 const CELL = 56;
 const STEP = 14;
@@ -11,9 +11,8 @@ const COLORS = ['34,230,255', '255,60,207', '139,92,246', '182,255,59'];
 // Set by the landing page: the RGB the grid should drift toward (one hue per chapter).
 export const tint = { c: '139,92,246' };
 
-// Set by the black hole each frame (screen px): a super-massive object the grid must bend around.
-// s is 1 while the hole is on screen and 0 otherwise; the grid eases toward it.
-export const mass = { x: 0, y: 0, r: 0, s: 0 };
+// The black hole the grid bends around lives in lib/wells (shared with the comets); re-exported here.
+export { mass };
 const MASS_GLOW = 8;
 const FLY_REACH = 170;
 

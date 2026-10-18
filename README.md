@@ -110,7 +110,7 @@ Título, descrição, botão e um painel com velas simuladas, marcas de compra e
 
 ![Manifesto e buraco negro](docs/screenshots/02-manifesto-black-hole.jpg)
 
-Seção fixada (sticky) em que o texto acende palavra por palavra conforme o scroll (`Manifesto.tsx`, variável CSS `--mp`). Atrás dele, `BlackHole.tsx` desenha horizonte de eventos, anel de fótons, disco de acreção e lente gravitacional. O buraco negro também deforma a malha do fundo: ele publica sua posição e raio no objeto `mass` exportado por `CyberBackground.tsx`, e a malha se curva em torno dele. Depois de alguns ticks livres, o usuário precisa clicar para alimentar o buraco negro.
+Seção fixada (sticky) em que o texto acende palavra por palavra conforme o scroll (`Manifesto.tsx`, variável CSS `--mp`). Atrás dele, `BlackHole.tsx` desenha horizonte de eventos, anel de fótons, disco de acreção e lente gravitacional. O buraco negro também deforma a malha do fundo: ele publica sua posição e raio no objeto `mass` (em `src/lib/wells.ts`, reexportado por `CyberBackground.tsx`), e a malha se curva em torno dele. Os cometas em voo também são atraídos pelo buraco negro: eles curvam a trajetória, aceleram, somem no horizonte e, ao serem engolidos, o disco dá um clarão. Depois de alguns ticks livres, o usuário precisa clicar para alimentar o buraco negro.
 
 ### 3. Estratégias (palco fixo)
 
@@ -194,7 +194,7 @@ Padrões que valem para qualquer cena nova:
 
 ### Fundo (`CyberBackground.tsx`)
 
-Malha que cai em um poço gravitacional sob o cursor (com banda de brilho gradual), feixe de varredura, ticks subindo e tinta por capítulo (`tint`). Há um segundo poço, muito mais pesado, quando o buraco negro está na tela (`mass`). A velocidade do poço do mouse tem teto (`MAX_SPEED`), para que sacudir o mouse não faça a malha saltar.
+Malha que cai em um poço gravitacional sob o cursor (com banda de brilho gradual), feixe de varredura, ticks subindo e tinta por capítulo (`tint`). Há um segundo poço, muito mais pesado, quando o buraco negro está na tela (`mass` em `lib/wells.ts`). A velocidade do poço do mouse tem teto (`MAX_SPEED`), para que sacudir o mouse não faça a malha saltar.
 
 ### Cometa nos painéis (`lib/lens.ts`)
 

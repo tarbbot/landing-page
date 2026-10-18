@@ -1,4 +1,4 @@
-import { flyers as wells } from './wells';
+import { flyers as wells, mass } from './wells';
 // A comet rides the cursor over every panel. The head is the cursor (with inertia), a tapered ion tail
 // follows the path it just travelled, and a dust tail of order-flow ticks streams away from the motion,
 // hot near the head and cooling to violet and magenta. Every time the cursor crosses into another layer
@@ -261,10 +261,28 @@ const runOverlay = (now: number) => {
   for (let i = fly.length - 1; i >= 0; i--) {
     const c = fly[i];
     const inside = c.x > -80 && c.x < W + 80 && c.y > -80 && c.y < H + 80;
+    // the black hole pulls comets in flight: they bend toward it, speed up, fade into the horizon and are swallowed
+    let fall = 1;
+    if (mass.s > 0.5 && mass.r > 0) {
+      const gx = mass.x - c.x;
+      const gy = mass.y - c.y;
+      const d2 = gx * gx + gy * gy;
+      const d = Math.sqrt(d2) || 1;
+      const acc = 0.26 / (d + mass.r); // long reach, like the pull of a far heavier body
+      c.vx += (gx / d) * acc * dt;
+      c.vy += (gy / d) * acc * dt;
+      fall = Math.max(0, Math.min(1, (d - mass.r * 0.55) / (mass.r * 1.3)));
+      if (d < mass.r * 0.62) {
+        mass.fed++;
+        rings.push({ x: mass.x, y: mass.y, t0: now, tc: c.tc });
+        fly.splice(i, 1);
+        continue;
+      }
+    }
     advance(c, dt);
     if (inside) c.outSince = 0;
     else if (!c.outSince) c.outSince = now;
-    paint(ctx, c, now, dt, 1, W, H, inside);
+    paint(ctx, c, now, dt, fall, W, H, inside && fall > 0.3);
     // gone: out of the screen and the tail has burnt out
     if (!inside && c.bits.length === 0 && now - c.outSince > 480) fly.splice(i, 1);
   }

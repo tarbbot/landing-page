@@ -1,4 +1,4 @@
-import { mass } from '../CyberBackground';
+import { mass } from '../../lib/wells';
 import React, { useEffect, useRef } from 'react';
 import { reducedMotion } from './fx';
 
@@ -57,6 +57,7 @@ const BlackHole: React.FC<Props> = ({ progress, onExhaust, onFeed, onReset }) =>
 
     let w = 0, h = 0, dpr = 1, raf = 0, visible = true, narrow = false;
     let cx = 0, cy = 0, base = 0;
+    let seenFed = mass.fed;
     let time = 0;
     let last = performance.now();
     let flare = 0; // 1 right after the final burst
@@ -121,6 +122,12 @@ const BlackHole: React.FC<Props> = ({ progress, onExhaust, onFeed, onReset }) =>
       if (p > 0.9 && !flared) { flared = true; flare = 1; }
       if (p < 0.78) flared = false;
 
+      // a comet swallowed by the hole: the disk flares
+      if (mass.fed !== seenFed) {
+        seenFed = mass.fed;
+        pulse = 1;
+        flare = Math.max(flare, 0.7);
+      }
       const R = base * (0.74 + 0.36 * grow);
       const RE = R * 1.85;
       const power = 0.5 + 0.5 * grow;
