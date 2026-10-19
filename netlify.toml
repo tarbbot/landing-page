@@ -3,8 +3,27 @@
   publish = "build/"
 
           
+# Only real client-side routes fall back to the app. The language pages are prerendered files
+# (build/<lang>/index.html) and need no rule. Every other path gets a real 404 (public/404.html), so old
+# URLs from earlier versions of the site, such as /rankings, stop looking alive to search engines.
 [[redirects]]
-  from = "/*"
+  from = "/dashboard-selector"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard-selector/*"
+  to = "/index.html"
+  status = 200
+
+# OAuth return from Cognito, handled by the app
+[[redirects]]
+  from = "/callback"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/callback/*"
   to = "/index.html"
   status = 200
 

@@ -69,7 +69,7 @@ landing-page/
     seo.cjs                pós-build: HTML por idioma, meta tags, JSON-LD, robots.txt
     shared.cjs             SITE e loader de TS usado pelo build e pelo craco
   craco.config.js          alias @, sitemap.xml (apenas em produção)
-  netlify.toml             build, fallback de SPA e X-Robots-Tag
+  netlify.toml             build, rotas do app (dashboard-selector, callback), 404 real e X-Robots-Tag
   docs/screenshots/        imagens deste README
   src/
     App.tsx                BrowserRouter, navegação, rotas por idioma, login
@@ -317,7 +317,7 @@ Dicas: mate sempre o servidor anterior (um bundle antigo na mesma porta engana),
 
 ## Deploy
 
-Netlify: `npm run build` publica `build/`, com fallback `/* -> /index.html` (SPA). Confirme em produção que `/robots.txt` e `/sitemap.xml` respondem e que cada rota de idioma abre com o texto no HTML (visualizar código-fonte). O endereço do site vem de `SITE_URL`.
+Netlify: `npm run build` publica `build/`. Só as rotas de cliente do app (`/dashboard-selector` e `/callback`) caem no `index.html`; os idiomas são arquivos pré-renderizados e qualquer outro caminho responde 404 de verdade com `public/404.html`. Isso evita que URLs antigas (por exemplo `/rankings`) sigam respondendo 200 e ocupando o índice do Google. Se criar uma nova rota de cliente, adicione uma regra para ela em `netlify.toml`. Confirme em produção que `/robots.txt` e `/sitemap.xml` respondem e que cada rota de idioma abre com o texto no HTML (visualizar código-fonte). O endereço do site vem de `SITE_URL`.
 
 ## Documentos relacionados
 
