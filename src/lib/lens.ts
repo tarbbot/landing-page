@@ -10,6 +10,8 @@ import { flyers as wells, mass } from './wells';
 const FALLBACK_TC: [number, number, number] = [34, 230, 255];
 const COOL = ['139,92,246', '255,60,207'];
 const MAX_PARTS = 220;
+const DWELL = 1000; // ms the pointer must stay inside a card before the comet arms
+const SCROLL_QUIET = 350; // ms after a scroll event during which hover effects stay off
 const MIN_FLY = 0.6; // px per ms: a released comet never slows below this, so it always leaves the screen
 const calm = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -407,24 +409,56 @@ export function attachLens(selector = '.zn-panel'): () => void {
     destroy(m);
   };
 
+  // The comet is not on every hover: it arms once the pointer has stayed inside a card for DWELL ms, and
+  // it is not triggered while the page scrolls under a still cursor. Quick passes over cards do nothing.
+  let pending: { panel: HTMLElement; timer: number } | null = null;
+  let lastScroll = 0;
+  let lastX = 0;
+  let lastY = 0;
+  const scrolling = () => performance.now() - lastScroll < SCROLL_QUIET;
+  const cancelPending = () => {
+    if (pending) window.clearTimeout(pending.timer);
+    pending = null;
+  };
+  const arm = (p: HTMLElement) => {
+    if (!pending || pending.panel !== p) return;
+    cancelPending();
+    const b = p.getBoundingClientRect();
+    const x = lastX - b.left - 1;
+    const y = lastY - b.top - 1;
+    if (x < 0 || y < 0 || x > b.width || y > b.height) return; // it left meanwhile
+    active = p;
+    start(p, x, y);
+  };
+  const wait = (p: HTMLElement) => {
+    cancelPending();
+    pending = { panel: p, timer: window.setTimeout(() => arm(p), DWELL) };
+  };
+
   const leave = () => {
     if (active) {
       const m = meshes.get(active);
-      if (m) release(m);
+      // a card sliding away under a still cursor (scroll) just ends the effect, no comet is fired
+      if (m) (scrolling() ? destroy(m) : release(m));
     }
     active = null;
   };
 
   const move = (e: PointerEvent) => {
     if (e.pointerType === 'touch' || calm()) return;
+    lastX = e.clientX;
+    lastY = e.clientY;
     const p = (e.target as HTMLElement).closest<HTMLElement>(selector);
-    if (!p) return leave();
+    if (!p) {
+      cancelPending();
+      return leave();
+    }
     const b = p.getBoundingClientRect();
     const x = e.clientX - b.left - 1;
     const y = e.clientY - b.top - 1;
     if (p !== active) {
       const prev = active ? meshes.get(active) : undefined;
-      if (prev && active && (p.contains(active) || active.contains(p))) {
+      if (prev && active && !scrolling() && (p.contains(active) || active.contains(p))) {
         // crossing into a layer inside (or around) the one we were in: the comet carries on and explodes
         const pb = prev.panel.getBoundingClientRect();
         const carry = shifted(prev, pb.left + 1 - (b.left + 1), pb.top + 1 - (b.top + 1));
@@ -434,22 +468,33 @@ export function attachLens(selector = '.zn-panel'): () => void {
         return;
       }
       leave();
-      active = p;
-      start(p, x, y); // a new card: the impact starts here, right under the cursor
+      if (!pending || pending.panel !== p) wait(p); // a new card: the comet arms after DWELL ms inside it
       return;
     }
     const m = meshes.get(p);
     if (m) {
       m.tx = x;
       m.ty = y;
-    } else start(p, x, y);
+    }
+  };
+
+  const onScroll = () => {
+    lastScroll = performance.now();
+    if (pending) wait(pending.panel); // scrolling restarts the wait
+  };
+  const leaveAll = () => {
+    cancelPending();
+    leave();
   };
 
   window.addEventListener('pointermove', move, { passive: true });
-  document.documentElement.addEventListener('mouseleave', leave);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  document.documentElement.addEventListener('mouseleave', leaveAll);
   return () => {
     window.removeEventListener('pointermove', move);
-    document.documentElement.removeEventListener('mouseleave', leave);
+    window.removeEventListener('scroll', onScroll);
+    document.documentElement.removeEventListener('mouseleave', leaveAll);
+    cancelPending();
     meshes.forEach(destroy);
   };
 }
