@@ -147,6 +147,8 @@ const LandingPage: React.FC = () => {
         slideTarget.current = clamp01((p - 0.1) / 0.75);
         if (!slideRaf.current) {
           let last = performance.now();
+          const cards = Array.from(stack.querySelectorAll<HTMLElement>('.stack-card'));
+          const slideEls = cards.flatMap((c) => [c, ...Array.from(c.querySelectorAll<HTMLElement>(':scope > .sheet'))]);
           const glide = (now: number) => {
             const dt = Math.min(64, now - last);
             last = now;
@@ -161,8 +163,14 @@ const LandingPage: React.FC = () => {
               slideVel.current = 0;
             }
             const s = Math.min(1, Math.max(0, slideNow.current));
-            stack.style.setProperty('--slide', s.toFixed(4));
-            stack.style.setProperty('--sv', Math.max(-1, Math.min(1, slideVel.current * 0.9)).toFixed(3));
+            // set on the four elements that use them (registered with inherits:false), not on .stack,
+            // so a change does not restyle the whole subtree of both sheets every frame
+            const sv = s.toFixed(4);
+            const vv = Math.max(-1, Math.min(1, slideVel.current * 0.9)).toFixed(3);
+            for (const el of slideEls) {
+              el.style.setProperty('--slide', sv);
+              el.style.setProperty('--sv', vv);
+            }
             stack.firstElementChild?.querySelector('.stack-card')?.classList.toggle('is-covered', s > 0.97);
             stackEased.current = s;
             slideRaf.current = settled ? 0 : requestAnimationFrame(glide);

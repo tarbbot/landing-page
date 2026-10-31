@@ -68,7 +68,7 @@ const CyberBackground: React.FC = () => {
       const widthChanged = nw !== w;
       w = nw;
       h = nh;
-      const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5); // hairlines at low alpha: 1.5x is indistinguishable from 2x and fills 44% fewer pixels
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       canvas.style.width = `${w}px`;

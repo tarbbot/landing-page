@@ -43,6 +43,8 @@
 }
 
 /* ---------- shared pieces ---------- */
+@property --slide { syntax: '<number>'; inherits: false; initial-value: 0; }
+@property --sv { syntax: '<number>'; inherits: false; initial-value: 0; }
 @property --hv { syntax: '<number>'; inherits: false; initial-value: 0; }
 .zn-panel {
   --tc: 34, 230, 255;
@@ -771,7 +773,6 @@
     transform: translate3d(0, calc((1 - var(--slide, 0)) * 112vh), 0)
       rotateX(calc((1 - var(--slide, 0)) * 7deg + var(--sv, 0) * -1.6deg))
       scale(calc(0.94 + var(--slide, 0) * 0.06));
-    filter: drop-shadow(0 -30px 44px rgba(2, 0, 8, calc(0.8 * (1 - var(--slide, 0) * 0.5))));
     will-change: transform;
     z-index: 2;
   }
@@ -779,8 +780,7 @@
   .stack-card:nth-child(1) {
     transform-origin: 50% 0;
     transform: translate3d(0, calc(var(--slide, 0) * -3.2vh), 0) rotateX(calc(var(--slide, 0) * 3deg)) scale(calc(1 - var(--slide, 0) * 0.085));
-    filter: blur(calc(var(--slide, 0) * 1.6px));
-    will-change: transform, filter;
+    will-change: transform;
   }
   /* the content of the arriving sheet trails its frame slightly, which reads as depth */
   .stack-card:nth-child(2) .sheet { transform: translate3d(0, calc((1 - var(--slide, 0)) * 26px), 0); }

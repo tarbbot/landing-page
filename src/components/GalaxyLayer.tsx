@@ -29,7 +29,8 @@ void main() {
   float r = pow(a_seed.x, 0.55);
   float arm = floor(a_seed.y * 3.0);
   float ang = r * 5.5 + arm * TAU / 3.0 + (a_seed.z - 0.5) * 0.95 * (1.0 - 0.35 * r) + u_time * 0.12 / (0.35 + r);
-  vec2 d = vec2(cos(ang), sin(ang)) * r * 0.95 * u_dscale;
+  // clip space has y up, so -sin turns everything clockwise on screen, like the black hole canvas
+  vec2 d = vec2(cos(ang), -sin(ang)) * r * 0.95 * u_dscale;
   d.y *= 0.5;
   d = rot(d, -0.35);
   vec2 disk = u_disk + d;
@@ -50,7 +51,7 @@ void main() {
   float pI = smoothstep(a0, a0 + 0.38, u_g);
   float rr = R0 * pow(1.0 - pI, 1.35);
   float th = th0 + pI * (1.4 + 2.6 * a_seed.z) + u_time * 0.05 / (0.4 + (R0 / u_holeR) * 0.15);
-  vec2 ph = u_hole + vec2(cos(th), sin(th) * 0.55) * rr;
+  vec2 ph = u_hole + vec2(cos(th), -sin(th) * 0.55) * rr;
   p = mix(p, ph, u_h);
   z = mix(z, 0.0, u_h);
 
@@ -202,6 +203,7 @@ const GalaxyInner: React.FC = () => {
       zg = zGlyph();
       zpts = zg.pts;
       fillZ();
+      measure();
     }).catch(() => undefined);
     const U = (n: string) => gl.getUniformLocation(prog, n);
     const u = {
@@ -231,7 +233,8 @@ const GalaxyInner: React.FC = () => {
     const resize = () => {
       W = window.innerWidth;
       H = window.innerHeight;
-      dpr = Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2);
+      // points are soft and the layer is full-screen, so 1x is enough and costs a quarter of the fill and memory
+      dpr = 1;
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
       canvas.style.width = `${W}px`;
@@ -239,20 +242,46 @@ const GalaxyInner: React.FC = () => {
       gl.viewport(0, 0, canvas.width, canvas.height);
     };
 
+    // Layout is measured here, not per frame: reading rects every frame forced a style and layout pass whenever
+    // anything else on the page had just changed. Positions are stored in page coordinates and moved by scrollY.
+    const lay = { strat: 1e5, manTop: 1e5, manH: 0, docH: 0, zx: 0, zy: 0, zs: 1, word: false };
+    const measure = () => {
+      const sy = window.scrollY;
+      const pageTop = (id: string) => (document.getElementById(id)?.getBoundingClientRect().top ?? 1e5 - sy) + sy;
+      lay.strat = pageTop('strategies');
+      const man = document.getElementById('manifesto');
+      lay.manTop = man ? man.getBoundingClientRect().top + sy : 1e5;
+      lay.manH = man ? man.offsetHeight : 0;
+      lay.docH = document.documentElement.scrollHeight;
+      const word = document.querySelector('.zn-foot-word');
+      const ch = word?.firstChild;
+      lay.word = !!word && !!ch && ch.nodeType === 3;
+      if (word && ch && lay.word) {
+        const rg = document.createRange();
+        rg.setStart(ch, 0);
+        rg.setEnd(ch, 1);
+        const r = rg.getBoundingClientRect();
+        const fs = parseFloat(getComputedStyle(word).fontSize);
+        lay.zx = r.left + (zg.left + zg.w / 2) * fs;
+        lay.zy = r.top + sy + (zg.asc - zg.top + zg.h / 2) * fs;
+        lay.zs = (zg.h * fs) / 2;
+      }
+    };
+
     const frame = (now: number, still = false) => {
       const dt = still ? 0 : Math.min(48, now - last);
       last = now;
       time += dt / 1000;
       const a = W / H;
-      const top = (id: string) => document.getElementById(id)?.getBoundingClientRect().top ?? 1e5;
+      const sy = window.scrollY;
 
       // chapters from the scroll position; wide ranges and slow easing keep every change gradual
-      const eT = sstep(H * 1.25, H * 0.15, top('strategies'));
+      const eT = sstep(H * 1.25, H * 0.15, lay.strat - sy);
       // measured from the page bottom, so the Z is complete there and starts to break up with the first scroll up
-      const toEnd = document.documentElement.scrollHeight - H - window.scrollY;
-      const zT = document.querySelector('.zn-foot-word') ? 1 - Math.min(1, Math.max(0, toEnd / (H * 0.75))) : 0;
+      const toEnd = lay.docH - H - sy;
+      const zT = lay.word ? 1 - Math.min(1, Math.max(0, toEnd / (H * 0.75))) : 0;
       const eGoal = eT * (1 - zT);
-      const mr = document.getElementById('manifesto')?.getBoundingClientRect();
+      const mr = lay.manH ? { top: lay.manTop - sy, bottom: lay.manTop - sy + lay.manH, height: lay.manH } : null;
       const pm = mr ? Math.min(1, Math.max(0, -mr.top / Math.max(1, mr.height - H))) : 0;
       // the hole feeds on its own, slowly, while it is on screen; scrolling the text speeds it up
       const holeVisible = !!mr && mr.bottom > 0 && mr.top < H;
@@ -285,19 +314,10 @@ const GalaxyInner: React.FC = () => {
       let zcx = 0;
       let zcy = 0;
       let zsPx = 1;
-      const word = document.querySelector('.zn-foot-word');
-      const ch = word?.firstChild;
-      if (word && ch && ch.nodeType === 3) {
-        const rg = document.createRange();
-        rg.setStart(ch, 0);
-        rg.setEnd(ch, 1);
-        const r = rg.getBoundingClientRect();
-        const fs = parseFloat(getComputedStyle(word).fontSize);
-        const cx = r.left + (zg.left + zg.w / 2) * fs;
-        const cy = r.top + (zg.asc - zg.top + zg.h / 2) * fs;
-        zsPx = (zg.h * fs) / 2;
-        zcx = (cx / W * 2 - 1) * a;
-        zcy = -(cy / H * 2 - 1);
+      if (lay.word) {
+        zsPx = lay.zs;
+        zcx = (lay.zx / W * 2 - 1) * a;
+        zcy = -((lay.zy - sy) / H * 2 - 1);
       }
 
       gl.clearColor(0, 0, 0, 0);
@@ -340,13 +360,19 @@ const GalaxyInner: React.FC = () => {
     const onDown = (ev: PointerEvent) => {
       if (ev.pointerType === 'touch' || (ev.target as HTMLElement).closest('a,button,input,select,textarea,[role="button"]')) return;
       // no click burst on the hero and the black hole: it only plays from the strategies on
-      if ((document.getElementById('strategies')?.getBoundingClientRect().top ?? 1e5) > window.innerHeight * 0.5) return;
+      if (lay.strat - window.scrollY > window.innerHeight * 0.5) return;
       burst = 1;
     };
     const redraw = () => frame(performance.now(), true);
 
     resize();
+    measure();
     window.addEventListener('resize', resize);
+    window.addEventListener('resize', measure);
+    const ro = new ResizeObserver(measure);
+    ro.observe(document.body);
+    document.fonts?.ready.then(measure);
+    window.addEventListener('load', measure);
     if (calm) {
       window.addEventListener('scroll', redraw, { passive: true });
       window.addEventListener('resize', redraw);
@@ -360,7 +386,10 @@ const GalaxyInner: React.FC = () => {
     return () => {
       document.documentElement.classList.remove('has-galaxy');
       cancelAnimationFrame(raf);
+      ro.disconnect();
       window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', measure);
+      window.removeEventListener('load', measure);
       window.removeEventListener('scroll', redraw);
       window.removeEventListener('resize', redraw);
       window.removeEventListener('pointermove', onMove);
