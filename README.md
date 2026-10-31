@@ -204,7 +204,7 @@ Uma camada fixa em WebGL (sem Three.js) com 7.000 partículas no desktop e 2.600
 1. **Hero:** disco espiral atrás do painel ZNIT.CORE; o cursor atrai as partículas com um giro.
 2. **Manifesto:** conforme o texto é lido, cada partícula espirala devagar até o buraco negro (posição vinda de `mass`, em `lib/wells.ts`) e é engolida uma única vez, sem órbita eterna.
 3. **Estratégias em diante:** o buraco devolve as partículas: elas saem dele por trajetórias curvas e se espalham pela tela, como um universo em expansão.
-4. **CTA:** as partículas voam em arco até o seu ponto do Z e o formam no palco vazio acima do box (`--zstage` em `landing.css`, ativo só quando a galáxia roda, pela classe `has-galaxy` no `<html>`).
+4. **CTA:** as partículas voam em arco até o seu ponto do Z e formam o Z do wordmark ZNIT.IO do rodapé, amostrado da mesma fonte (Space Grotesk) e posicionado sobre a primeira letra de `.zn-foot-word`.
 
 As transições usam faixas de scroll largas e suavização lenta (taxas no loop de `frame`). Para testes automatizados, `window.__znInstant = true` pula a suavização.
 

@@ -113,20 +113,31 @@ const sstep = (a: number, b: number, x: number) => {
   return t * t * (3 - 2 * t);
 };
 
-// pixels of a bold Z, so that each particle can be given a point of it
-const zPoints = (): { x: number; y: number }[] => {
+// pixels of the Z in the footer wordmark (same font), so that each particle can be given a point of it.
+// Points are normalised to the glyph height (y in -1..1); the metrics are in em, to place it on screen.
+interface ZGlyph { pts: { x: number; y: number }[]; left: number; top: number; w: number; h: number; asc: number }
+const zGlyph = (): ZGlyph => {
+  const S = 300;
   const c = document.createElement('canvas');
-  c.width = c.height = 200;
+  c.width = c.height = 400;
   const g = c.getContext('2d')!;
+  g.font = `700 ${S}px "Space Grotesk", sans-serif`;
   g.fillStyle = '#fff';
-  g.beginPath();
-  [[28, 28], [172, 28], [172, 62], [86, 138], [172, 138], [172, 172], [28, 172], [28, 138], [114, 62], [28, 62]].forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)));
-  g.closePath();
-  g.fill();
-  const px = g.getImageData(0, 0, 200, 200).data;
-  const out: { x: number; y: number }[] = [];
-  for (let i = 0; i < 200 * 200; i++) if (px[i * 4 + 3] > 128) out.push({ x: ((i % 200) / 200 - 0.5) * 2, y: -((Math.floor(i / 200) / 200) - 0.5) * 2 });
-  return out;
+  g.fillText('Z', 50, 330);
+  const asc = (g.measureText('Z').fontBoundingBoxAscent || S * 0.95) / S;
+  const px = g.getImageData(0, 0, 400, 400).data;
+  let x0 = 400, x1 = 0, y0 = 400, y1 = 0;
+  const hit: number[] = [];
+  for (let i = 0; i < 400 * 400; i++) {
+    if (px[i * 4 + 3] <= 128) continue;
+    const x = i % 400, y = Math.floor(i / 400);
+    x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+    hit.push(x, y);
+  }
+  const bw = x1 - x0 + 1, bh = y1 - y0 + 1;
+  const pts: { x: number; y: number }[] = [];
+  for (let i = 0; i < hit.length; i += 2) pts.push({ x: (hit[i] - x0 - bw / 2) / (bh / 2), y: -(hit[i + 1] - y0 - bh / 2) / (bh / 2) });
+  return { pts, left: (x0 - 50) / S, top: (330 - y0) / S, w: bw / S, h: bh / S, asc };
 };
 
 const GalaxyInner: React.FC = () => {
@@ -160,7 +171,8 @@ const GalaxyInner: React.FC = () => {
 
     const seed = new Float32Array(COUNT * 4);
     const zz = new Float32Array(COUNT * 2);
-    const zpts = zPoints();
+    let zg = zGlyph();
+    let zpts = zg.pts;
     for (let i = 0; i < COUNT; i++) {
       for (let k = 0; k < 4; k++) seed[i * 4 + k] = Math.random();
       const zp = zpts[Math.floor(Math.random() * zpts.length)];
@@ -177,6 +189,20 @@ const GalaxyInner: React.FC = () => {
     };
     bind('a_seed', seed, 4);
     bind('a_z', zz, 2);
+    const fillZ = () => {
+      for (let i = 0; i < COUNT; i++) {
+        const zp = zpts[Math.floor(Math.random() * zpts.length)];
+        zz[i * 2] = zp.x;
+        zz[i * 2 + 1] = zp.y;
+      }
+      gl.bufferSubData(gl.ARRAY_BUFFER, 0, zz);
+    };
+    // the first sample may use a fallback font; redo it once Space Grotesk is in
+    document.fonts?.load('700 100px "Space Grotesk"').then(() => {
+      zg = zGlyph();
+      zpts = zg.pts;
+      fillZ();
+    }).catch(() => undefined);
     const U = (n: string) => gl.getUniformLocation(prog, n);
     const u = {
       time: U('u_time'), aspect: U('u_aspect'), e: U('u_e'), z: U('u_z'), h: U('u_h'), g: U('u_g'), burst: U('u_burst'), dpr: U('u_dpr'), scale: U('u_scale'),
@@ -222,7 +248,9 @@ const GalaxyInner: React.FC = () => {
 
       // chapters from the scroll position; wide ranges and slow easing keep every change gradual
       const eT = sstep(H * 1.25, H * 0.15, top('strategies'));
-      const zT = sstep(H * 1.7, H * 0.35, top('start'));
+      // measured from the page bottom, so the Z is complete there and starts to break up with the first scroll up
+      const toEnd = document.documentElement.scrollHeight - H - window.scrollY;
+      const zT = document.querySelector('.zn-foot-word') ? 1 - Math.min(1, Math.max(0, toEnd / (H * 0.75))) : 0;
       const eGoal = eT * (1 - zT);
       const mr = document.getElementById('manifesto')?.getBoundingClientRect();
       const pm = mr ? Math.min(1, Math.max(0, -mr.top / Math.max(1, mr.height - H))) : 0;
@@ -236,7 +264,7 @@ const GalaxyInner: React.FC = () => {
       const instant = still || (window as unknown as { __znInstant?: boolean }).__znInstant === true;
       const ease = (rate: number) => (instant ? 1 : 1 - Math.pow(1 - rate, dt / 16.667));
       e += (eGoal - e) * ease(0.025);
-      zf += (zT - zf) * ease(0.022);
+      zf += (zT - zf) * ease(zT < zf ? 0.05 : 0.022);
       g += (gGoal - g) * ease(0.04);
       h += ((holeOn ? 1 : 0) - h) * ease(0.03);
       burst = Math.max(0, burst - dt / 900);
@@ -253,17 +281,23 @@ const GalaxyInner: React.FC = () => {
       const goal = tint.c.split(',').map((n) => parseFloat(n) / 255);
       for (let i = 0; i < 3; i++) tintC[i] += (goal[i] - tintC[i]) * 0.05;
 
-      // where the Z forms: on the empty stage the CTA section reserves above its box (CSS: --zstage)
-      const start = document.getElementById('start');
-      const box = document.querySelector('.cta-box')?.getBoundingClientRect();
-      const stage = start ? parseFloat(getComputedStyle(start).getPropertyValue('--zstage')) || 260 : 260;
-      const zHpx = stage * 0.8; // height of the Z on screen
-      const zsPx = zHpx / 0.72;
+      // where the Z forms: over the first letter of the ZNIT.IO wordmark in the footer
       let zcx = 0;
       let zcy = 0;
-      if (box) {
-        zcx = ((box.left + box.width / 2) / W * 2 - 1) * a;
-        zcy = -((box.top - stage / 2) / H * 2 - 1);
+      let zsPx = 1;
+      const word = document.querySelector('.zn-foot-word');
+      const ch = word?.firstChild;
+      if (word && ch && ch.nodeType === 3) {
+        const rg = document.createRange();
+        rg.setStart(ch, 0);
+        rg.setEnd(ch, 1);
+        const r = rg.getBoundingClientRect();
+        const fs = parseFloat(getComputedStyle(word).fontSize);
+        const cx = r.left + (zg.left + zg.w / 2) * fs;
+        const cy = r.top + (zg.asc - zg.top + zg.h / 2) * fs;
+        zsPx = (zg.h * fs) / 2;
+        zcx = (cx / W * 2 - 1) * a;
+        zcy = -(cy / H * 2 - 1);
       }
 
       gl.clearColor(0, 0, 0, 0);
@@ -278,7 +312,7 @@ const GalaxyInner: React.FC = () => {
       gl.uniform1f(u.dpr, dpr);
       gl.uniform1f(u.scale, (H / 900) * (small ? 0.85 : 1));
       gl.uniform1f(u.dscale, small ? 0.7 : 1);
-      gl.uniform1f(u.zs, zsPx / H * 2 * 0.5);
+      gl.uniform1f(u.zs, zsPx / H * 2);
       gl.uniform2f(u.mouse, mouse.x, mouse.y);
       gl.uniform2f(u.hole, hole.x, hole.y);
       gl.uniform1f(u.holeR, hole.r);
