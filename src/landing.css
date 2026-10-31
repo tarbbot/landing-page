@@ -25,6 +25,13 @@
   transform: translateZ(0);
 }
 
+/* the galaxy of order flow: above the grid, below every panel and text */
+.zn-galaxy { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
+/* the empty stage above the CTA box where the particles gather into the Z (only when the galaxy runs) */
+#start { --zstage: 260px; }
+.has-galaxy #start::before { content: ''; display: block; height: var(--zstage); }
+@media (max-width: 900px) { #start { --zstage: 190px; } }
+
 .zn {
   position: relative;
   color: var(--zn-ink);

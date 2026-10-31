@@ -78,6 +78,7 @@ landing-page/
     components/
       LandingPage.tsx      composição das seções e loop de scroll
       CyberBackground.tsx  fundo fixo: malha, poço gravitacional, ticks
+      GalaxyLayer.tsx      galáxia de partículas em WebGL que acompanha o scroll
       Footer.tsx, Login.tsx, DashboardSelector.tsx, LanguageSelector.tsx
       brand/ZMark.tsx      logotipo (Z)
       landing/
@@ -195,6 +196,19 @@ Padrões que valem para qualquer cena nova:
 ### Fundo (`CyberBackground.tsx`)
 
 Malha que cai em um poço gravitacional sob o cursor (com banda de brilho gradual), feixe de varredura, ticks subindo e tinta por capítulo (`tint`). Há um segundo poço, muito mais pesado, quando o buraco negro está na tela (`mass` em `lib/wells.ts`). A velocidade do poço do mouse tem teto (`MAX_SPEED`), para que sacudir o mouse não faça a malha saltar.
+
+### Galáxia de partículas (`GalaxyLayer.tsx`)
+
+Uma camada fixa em WebGL (sem Three.js) com 7.000 partículas no desktop e 2.600 no mobile. Cada posição é calculada no vertex shader a partir de poucos números (progresso do scroll, cursor, buraco negro), então o custo de CPU é baixo. Ela passa por quatro estados, ligados ao scroll:
+
+1. **Hero:** disco espiral atrás do painel ZNIT.CORE; o cursor atrai as partículas com um giro.
+2. **Manifesto:** conforme o texto é lido, cada partícula espirala devagar até o buraco negro (posição vinda de `mass`, em `lib/wells.ts`) e é engolida uma única vez, sem órbita eterna.
+3. **Estratégias em diante:** o buraco devolve as partículas: elas saem dele por trajetórias curvas e se espalham pela tela, como um universo em expansão.
+4. **CTA:** as partículas voam em arco até o seu ponto do Z e o formam no palco vazio acima do box (`--zstage` em `landing.css`, ativo só quando a galáxia roda, pela classe `has-galaxy` no `<html>`).
+
+As transições usam faixas de scroll largas e suavização lenta (taxas no loop de `frame`). Para testes automatizados, `window.__znInstant = true` pula a suavização.
+
+Um clique espalha as partículas e elas voltam sozinhas à forma, mas só a partir da seção de estratégias: no hero e no buraco negro o clique não faz nada. Enquanto o buraco negro está na tela, ele também puxa as partículas sozinho, bem devagar (até metade do caminho); rolar o texto acelera. Com movimento reduzido é desenhado um único quadro a cada scroll; sem WebGL a camada não aparece. Testes automatizados de WebGL precisam do Chromium completo com `--use-angle=swiftshader` (o `headless_shell` não tem WebGL), e em renderização por software ela fica muito lenta; avalie desempenho em GPU real.
 
 ### Cometa nos painéis (`lib/lens.ts`)
 

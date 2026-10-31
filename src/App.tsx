@@ -13,6 +13,7 @@ import { isLandingPath, LANG_CODES, LANG_PATH } from './i18n/locales';
 import ZMark from './components/brand/ZMark';
 import DashboardSelector from './components/DashboardSelector';
 import CyberBackground from './components/CyberBackground';
+import GalaxyLayer from './components/GalaxyLayer';
 import "./App.css";
 import "./nav.css";
 import './amplifyConfig';
@@ -765,6 +766,7 @@ function AppContent() {
   return (
       <div className="App">
         <CyberBackground />
+        <GalaxyLayer />
         
         <>
           <ScrollToTop />
