@@ -98,6 +98,7 @@ const LandingPage: React.FC = () => {
   // The stacked sheet follows the scroll through a damped value, so wheel notches glide instead of jumping.
   const slideTarget = useRef(0);
   const slideNow = useRef(0);
+  const slideVel = useRef(0);
   const slideRaf = useRef(0);
   const stackEased = useRef(0);
   const [ready, setReady] = useState(false);
@@ -150,15 +151,21 @@ const LandingPage: React.FC = () => {
             const dt = Math.min(64, now - last);
             last = now;
             const gap = slideTarget.current - slideNow.current;
-            // exponential smoothing, independent of frame rate (about 140 ms to close most of the gap)
-            slideNow.current += gap * (1 - Math.exp(-dt / 140));
-            if (Math.abs(gap) < 0.0006) slideNow.current = slideTarget.current;
-            const s = slideNow.current;
-            const eased = s * s * (3 - 2 * s); // smoothstep: slow in, slow out
-            stack.style.setProperty('--slide', eased.toFixed(4));
-            stack.firstElementChild?.querySelector('.stack-card')?.classList.toggle('is-covered', eased > 0.97);
-            stackEased.current = eased;
-            slideRaf.current = slideNow.current === slideTarget.current ? 0 : requestAnimationFrame(glide);
+            // a lightly underdamped spring (about 0.9): the sheet carries momentum and settles instead of tracking the wheel rigidly
+            const dts = dt / 1000;
+            slideVel.current += (gap * 90 - slideVel.current * 17) * dts;
+            slideNow.current += slideVel.current * dts;
+            const settled = Math.abs(gap) < 0.0006 && Math.abs(slideVel.current) < 0.002;
+            if (settled) {
+              slideNow.current = slideTarget.current;
+              slideVel.current = 0;
+            }
+            const s = Math.min(1, Math.max(0, slideNow.current));
+            stack.style.setProperty('--slide', s.toFixed(4));
+            stack.style.setProperty('--sv', Math.max(-1, Math.min(1, slideVel.current * 0.9)).toFixed(3));
+            stack.firstElementChild?.querySelector('.stack-card')?.classList.toggle('is-covered', s > 0.97);
+            stackEased.current = s;
+            slideRaf.current = settled ? 0 : requestAnimationFrame(glide);
           };
           slideRaf.current = requestAnimationFrame(glide);
         }
